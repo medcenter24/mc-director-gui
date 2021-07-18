@@ -9,7 +9,7 @@
         "medcenter24-extension-name": "guiDirector"
     },
     "require": {
-        "medcenter24/lib-installer": "~1.0"
+        "medcenter24/lib-installer": "^2.0"
     },
     "config": {
         "preferred-install": "dist",
