@@ -65,7 +65,7 @@
         }
       }
 
-      .sidebar-hover-elem, .sidebar-select-elem {
+      .sidebar-select-elem {
         left: 48px;
       }
     }
@@ -92,7 +92,7 @@
         transition: none;
       }
 
-      .sidebar-hover-elem, .sidebar-select-elem {
+      .sidebar-select-elem {
         left: $sidebar-width - 4;
         transition: left 0.5s ease;
       }
@@ -103,7 +103,7 @@
     .al-sidebar {
       width: 0;
     }
-    .sidebar-hover-elem, .sidebar-select-elem {
+    .sidebar-select-elem {
       display: none;
     }
   }

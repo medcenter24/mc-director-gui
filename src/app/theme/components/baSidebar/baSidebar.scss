@@ -63,6 +63,7 @@ $angle-right: '\f101';
   .al-sidebar {
     width: $sidebar-width;
     top: $top-height;
+    padding-bottom: $top-height;
     left: 0;
     z-index: 1001;
     display: block;
@@ -175,18 +176,6 @@ $angle-right: '\f101';
 
   .al-sidebar-sublist {
     @include default-sublist();
-  }
-
-  .sidebar-hover-elem {
-    width: $sidebar-scroll-width;
-    background: $primary;
-    position: absolute;
-    top: -150px;
-    left: $sidebar-width - $sidebar-scroll-width;
-    transition: all 0.5s ease;
-    transition-property: top, height;
-    height: 42px;
-    display: block;
   }
 
   .sidebar-select-elem {
