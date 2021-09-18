@@ -101,7 +101,11 @@ export abstract class AbstractDatatableController extends LoadingComponent imple
         requestBuilder: this.getRequestBuilder(),
         hasFilterRow: this.hasFilterRow(),
       });
+      this.onDatatableConfigInitialized();
     });
+  }
+
+  protected onDatatableConfigInitialized(): void {
   }
 
   protected hasFilterRow(): boolean {

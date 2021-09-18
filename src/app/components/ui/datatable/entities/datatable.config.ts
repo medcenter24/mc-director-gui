@@ -44,13 +44,20 @@ export class DatatableConfig {
     public cols: DatatableCol[] = null,
     public onRowSelect: Function = function() { },
     public showTotal: boolean = true,
-    public refreshBtnTitle: string = 'Refresh',
+    public refreshBtnTitle: string = '',
     public showRefreshBtn: boolean = true,
+
     /**
      * to Show filters next to the head column
      * @type boolean
      */
     public hasFilterRow: boolean = false,
+
+    /**
+     * Class for the main <table> element
+     * @type string
+     */
+    public tableClass: string = '',
   ) { }
 
   /**
@@ -72,7 +79,7 @@ export class DatatableConfig {
   }
 
   get(key: string): any {
-    return this[key];
+    return this[key] || '';
   }
 
   getDatatableRequestBuilder(): DatatableRequestBuilder {

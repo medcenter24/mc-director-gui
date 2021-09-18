@@ -46,6 +46,7 @@ import { AccidentTemplateHelper } from '../../../accident/accident.template.help
 @Component({
   selector: 'nga-case-datatable',
   templateUrl: './case.datatable.html',
+  styleUrls: ['./case.datatable.scss'],
 })
 export class CaseDatatableComponent extends AbstractDatatableController implements OnInit {
   protected componentName: string = 'CaseDatatableComponent';
@@ -75,10 +76,15 @@ export class CaseDatatableComponent extends AbstractDatatableController implemen
     super();
   }
 
+  protected onDatatableConfigInitialized(): void {
+    super.onDatatableConfigInitialized();
+    this.datatableConfig.tableClass = 'cases-datatable';
+  }
+
   protected onLangLoaded () {
     super.onLangLoaded();
     const breadcrumbs = [];
-    const title = this.translateService.instant('List of Cases');
+    const title = this.translateService.instant('Cases');
     breadcrumbs.push(new Breadcrumb(title, '/pages/cases', true));
     this._state.notifyDataChanged('menu.activeLink', breadcrumbs);
     this._state.notifyDataChanged('changeTitle', title);

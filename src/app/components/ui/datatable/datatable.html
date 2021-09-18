@@ -29,6 +29,7 @@
   (onRowSelect)="onRowSelect($event)"
   [selectionMode]="getConfig().get('selectionMode')"
   [(selection)]="selectedData"
+  [tableStyleClass]="getConfig().get('tableClass')"
 >
   <ng-template pTemplate="caption" *ngIf="getConfig().get('captionPanel')">
     <div class="ui-helper-clearfix">
