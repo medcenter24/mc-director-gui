@@ -15,7 +15,7 @@
  * Copyright (c) 2019 (original work) MedCenter24.com;
  */
 
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { CasesService } from '../../cases.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
@@ -44,9 +44,10 @@ import { RequestBuilder } from '../../../core/http/request';
 import { AccidentTemplateHelper } from '../../../accident/accident.template.helper';
 
 @Component({
+  encapsulation: ViewEncapsulation.None,
   selector: 'nga-case-datatable',
   templateUrl: './case.datatable.html',
-  styleUrls: ['./case.datatable.scss'],
+  styleUrls: ['case.datatable.scss'],
 })
 export class CaseDatatableComponent extends AbstractDatatableController implements OnInit {
   protected componentName: string = 'CaseDatatableComponent';
