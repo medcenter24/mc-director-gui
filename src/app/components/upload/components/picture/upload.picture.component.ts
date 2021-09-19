@@ -15,11 +15,21 @@
  * Copyright (c) 2019 (original work) MedCenter24.com;
  */
 
-import { Component, ViewChild, Input, Output, EventEmitter, ElementRef, Renderer2 } from '@angular/core';
+import {
+  Component,
+  ViewChild,
+  Input,
+  Output,
+  EventEmitter,
+  ElementRef,
+  Renderer2,
+  ViewEncapsulation,
+} from '@angular/core';
 import { UploadOutput, UploadInput, UploadFile, humanizeBytes, UploaderOptions } from 'ngx-uploader';
 
 // todo move to ui/upload
 @Component({
+  encapsulation: ViewEncapsulation.None,
   selector: 'nga-picture-uploader',
   styleUrls: ['./upload.picture.scss'],
   templateUrl: './upload.picture.html',

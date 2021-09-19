@@ -18,7 +18,7 @@
 <div class="commentaries-component">
   <div class="media mb-1" *ngFor="let event of comments">
     <img class="mr-3" *ngIf="event.userId && event.userThumb" [alt]="event.userName"
-         src="{{ 'data:image/jpeg;base64,' + event.userThumb }}">
+         src="{{ event.userThumb }}">
     <img class="mr-3" *ngIf="!event.userId || !event.userThumb" alt="{{ 'System' | translate }}" width="45"
          src="{{ noPhoto }}">
     <div class="media-body">

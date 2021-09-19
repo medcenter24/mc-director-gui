@@ -61,7 +61,7 @@ export class CompanyEditorComponent extends LoadableComponent implements OnInit 
 
         this.company = company;
 
-        this.pictureLogo = this.company.logo250.length ? `data:image/jpeg;base64,${this.company.logo250}` : '';
+        this.pictureLogo = this.company.logo250.length ? this.company.logo250 : '';
 
         this.eventLogoToUpload = {
           type: 'uploadAll',

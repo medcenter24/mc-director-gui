@@ -50,7 +50,7 @@ export class ProfileComponent extends LoadingComponent implements OnInit {
   uploaderOptions: UploaderOptions;
   eventToUpload: UploadInput;
   directorPhotoUri: string = '';
-  tokenLiveTime: string = '';
+  tokenLiveTime: string = '00:00:00';
   private profileTabIndexKey: string = 'profileTabIndex';
   private timer: any;
 
@@ -80,10 +80,10 @@ export class ProfileComponent extends LoadingComponent implements OnInit {
     this._state.notifyDataChanged('menu.activeLink', { title: 'Profile' });
     this.languages = langs.map((v) => ({ label: v, value: v }) );
 
+    this.setTokensData(this.tokenService.getToken());
+
     this._state.subscribe('token', (token) => {
-
       this.setTokensData(token);
-
       if (this.eventToUpload) {
         this.eventToUpload.headers = { 'Authorization': `Bearer ${token}` };
       }
@@ -93,7 +93,7 @@ export class ProfileComponent extends LoadingComponent implements OnInit {
     this.loggedUserService.getUser().then((user: User) => {
       this.stopLoader('getUser');
       this.loggedUser = user;
-      this.directorPhotoUri = user.thumb200 ? `data:image/jpeg;base64,${user.thumb200}` : '';
+      this.directorPhotoUri = user.thumb200 ? user.thumb200 : '';
 
       this.eventToUpload = {
         type: 'uploadAll',
@@ -166,11 +166,11 @@ export class ProfileComponent extends LoadingComponent implements OnInit {
     this.loggedUser.phone = event.target.value;
   }
 
-  startPhotoUpload(/*event*/): void {
+  startPhotoUpload(): void {
     this.startLoader('PhotoUpload');
   }
 
-  endPhotoUpload(/*event*/): void {
+  endPhotoUpload(): void {
     this.stopLoader('PhotoUpload');
     this.uiToastService.saved();
 
@@ -180,7 +180,7 @@ export class ProfileComponent extends LoadingComponent implements OnInit {
       this.stopLoader(opName);
       this.loggedUser = user;
       this._state.notifyDataChanged('avatarB64', user.thumb45);
-      this.directorPhotoUri = user.thumb200 ? `data:image/jpeg;base64,${user.thumb200}` : '';
+      this.directorPhotoUri = user.thumb200 ? user.thumb200 : '';
     }).catch(() => this.stopLoader(opName));
   }
 
@@ -215,12 +215,14 @@ export class ProfileComponent extends LoadingComponent implements OnInit {
     const jwtExp = decodedToken.exp; // exp at
     const now: number = Math.ceil( new Date().getTime() / 1000 ); // UTC seconds
     const leftSec: number = jwtExp - now;
-
+    let counted = 0;
     if (this.timer) {
       clearInterval(this.timer);
+      counted = 0;
     }
-    this.timer = setInterval((v) => {
-      this.setLeftTime(leftSec - v);
+    this.timer = setInterval(() => {
+      counted++;
+      this.setLeftTime(leftSec - counted);
     }, 1000);
   }
 
