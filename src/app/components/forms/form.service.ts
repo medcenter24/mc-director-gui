@@ -21,6 +21,7 @@ import { HttpService } from '../core/http/http.service';
 import { LoadableServiceInterface } from '../core/loadable';
 import { Form } from './form';
 import { saveAs } from 'file-saver';
+import 'rxjs/add/operator/map';
 
 @Injectable()
 export class FormService extends HttpService implements LoadableServiceInterface {
