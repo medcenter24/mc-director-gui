@@ -275,12 +275,12 @@ export class CaseEditorComponent extends LoadingComponent implements OnInit {
   }
 
   private showToolbox(): void {
-    this.translate.get('Save').subscribe(() => {
+    this.translate.get('Save').subscribe((saveText: string) => {
       const actions: BaToolboxAction[] = [];
       actions.push(new BaToolboxAction(this.translate.instant('Back'), 'fa fa-angle-left', () => {
         this.goToList().then();
       }, 'navigation'));
-      actions.push(new BaToolboxAction(this.translate.instant('Save'), 'fa fa-save', () => {
+      actions.push(new BaToolboxAction(saveText, 'fa fa-save', () => {
         this.onSave();
       }, 'save'));
       actions.push(new BaToolboxAction(this.translate.instant('Delete'), 'fa fa-trash', () => {
