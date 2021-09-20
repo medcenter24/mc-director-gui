@@ -15,13 +15,12 @@
  * Copyright (c) 2019 (original work) MedCenter24.com;
  */
 
-
 import { NgModule } from '@angular/core';
-import { DatatableModule } from '../../../ui/datatable/datatable.module';
+import { DatatableModule } from '../../../ui/datatable';
 import { CommonModule } from '@angular/common';
 import { AppTranslationModule } from '../../../../app.translation.module';
 import { DialogModule } from 'primeng/dialog';
-import { AssistantEditorModule } from '../editor/assistant.editor.module';
+import { AssistantEditorModule } from '../editor';
 import { AssistantDatatableComponent } from './assistant.datatable.component';
 import { AssistantsService } from '../../assistant.service';
 

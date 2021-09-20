@@ -18,7 +18,6 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from '../core/http/http.service';
 import { FinanceRule } from './finance.rule';
-import { LoadableServiceInterface } from '../core/loadable';
 
 @Injectable()
 export class FinanceService extends HttpService {
