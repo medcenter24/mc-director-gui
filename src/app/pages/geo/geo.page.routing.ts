@@ -17,7 +17,7 @@
 
 import { Routes, RouterModule } from '@angular/router';
 
-import { GeoComponent } from './geo.component';
+import { GeoPageComponent } from './geo.page.component';
 import { HospitalDatatableComponent }
   from '../../components/hospital/components/datatable/hospital.datatable.component';
 import { GeoCityPageComponent } from './city';
@@ -28,7 +28,7 @@ import { GeoRegionPageComponent } from './region';
 const routes: Routes = [
   {
     path: '',
-    component: GeoComponent,
+    component: GeoPageComponent,
     children: [
       { path: 'cities', component: GeoCityPageComponent },
       { path: 'hospitals', component: HospitalDatatableComponent },

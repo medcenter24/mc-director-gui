@@ -15,13 +15,15 @@
  * Copyright (c) 2019 (original work) MedCenter24.com;
  */
 
-import { Component } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
 
-@Component({
-  selector: 'nga-geo',
-  template: `<router-outlet></router-outlet>`,
-})
-export class GeoComponent {
+import { ModuleWithProviders } from '@angular/core';
+import { ProfilePageComponent } from './profile.page.component';
 
-  constructor() {}
-}
+// noinspection TypeScriptValidateTypes
+export const routes: Routes = [{
+  path: '',
+  component: ProfilePageComponent,
+}];
+
+export const routing: ModuleWithProviders<any> = RouterModule.forChild(routes);

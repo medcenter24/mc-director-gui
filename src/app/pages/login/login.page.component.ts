@@ -15,9 +15,8 @@
  * Copyright (c) 2019 (original work) MedCenter24.com;
  */
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormGroup, AbstractControl, FormBuilder, Validators } from '@angular/forms';
-import 'style-loader!./login.scss';
 import { AuthenticationService } from '../../components/auth/authentication.service';
 import { Router } from '@angular/router';
 import { LocalStorageHelper } from '../../helpers/local.storage.helper';
@@ -26,10 +25,12 @@ import { UrlHelper } from '../../helpers/url.helper';
 import { GlobalState } from '../../global.state';
 
 @Component({
+  encapsulation: ViewEncapsulation.None,
   selector: 'nga-login',
   templateUrl: './login.html',
+  styleUrls: ['login.scss'],
 })
-export class LoginComponent implements OnInit {
+export class LoginPageComponent implements OnInit {
 
   form: FormGroup;
   email: AbstractControl;
@@ -72,6 +73,9 @@ export class LoginComponent implements OnInit {
           this._state.notifyDataChanged('runLoadingProcess', true);
           let lastUri = this.storage.getItem('lastActiveUri');
           lastUri = lastUri && lastUri !== '/login' ? lastUri : '/';
+          if (lastUri === '/') {
+            lastUri = '/pages/dashboard';
+          }
 
           if (lastUri.includes('?')) {
             const queryParams = { queryParams: UrlHelper.getQueryVarsAsObject(lastUri) };

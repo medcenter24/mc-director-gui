@@ -16,32 +16,25 @@
  */
 
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { NgaModule } from '../../theme/nga.module';
-import { routing } from './geo.routing';
-import { GeoComponent } from './geo.component';
-import { AppTranslationModule } from '../../app.translation.module';
-import { HospitalDatatableModule } from '../../components/hospital/components/datatable';
-import { GeoCityPageModule } from './city';
-import { GeoCountryPageModule } from './country';
-import { GeoRegionPageModule } from './region';
+import { DoctorDatatableModule } from '../../components/doctors/components/datatable';
+import { DoctorsPageComponent } from './doctors.page.component';
+import { routing } from './doctors.page.routing';
+import { DiagnosticDatatableModule } from '../../components/diagnostic/components/datatable';
+import { ServiceDatatableModule } from '../../components/service/components/datatable';
+import { SurveyDatatableModule } from '../../components/survey/components/datatable';
 
 @NgModule({
   imports: [
-    CommonModule,
-    FormsModule,
-    AppTranslationModule,
-    NgaModule,
     routing,
-    HospitalDatatableModule,
-    GeoCityPageModule,
-    GeoCountryPageModule,
-    GeoRegionPageModule,
+    DoctorDatatableModule,
+    DiagnosticDatatableModule,
+    ServiceDatatableModule,
+    SurveyDatatableModule,
   ],
   declarations: [
-    GeoComponent,
+    DoctorsPageComponent,
   ],
 })
 
-export class GeoModule {}
+export class DoctorsPageModule {
+}

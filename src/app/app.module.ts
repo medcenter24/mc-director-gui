@@ -18,12 +18,11 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { AppState } from './app.service';
 import { GlobalState } from './global.state';
 import { NgaModule } from './theme/nga.module';
-import { PagesModule } from './pages/pages.module';
+import { PagesModule } from './pages';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BlockUIModule } from 'primeng/blockui';
 import { ConfirmationService } from 'primeng/api';
@@ -41,10 +40,10 @@ import { LoggerComponent } from './components/core/logger/LoggerComponent';
 import { UiToastModule } from './components/ui/toast';
 import { UiToastService } from './components/ui/toast/ui.toast.service';
 import { TokenService } from './components/auth/token.service';
-import { BaImageLoaderService } from './theme/services/baImageLoader';
-import { BaThemePreloader } from './theme/services/baThemePreloader';
-import { BaThemeSpinner } from './theme/services/baThemeSpinner';
-import { BaMenuService } from './theme/services/baMenu';
+import { BaImageLoaderService } from './theme/services';
+import { BaThemePreloader } from './theme/services';
+import { BaThemeSpinner } from './theme/services';
+import { BaMenuService } from './theme';
 import { AuthenticationService } from './components/auth/authentication.service';
 import { BaThemeConfig, BaThemeConfigProvider } from './theme';
 import { EmailValidator, EqualPasswordsValidator } from './theme/validators';
@@ -85,11 +84,10 @@ export function tokenGetter() {
   declarations: [
     AppComponent,
   ],
-  imports: [ // import Angular's modules
+  imports: [ // import Angular 's modules
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    RouterModule,
     FormsModule,
     ReactiveFormsModule,
     NgaModule,
@@ -111,7 +109,7 @@ export function tokenGetter() {
     ProgressBarModule,
   ],
   exports: [],
-  providers: [ // expose our Services and Providers into Angular's dependency injection
+  providers: [ // expose our Services and Providers into Angular 's dependency injection
     APP_PROVIDERS,
   ],
 })

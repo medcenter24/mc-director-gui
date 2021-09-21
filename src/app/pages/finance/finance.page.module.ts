@@ -15,15 +15,24 @@
  * Copyright (c) 2019 (original work) MedCenter24.com;
  */
 
-import { Routes, RouterModule } from '@angular/router';
+import { NgModule } from '@angular/core';
+import { FinanceCurrencyDatatableModule } from '../../components/finance/components/currency/components/datatable';
+import { FinanceDatatableModule } from '../../components/finance/components/datatable';
+import { ConditionsEditorPageModule } from './conditions/editor';
+import { FinancePageComponent } from './finance.page.component';
+import { routing } from './finance.page.routing';
 
-import { LoginComponent } from './login.component';
-import { ModuleWithProviders } from '@angular/core';
+@NgModule({
+  imports: [
+    routing,
+    FinanceDatatableModule,
+    FinanceCurrencyDatatableModule,
+    ConditionsEditorPageModule,
+  ],
+  declarations: [
+    FinancePageComponent,
+  ],
+})
 
-// noinspection TypeScriptValidateTypes
-export const routes: Routes = [{
-  path: '',
-  component: LoginComponent,
-}];
-
-export const routing: ModuleWithProviders<any> = RouterModule.forChild(routes);
+export class FinancePageModule {
+}

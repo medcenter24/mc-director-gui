@@ -16,27 +16,16 @@
  */
 
 import { Routes, RouterModule } from '@angular/router';
+
+import { DashboardPageComponent } from './dashboard.page.component';
 import { ModuleWithProviders } from '@angular/core';
-import { SettingsComponent } from './settings.component';
-import { PeriodDatatableComponent } from '../../components/period/components/datatable/period.datatable.component';
-import { AccidentCheckpointDatatableComponent }
-  from '../../components/accident/components/checkpoint/components/datatable/accident.checkpoint.datatable.component';
-import { FormDatatableComponent } from '../../components/forms/components/datatable';
-import { FormEditorPageComponent } from './form/editor';
-import { DiseaseDatatableComponent } from '../../components/disease/components/datatable';
 
 // noinspection TypeScriptValidateTypes
-const routes: Routes = [
+export const routes: Routes = [
   {
     path: '',
-    component: SettingsComponent,
+    component: DashboardPageComponent,
     children: [
-      { path: 'checkpoints', component: AccidentCheckpointDatatableComponent },
-      { path: 'periods', component: PeriodDatatableComponent },
-      { path: 'forms', component: FormDatatableComponent },
-      { path: 'forms/new', component: FormEditorPageComponent },
-      { path: 'forms/:id', component: FormEditorPageComponent },
-      { path: 'diseases', component: DiseaseDatatableComponent },
     ],
   },
 ];

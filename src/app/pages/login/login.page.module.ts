@@ -19,8 +19,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgaModule } from '../../theme/nga.module';
-import { LoginComponent } from './login.component';
-import { routing } from './login.routing';
+import { LoginPageComponent } from './login.page.component';
+import { routing } from './login.page.routing';
 import { AuthenticationService } from '../../components/auth/authentication.service';
 import { MessagesModule } from 'primeng/messages';
 import { AppTranslationModule } from '../../app.translation.module';
@@ -36,10 +36,10 @@ import { AppTranslationModule } from '../../app.translation.module';
     AppTranslationModule,
   ],
   declarations: [
-    LoginComponent,
+    LoginPageComponent,
   ],
   providers: [
     AuthenticationService,
   ],
 })
-export class LoginModule {}
+export class LoginPageModule {}

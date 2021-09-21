@@ -6,10 +6,6 @@
     "baseUrl": "./",
     "types": ["node"],
   },
-  "include": [
-    "../node_modules/angular2-logger",
-    "./"
-  ],
   "files": [
     "main.ts",
     "polyfills.ts"

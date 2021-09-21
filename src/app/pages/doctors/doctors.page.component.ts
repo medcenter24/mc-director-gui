@@ -18,7 +18,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'nga-finance-page',
+  selector: 'nga-doctors',
   template: `<router-outlet></router-outlet>`,
 })
-export class FinanceComponent { }
+export class DoctorsPageComponent { }

@@ -18,14 +18,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgaModule } from '../../theme/nga.module';
-import { routing } from './profile.routing';
+import { routing } from './profile.page.routing';
 import { MessagesModule } from 'primeng/messages';
 import { DropdownModule } from 'primeng/dropdown';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { AppTranslationModule } from '../../app.translation.module';
-import { ProfileComponent } from './profile.component';
+import { ProfilePageComponent } from './profile.page.component';
 import { FormsModule } from '@angular/forms';
 import { UsersService } from '../../components/users/users.service';
 import { LoggedUserService } from '../../components/auth/loggedUser.service';
@@ -52,7 +52,7 @@ import { CompanyEditorModule } from '../../components/company/components/editor'
     CompanyEditorModule,
   ],
   declarations: [
-    ProfileComponent,
+    ProfilePageComponent,
     TimezoneSelectComponent,
   ],
   providers: [
@@ -63,5 +63,5 @@ import { CompanyEditorModule } from '../../components/company/components/editor'
     TimezoneService,
   ],
 })
-export class ProfileModule {
+export class ProfilePageModule {
 }

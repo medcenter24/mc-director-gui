@@ -20,13 +20,13 @@ import { ModuleWithProviders } from '@angular/core';
 import { FinanceCurrencyDatatableComponent } from '../../components/finance/components/currency/components/datatable';
 import { FinanceDatatableComponent } from '../../components/finance/components/datatable';
 import { ConditionsEditorPageComponent } from './conditions/editor';
-import { FinanceComponent } from './finance.component';
+import { FinancePageComponent } from './finance.page.component';
 
 // noinspection TypeScriptValidateTypes
 const routes: Routes = [
   {
     path: '',
-    component: FinanceComponent,
+    component: FinancePageComponent,
     children: [
       { path: 'conditions', component: FinanceDatatableComponent },
       { path: 'conditions/new', component: ConditionsEditorPageComponent },

@@ -22,6 +22,16 @@ import { NgaModule } from '../theme/nga.module';
 import { AppTranslationModule } from '../app.translation.module';
 import { PagesComponent } from './pages.component';
 import { PageNotFoundComponent } from './page.not.found.component';
+// import { LoginPageModule } from './login';
+// import { CasesPageModule } from './cases';
+// import { CompanionsPageModule } from './companions';
+// import { DashboardPageModule } from './dashboard';
+// import { DevelopmentPageModule } from './development';
+// import { DoctorsPageModule } from './doctors';
+// import { FinancePageModule } from './finance';
+// import { GeoPageModule } from './geo';
+// import { ProfilePageModule } from './profile';
+// import { SettingsPageModule } from './settings';
 
 @NgModule({
   imports: [
@@ -29,6 +39,16 @@ import { PageNotFoundComponent } from './page.not.found.component';
     AppTranslationModule,
     NgaModule,
     routing,
+    // LoginPageModule,
+    // CasesPageModule,
+    // CompanionsPageModule,
+    // DashboardPageModule,
+    // DevelopmentPageModule,
+    // DoctorsPageModule,
+    // FinancePageModule,
+    // GeoPageModule,
+    // ProfilePageModule,
+    // SettingsPageModule,
   ],
   declarations: [
     PagesComponent,

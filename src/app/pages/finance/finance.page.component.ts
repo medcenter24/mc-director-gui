@@ -15,19 +15,10 @@
  * Copyright (c) 2019 (original work) MedCenter24.com;
  */
 
-import { Routes, RouterModule } from '@angular/router';
+import { Component } from '@angular/core';
 
-import { DashboardComponent } from './dashboard.component';
-import { ModuleWithProviders } from '@angular/core';
-
-// noinspection TypeScriptValidateTypes
-export const routes: Routes = [
-  {
-    path: '',
-    component: DashboardComponent,
-    children: [
-    ],
-  },
-];
-
-export const routing: ModuleWithProviders<any> = RouterModule.forChild(routes);
+@Component({
+  selector: 'nga-finance-page',
+  template: `<router-outlet></router-outlet>`,
+})
+export class FinancePageComponent { }

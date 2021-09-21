@@ -17,22 +17,26 @@
 
 import { Routes, RouterModule } from '@angular/router';
 import { ModuleWithProviders } from '@angular/core';
-import { DoctorDatatableComponent } from '../../components/doctors/components/datatable';
-import { DoctorsComponent } from './doctors.component';
-import { DiagnosticDatatableComponent } from '../../components/diagnostic/components/datatable';
-import { ServiceDatatableComponent } from '../../components/service/components/datatable';
-import { SurveyDatatableComponent } from '../../components/survey/components/datatable';
+import { SettingsPageComponent } from './settings.page.component';
+import { PeriodDatatableComponent } from '../../components/period/components/datatable/period.datatable.component';
+import { AccidentCheckpointDatatableComponent }
+  from '../../components/accident/components/checkpoint/components/datatable/accident.checkpoint.datatable.component';
+import { FormDatatableComponent } from '../../components/forms/components/datatable';
+import { FormEditorPageComponent } from './form/editor';
+import { DiseaseDatatableComponent } from '../../components/disease/components/datatable';
 
 // noinspection TypeScriptValidateTypes
 const routes: Routes = [
   {
     path: '',
-    component: DoctorsComponent,
+    component: SettingsPageComponent,
     children: [
-      { path: 'surveys', component: SurveyDatatableComponent },
-      { path: 'stuff', component: DoctorDatatableComponent },
-      { path: 'diagnostics', component: DiagnosticDatatableComponent },
-      { path: 'services', component: ServiceDatatableComponent },
+      { path: 'checkpoints', component: AccidentCheckpointDatatableComponent },
+      { path: 'periods', component: PeriodDatatableComponent },
+      { path: 'forms', component: FormDatatableComponent },
+      { path: 'forms/new', component: FormEditorPageComponent },
+      { path: 'forms/:id', component: FormEditorPageComponent },
+      { path: 'diseases', component: DiseaseDatatableComponent },
     ],
   },
 ];

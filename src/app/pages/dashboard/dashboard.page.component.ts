@@ -30,7 +30,7 @@ import { Breadcrumb } from '../../theme/components/baContentTop/breadcrumb';
   styleUrls: ['./dashboard.scss'],
   templateUrl: './dashboard.html',
 })
-export class DashboardComponent extends LoadingComponent implements OnInit {
+export class DashboardPageComponent extends LoadingComponent implements OnInit {
 
   protected componentName: string = 'DashboardComponent';
 

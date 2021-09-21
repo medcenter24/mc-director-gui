@@ -16,23 +16,32 @@
  */
 
 import { NgModule } from '@angular/core';
-import { FinanceCurrencyDatatableModule } from '../../components/finance/components/currency/components/datatable';
-import { FinanceDatatableModule } from '../../components/finance/components/datatable';
-import { ConditionsEditorPageModule } from './conditions/editor';
-import { FinanceComponent } from './finance.component';
-import { routing } from './finance.routing';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { NgaModule } from '../../theme/nga.module';
+import { routing } from './geo.page.routing';
+import { GeoPageComponent } from './geo.page.component';
+import { AppTranslationModule } from '../../app.translation.module';
+import { HospitalDatatableModule } from '../../components/hospital/components/datatable';
+import { GeoCityPageModule } from './city';
+import { GeoCountryPageModule } from './country';
+import { GeoRegionPageModule } from './region';
 
 @NgModule({
   imports: [
+    CommonModule,
+    FormsModule,
+    AppTranslationModule,
+    NgaModule,
     routing,
-    FinanceDatatableModule,
-    FinanceCurrencyDatatableModule,
-    ConditionsEditorPageModule,
+    HospitalDatatableModule,
+    GeoCityPageModule,
+    GeoCountryPageModule,
+    GeoRegionPageModule,
   ],
   declarations: [
-    FinanceComponent,
+    GeoPageComponent,
   ],
 })
 
-export class FinanceModule {
-}
+export class GeoPageModule {}

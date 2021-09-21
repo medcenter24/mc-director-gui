@@ -16,25 +16,27 @@
  */
 
 import { NgModule } from '@angular/core';
-import { DoctorDatatableModule } from '../../components/doctors/components/datatable';
-import { DoctorsComponent } from './doctors.component';
-import { routing } from './doctors.routing';
-import { DiagnosticDatatableModule } from '../../components/diagnostic/components/datatable';
-import { ServiceDatatableModule } from '../../components/service/components/datatable';
-import { SurveyDatatableModule } from '../../components/survey/components/datatable';
+import { routing } from './settings.page.routing';
+import { SettingsPageComponent } from './settings.page.component';
+import { PeriodDatatableModule } from '../../components/period/components/datatable';
+import { AccidentCheckpointDatatableModule }
+  from '../../components/accident/components/checkpoint/components/datatable';
+import { FormDatatableModule } from '../../components/forms/components/datatable';
+import { FormEditorPageModule } from './form/editor';
+import { DiseaseDatatableModule } from '../../components/disease/components/datatable';
 
 @NgModule({
   imports: [
     routing,
-    DoctorDatatableModule,
-    DiagnosticDatatableModule,
-    ServiceDatatableModule,
-    SurveyDatatableModule,
+    PeriodDatatableModule,
+    AccidentCheckpointDatatableModule,
+    FormDatatableModule,
+    FormEditorPageModule,
+    DiseaseDatatableModule,
   ],
   declarations: [
-    DoctorsComponent,
+    SettingsPageComponent,
   ],
 })
-
-export class DoctorsModule {
+export class SettingsPageModule {
 }

@@ -21,38 +21,60 @@ import { ModuleWithProviders } from '@angular/core';
 import { AuthGuard } from '../components/auth/auth.guard';
 import { PageNotFoundComponent } from './page.not.found.component';
 
-// export function loadChildren(path) { return System.import(path); };
-
-// noinspection TypeScriptValidateTypes
 export const routes: Routes = [
   {
     path: 'login',
-    loadChildren: 'app/pages/login/login.module#LoginModule',
-  },
-  {
-    path: 'profile',
-    loadChildren: 'app/pages/profile/profile.module#ProfileModule',
+    loadChildren: () => import('./login/login.page.module').then(m => m.LoginPageModule),
   },
   {
     path: 'pages',
     component: PagesComponent,
     children: [
-      { path: 'settings', loadChildren: 'app/pages/settings/settings.module#SettingsModule',
-        canActivate: [AuthGuard] },
-      { path: 'finance', loadChildren: 'app/pages/finance/finance.module#FinanceModule',
-        canActivate: [AuthGuard] },
-      { path: 'geo', loadChildren: 'app/pages/geo/geo.module#GeoModule', canActivate: [AuthGuard] },
-      { path: 'doctors', loadChildren: 'app/pages/doctors/doctors.module#DoctorsModule', canActivate: [AuthGuard] },
-      { path: 'dashboard', loadChildren: 'app/pages/dashboard/dashboard.module#DashboardModule',
-        canActivate: [AuthGuard] },
-      { path: 'cases', loadChildren: 'app/pages/cases/cases.page.module#CasesPageModule', canActivate: [AuthGuard] },
-      { path: 'profile', loadChildren: 'app/pages/profile/profile.module#ProfileModule', canActivate: [AuthGuard] },
-      { path: 'companions', loadChildren: 'app/pages/companions/companions.page.module#CompanionsPageModule',
-        canActivate: [AuthGuard] },
-      { path: 'development', loadChildren: 'app/pages/development/development.page.module#DevelopmentPageModule',
-        canActivate: [AuthGuard]},
-      { path: '', redirectTo: 'dashboard', pathMatch: 'full', canActivate: [AuthGuard] },
-      { path: '**', component: PageNotFoundComponent },
+      {
+        path: 'settings',
+        loadChildren: () => import('./settings/settings.page.module').then(m => m.SettingsPageModule),
+        canActivate: [AuthGuard],
+      }, {
+        path: 'finance',
+        loadChildren: () => import('./finance/finance.page.module').then(m => m.FinancePageModule),
+        canActivate: [AuthGuard],
+      }, {
+        path: 'geo',
+        loadChildren: () => import('./geo/geo.page.module').then(m => m.GeoPageModule),
+        canActivate: [AuthGuard],
+      }, {
+        path: 'doctors',
+        loadChildren: () => import('./doctors/doctors.page.module').then(m => m.DoctorsPageModule),
+        canActivate: [AuthGuard],
+      }, {
+        path: 'dashboard',
+        loadChildren: () => import('./dashboard/dashboard.page.module').then(m => m.DashboardPageModule),
+        canActivate: [AuthGuard],
+      }, {
+        path: 'cases',
+        loadChildren: () => import('./cases/cases.page.module').then(m => m.CasesPageModule),
+        canActivate: [AuthGuard],
+      }, {
+        path: 'profile',
+        loadChildren: () => import('./profile/profile.page.module').then(m => m.ProfilePageModule),
+        canActivate: [AuthGuard],
+      }, {
+        path: 'companions',
+        loadChildren: () => import('./companions/companions.page.module').then(m => m.CompanionsPageModule),
+        canActivate: [AuthGuard],
+      }, {
+        path: 'development',
+        loadChildren: () => import('./development/development.page.module').then(m => m.DevelopmentPageModule),
+        canActivate: [AuthGuard],
+      }, {
+        path: '',
+        redirectTo: 'pages/dashboard',
+        pathMatch: 'full',
+        canActivate: [AuthGuard],
+      }, {
+        path: '**',
+        component: PageNotFoundComponent,
+      },
     ],
   },
 ];

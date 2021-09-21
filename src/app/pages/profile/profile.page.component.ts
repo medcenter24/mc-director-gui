@@ -37,7 +37,7 @@ import { Breadcrumb } from '../../theme/components/baContentTop/breadcrumb';
   templateUrl: './profile.html',
   styleUrls: ['./profile.scss'],
 })
-export class ProfileComponent extends LoadingComponent implements OnInit {
+export class ProfilePageComponent extends LoadingComponent implements OnInit {
 
   protected componentName: string = 'ProfileComponent';
 

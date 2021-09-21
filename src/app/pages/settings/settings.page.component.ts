@@ -15,15 +15,15 @@
  * Copyright (c) 2019 (original work) MedCenter24.com;
  */
 
-import { Routes, RouterModule } from '@angular/router';
+import { Component } from '@angular/core';
 
-import { ModuleWithProviders } from '@angular/core';
-import { ProfileComponent } from './profile.component';
+@Component({
+  selector: 'nga-settings-component',
+  styles: [],
+  template: `<router-outlet></router-outlet>`,
+})
+export class SettingsPageComponent {
 
-// noinspection TypeScriptValidateTypes
-export const routes: Routes = [{
-  path: '',
-  component: ProfileComponent,
-}];
-
-export const routing: ModuleWithProviders<any> = RouterModule.forChild(routes);
+  constructor() {
+  }
+}

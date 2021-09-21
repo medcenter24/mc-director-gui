@@ -15,15 +15,14 @@
  * Copyright (c) 2019 (original work) MedCenter24.com;
  */
 
-import { Component } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+import { LoginPageComponent } from './login.page.component';
+import { ModuleWithProviders } from '@angular/core';
 
-@Component({
-  selector: 'nga-settings-component',
-  styles: [],
-  template: `<router-outlet></router-outlet>`,
-})
-export class SettingsComponent {
+// noinspection TypeScriptValidateTypes
+export const routes: Routes = [{
+  path: '',
+  component: LoginPageComponent,
+}];
 
-  constructor() {
-  }
-}
+export const routing: ModuleWithProviders<any> = RouterModule.forChild(routes);
