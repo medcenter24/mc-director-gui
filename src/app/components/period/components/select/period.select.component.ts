@@ -23,6 +23,7 @@ import { PeriodService } from '../../period.service';
 @Component({
   selector: 'nga-period-select',
   templateUrl: '../../../ui/autocompleter/autocompleter.tpl.html',
+  outputs: ['init', 'loaded'],
 })
 export class PeriodSelectComponent extends AbstractAutoCompleteController {
   protected componentName: string = 'DatePeriodSelectComponent';

@@ -25,6 +25,7 @@ import { SelectServicesComponent } from '../select';
 @Component({
   selector: 'nga-services-selector',
   templateUrl: 'selector.html',
+  outputs: ['init', 'loaded'],
 })
 export class ServiceSelectorComponent extends LoadableComponent implements OnInit {
 

@@ -23,6 +23,7 @@ import { LoadableComponent } from '../../../../../core/components/componentLoade
 @Component({
   selector: 'nga-checkpoints-selector',
   templateUrl: './select.html',
+  outputs: ['init', 'loaded'],
 })
 export class AccidentCheckpointsSelectorComponent extends LoadableComponent implements OnInit {
 

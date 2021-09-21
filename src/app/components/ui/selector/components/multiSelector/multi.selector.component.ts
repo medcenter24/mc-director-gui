@@ -25,6 +25,7 @@ import { SelectorProviderMultipleComponent } from '../../provider/multiple';
 @Component({
   selector: 'nga-multi-selector',
   templateUrl: './multi.selector.html',
+  outputs: ['init', 'loaded'],
 })
 export class MultiSelectorComponent extends LoadableComponent implements OnInit {
   protected componentName: string = 'MultiSelectorComponent';

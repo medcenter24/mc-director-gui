@@ -16,12 +16,13 @@
  */
 
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { LoadableComponent } from '../../../core/components/componentLoader/LoadableComponent';
+import { LoadableComponent } from '../../../core/components/componentLoader';
 import { TimezoneService } from '../../timezone.service';
 
 @Component({
   selector: 'nga-select-timezone',
   templateUrl: './select.html',
+  outputs: ['init', 'loaded'],
 })
 export class TimezoneSelectComponent extends LoadableComponent implements OnInit {
 

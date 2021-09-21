@@ -26,6 +26,7 @@ import { LoggerComponent } from '../../../../../core/logger/LoggerComponent';
   selector: 'nga-accident-scenario',
   templateUrl: './line.html',
   encapsulation: ViewEncapsulation.None,
+  outputs: ['init', 'loaded'],
 })
 export class AccidentScenarioLineComponent extends LoadableComponent implements OnInit {
 

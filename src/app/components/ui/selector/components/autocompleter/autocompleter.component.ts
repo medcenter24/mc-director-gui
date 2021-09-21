@@ -26,6 +26,7 @@ import { SearchFilter } from '../../../../core/loadable/search.filter';
 @Component({
   selector: 'nga-autocompleter',
   templateUrl: './autocompleter.html',
+  outputs: ['init', 'loaded'],
 })
 export class AutocompleterComponent extends LoadableComponent implements OnInit {
   protected componentName: string = 'AutocompleterComponent';

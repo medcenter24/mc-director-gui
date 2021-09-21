@@ -23,6 +23,7 @@ import { LoadableComponent } from '../../../core/components/componentLoader';
 @Component({
   selector: 'nga-case-type-select',
   templateUrl: './case.type.select.html',
+  outputs: ['init', 'loaded'],
 })
 export class CaseTypeSelectComponent extends LoadableComponent implements OnInit {
 

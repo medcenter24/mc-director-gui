@@ -25,6 +25,7 @@ import { AutocompleterComponent } from '../../../ui/selector/components/autocomp
     selector: 'nga-patient-selector',
     templateUrl: 'patient.selector.html',
     styleUrls: ['patient.selector.scss'],
+    outputs: ['init', 'loaded'],
 })
 export class PatientSelectorComponent extends LoadableComponent {
 

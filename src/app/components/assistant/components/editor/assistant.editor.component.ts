@@ -25,6 +25,7 @@ import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'nga-assistant-editor',
   templateUrl: './editor.html',
+  outputs: ['init', 'loaded'],
 })
 export class AssistantEditorComponent extends LoadableComponent {
   protected componentName: string = 'AssistantEditorComponent';

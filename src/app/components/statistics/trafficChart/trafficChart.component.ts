@@ -25,6 +25,7 @@ import { LoadableComponent } from '../../core/components/componentLoader';
 @Component({
   selector: 'nga-traffic-chart',
   templateUrl: './trafficChart.html',
+  outputs: ['init', 'loaded'],
 })
 
 export class TrafficChartComponent extends LoadableComponent implements AfterViewInit {

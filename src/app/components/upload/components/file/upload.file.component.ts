@@ -46,6 +46,7 @@ import { FileUpload } from 'primeng/fileupload';
         auto="true"
         [title]="'No file chosen' | translate"
         [chooseLabel]="'Browse' | translate"></p-fileUpload>`,
+  outputs: ['init', 'loaded'],
 })
 export class UploadFileComponent extends LoadableComponent implements OnInit {
   protected componentName: string = 'UploadFileComponent';

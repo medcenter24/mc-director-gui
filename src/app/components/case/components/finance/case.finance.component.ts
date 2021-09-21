@@ -26,6 +26,7 @@ import { CasesService } from '../../cases.service';
   selector: 'nga-case-finance',
   templateUrl: './case.finance.html',
   styleUrls: ['./case.finance.scss'],
+  outputs: ['init', 'loaded'],
 })
 export class CaseFinanceComponent extends LoadableComponent implements OnInit {
   protected componentName: string = 'CaseFinanceComponent';

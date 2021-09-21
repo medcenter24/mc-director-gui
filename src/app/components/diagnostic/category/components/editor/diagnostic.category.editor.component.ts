@@ -24,6 +24,7 @@ import { AutocompleterComponent } from '../../../../ui/selector/components/autoc
 @Component({
   selector: 'nga-diagnostic-category-editor',
   templateUrl: './diagnostic.category.editor.html',
+  outputs: ['init', 'loaded'],
 })
 export class DiagnosticCategoryEditorComponent extends LoadableComponent implements AfterViewInit {
   protected componentName: string = 'DiagnosticCategoryEditorComponent';

@@ -36,6 +36,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'nga-datatable',
   templateUrl: './datatable.html',
+  outputs: ['init', 'loaded'],
 })
 export class DatatableComponent extends LoadableComponent {
   protected componentName: string = 'DatatableComponent';

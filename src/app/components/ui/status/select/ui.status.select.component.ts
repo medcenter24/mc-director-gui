@@ -27,6 +27,7 @@ import { LoadableComponent } from '../../../core/components/componentLoader';
                         appendTo="body"
                         (onChange)="onChange($event)"
       ></p-dropdown>`,
+  outputs: ['init', 'loaded'],
 })
 export class UiStatusSelectComponent extends LoadableComponent implements OnInit {
 

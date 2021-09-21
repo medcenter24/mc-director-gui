@@ -23,6 +23,7 @@ import { AbstractAutoCompleteController } from '../../../ui/autocompleter';
 @Component({
   selector: 'nga-select-city',
   templateUrl: '../../../ui/autocompleter/autocompleter.tpl.html',
+  outputs: ['init', 'loaded'],
 })
 export class CitySelectComponent extends AbstractAutoCompleteController {
 

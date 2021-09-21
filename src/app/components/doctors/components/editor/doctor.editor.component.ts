@@ -39,6 +39,7 @@ import { AutocompleterComponent } from '../../../ui/selector/components/autocomp
   selector: 'nga-doctor-editor',
   templateUrl: './doctor.editor.html',
   styleUrls: ['./doctor.editor.scss'],
+  outputs: ['init', 'loaded'],
 })
 export class DoctorEditorComponent extends LoadableComponent implements AfterViewInit {
   protected componentName: string = 'DoctorEditorComponent';

@@ -30,6 +30,7 @@ import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'nga-invoice-editor',
   templateUrl: './invoice.editor.html',
+  outputs: ['init', 'loaded'],
 })
 export class InvoiceEditorComponent extends LoadableComponent implements OnInit {
   protected componentName: string = 'InvoiceEditorComponent';

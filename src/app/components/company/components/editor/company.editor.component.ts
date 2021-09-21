@@ -20,13 +20,14 @@ import { CompanyService } from '../../company.service';
 import { Company } from '../../company';
 import { LoggedUserService } from '../../../auth/loggedUser.service';
 import { AuthenticationService } from '../../../auth/authentication.service';
-import { UploaderOptions, UploadFile, UploadInput, humanizeBytes, UploadOutput } from 'ngx-uploader';
+import { UploaderOptions, UploadFile, UploadInput, humanizeBytes } from 'ngx-uploader';
 import { GlobalState } from '../../../../global.state';
 import { LoadableComponent } from '../../../core/components/componentLoader';
 
 @Component({
   selector: 'nga-company-editor',
   templateUrl: 'company.editor.html',
+  outputs: ['init', 'loaded'],
 })
 export class CompanyEditorComponent extends LoadableComponent implements OnInit {
 
@@ -86,11 +87,11 @@ export class CompanyEditorComponent extends LoadableComponent implements OnInit 
       .catch(() => this.stopLoader(postfix));
   }
 
-  startCompanyLogoUpload(event): void {
+  startCompanyLogoUpload(): void {
     this.startLoader('CompanyLogoUpload');
   }
 
-  endCompanyLogoUpload(event): void {
+  endCompanyLogoUpload(): void {
     this.stopLoader('CompanyLogoUpload');
   }
 

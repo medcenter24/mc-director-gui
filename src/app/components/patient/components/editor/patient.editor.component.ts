@@ -27,6 +27,7 @@ import { LoadableComponent } from '../../../core/components/componentLoader';
 @Component({
   selector: 'nga-patient-editor',
   templateUrl: './patient.editor.html',
+  outputs: ['init', 'loaded'],
 })
 export class PatientEditorComponent extends LoadableComponent {
   @Input() initPatient(patient: Patient) {

@@ -23,6 +23,7 @@ import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'nga-select-assistant',
   templateUrl: '../../../ui/autocompleter/autocompleter.tpl.html',
+  outputs: ['init', 'loaded'],
 })
 export class AssistantSelectComponent extends AbstractAutoCompleteController {
   protected componentName: string = 'AssistantSelectComponent';

@@ -26,6 +26,7 @@ import { layoutPaths } from '../../../../../theme';
 @Component({
   selector: 'nga-accident-history',
   templateUrl: './history.html',
+  outputs: ['init', 'loaded'],
 })
 export class AccidentHistoryComponent extends LoadableComponent implements OnInit {
 

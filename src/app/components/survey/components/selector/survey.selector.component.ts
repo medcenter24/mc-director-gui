@@ -25,6 +25,7 @@ import { SurveySelectComponent } from '../select/survey.select.component';
 @Component({
   selector: 'nga-surveys-selector',
   templateUrl: 'selector.html',
+  outputs: ['init', 'loaded'],
 })
 export class SurveysSelectorComponent extends LoadableComponent implements OnInit {
 

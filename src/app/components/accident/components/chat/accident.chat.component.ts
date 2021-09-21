@@ -26,6 +26,7 @@ import { DateHelper } from '../../../../helpers/date.helper';
 @Component({
   selector: 'nga-accident-chat',
   templateUrl: './chat.html',
+  outputs: ['init', 'loaded'],
 })
 export class AccidentChatComponent extends LoadableComponent implements OnInit {
 

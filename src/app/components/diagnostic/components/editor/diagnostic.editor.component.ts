@@ -31,6 +31,7 @@ import { AutocompleterComponent } from '../../../ui/selector/components/autocomp
 @Component({
   selector: 'nga-diagnostic-editor',
   templateUrl: './diagnostic.editor.html',
+  outputs: ['init', 'loaded'],
 })
 export class DiagnosticEditorComponent extends LoadableComponent implements OnInit, AfterViewInit {
   protected componentName: string = 'DiagnosticEditorComponent';

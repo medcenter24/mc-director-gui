@@ -24,6 +24,7 @@ import { LoadableComponent } from '../../core/components/componentLoader';
 @Component({
   selector: 'nga-commentaries-component',
   templateUrl: './comments.html',
+  outputs: ['init', 'loaded'],
 })
 export class CommentsComponent extends LoadableComponent {
 

@@ -28,6 +28,7 @@ import { UploadService } from '../../upload.service';
           (onClick)="downloadFile()"
           label="{{ 'Download' | translate }}"
           icon="fa fa-download"></p-button>`,
+  outputs: ['init', 'loaded'],
 })
 export class DownloadFileComponent extends LoadableComponent {
   protected componentName: string = 'DownloadFileComponent';

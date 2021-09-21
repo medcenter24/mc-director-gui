@@ -31,6 +31,7 @@ import {
 @Component({
   selector: 'nga-select-diagnostics',
   templateUrl: './select.html',
+  outputs: ['init', 'loaded'],
 })
 export class DiagnosticSelectComponent extends LoadableComponent implements OnInit {
 

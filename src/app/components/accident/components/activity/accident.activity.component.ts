@@ -23,6 +23,7 @@ import { Accident } from '../../accident';
   selector: 'nga-accident-activity',
   templateUrl: './activity.html',
   styleUrls: ['./activity.scss'],
+  outputs: ['init', 'loaded'],
 })
 export class AccidentActivityComponent extends LoadableComponent implements OnInit {
 

@@ -31,12 +31,12 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { GlobalState } from '../../../../global.state';
 import { FinanceCurrencyService } from '../currency/finance.currency.service';
 import { Breadcrumb } from '../../../../theme/components/baContentTop/breadcrumb';
-import { UiToastService } from '../../../ui/toast/ui.toast.service';
 
 @Component({
   selector: 'nga-finance-editor',
   templateUrl: './finance.editor.html',
   styleUrls: ['./finance.editor.scss'],
+  outputs: ['init', 'loaded'],
 })
 export class FinanceEditorComponent extends LoadableComponent implements OnInit {
   protected componentName: string = 'FinanceEditorComponent';

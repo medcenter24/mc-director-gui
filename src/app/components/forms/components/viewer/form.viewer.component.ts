@@ -59,6 +59,7 @@ import { UiToastService } from '../../../ui/toast/ui.toast.service';
     </p-dialog>
   `,
   styleUrls: ['./form.viewer.scss'],
+  outputs: ['init', 'loaded'],
 })
 export class FormViewerComponent extends LoadableComponent {
   protected componentName: string = 'FormViewerComponent';

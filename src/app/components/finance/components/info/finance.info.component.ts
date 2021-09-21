@@ -23,6 +23,7 @@ import { FinanceCurrency } from '../currency/finance.currency';
 @Component({
   selector: 'nga-finance-info',
   templateUrl: './finance.info.html',
+  outputs: ['init', 'loaded'],
 })
 export class FinanceInfoComponent extends LoadableComponent {
   protected componentName: string = 'FinanceInfoComponent';

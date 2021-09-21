@@ -24,6 +24,7 @@ import { AutocompleterComponent } from '../../ui/selector/components/autocomplet
 @Component({
   selector: 'nga-user-editor',
   templateUrl: './user.editor.html',
+  outputs: ['init', 'loaded'],
 })
 export class UserEditorComponent extends LoadableComponent implements OnInit {
 

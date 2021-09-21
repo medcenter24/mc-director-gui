@@ -31,6 +31,7 @@ declare var $: any;
 @Component({
   selector: 'nga-file-uploader',
   templateUrl: './uploader.html',
+  outputs: ['init', 'loaded'],
 })
 export class FileUploaderComponent extends LoadableComponent implements OnInit {
   protected componentName: string = 'FileUploaderComponent';

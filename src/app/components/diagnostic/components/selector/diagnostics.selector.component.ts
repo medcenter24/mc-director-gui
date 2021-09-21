@@ -25,6 +25,7 @@ import { LoggerComponent } from '../../../core/logger/LoggerComponent';
 @Component({
   selector: 'nga-diagnostics-selector',
   templateUrl: 'selector.html',
+  outputs: ['init', 'loaded'],
 })
 export class DiagnosticsSelectorComponent extends LoadableComponent implements OnInit {
   protected componentName: string = 'DiagnosticsSelectorComponent';

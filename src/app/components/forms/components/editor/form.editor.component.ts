@@ -26,7 +26,7 @@ import { FormService } from '../../form.service';
 import { Form } from '../../form';
 import { TranslateService } from '@ngx-translate/core';
 import { FormOption } from '../options/form.option';
-import { BaToolboxAction } from '../../../../theme/components/baToolbox';
+import { BaToolboxAction } from '../../../../theme/components';
 import { Breadcrumb } from '../../../../theme/components/baContentTop/breadcrumb';
 import { FormsOptionsEditorComponent } from '../options/editor';
 declare var $: any;
@@ -34,6 +34,7 @@ declare var $: any;
 @Component({
   selector: 'nga-form-editor',
   templateUrl: './form.editor.html',
+  outputs: ['init', 'loaded'],
 })
 export class FormEditorComponent extends LoadableComponent implements OnInit {
   protected componentName: string = 'FormEditorComponent';

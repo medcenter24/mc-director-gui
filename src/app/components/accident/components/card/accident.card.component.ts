@@ -26,6 +26,7 @@ import { LoggerComponent } from '../../../core/logger/LoggerComponent';
 @Component({
   selector: 'nga-accident-card',
   templateUrl: './accident.card.html',
+  outputs: ['init', 'loaded'],
 })
 export class AccidentCardComponent extends LoadableComponent implements OnInit {
 
@@ -33,7 +34,7 @@ export class AccidentCardComponent extends LoadableComponent implements OnInit {
   @Output() closed: EventEmitter<any> = new EventEmitter();
 
   accident: Accident;
-  private patient: Patient;
+  patient: Patient;
   protected componentName: string = 'AccidentCardComponent';
 
   constructor (
