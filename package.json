@@ -90,9 +90,9 @@
     "rxjs-compat": "^6.5.5",
     "tether": "^1.4.7",
     "typeface-exo": "^0.0.61",
-    "webpack-dev-middleware": "^3.7.2",
-    "webpack-hot-middleware": "^2.25.0",
-    "zone.js": "^0.10.3"
+    "webpack-dev-middleware": "^5.3.0",
+    "webpack-hot-middleware": "^2.25.1",
+    "zone.js": "^0.11.4"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^0.1000.0",
