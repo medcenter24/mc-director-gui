@@ -80,7 +80,7 @@
     "ng2-flatpickr": "^9.0.0",
     "ngx-logger": "^5.0.4",
     "ngx-uploader": "^11.0.0",
-    "node-sass": "^7.0.1",
+    "sass": "^1.47.0",
     "normalize.css": "^8.0.1",
     "pace-js": "^1.2.4",
     "primeicons": "^5.0.0",
