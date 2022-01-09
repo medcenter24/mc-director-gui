@@ -41,10 +41,8 @@ import { CaseTypeSelectModule } from '../type/case.type.select.module';
 import { AccidentCardModule } from '../../../accident/components/card';
 import { PatientEditorModule } from '../../../patient/components/editor';
 import { PatientSelectorModule } from '../../../patient/components/selector/patient.selector.module';
-import { AccidentScenarioLineModule }
-  from '../../../accident/components/scenario/components/line/accident.scenario.line.module';
-import { AccidentCheckpointsSelectorModule }
-  from '../../../accident/components/checkpoint/components/select/accident.checkpoints.selector.module';
+import { AccidentScenarioLineModule } from '../../../accident/components/scenario/components/line/accident.scenario.line.module';
+import { AccidentCheckpointsSelectorModule } from '../../../accident/components/checkpoint/components/select/accident.checkpoints.selector.module';
 import { AccidentTypeSelectModule } from '../../../accident/components/type/select';
 import { SurveySelectorModule } from '../../../survey/components/selector/survey.selector.module';
 import { DiagnosticSelectorModule } from '../../../diagnostic/components/selector';
