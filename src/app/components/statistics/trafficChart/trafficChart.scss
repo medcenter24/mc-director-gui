@@ -22,7 +22,6 @@
   position: relative;
 }
 
-
 .chart-bg {
   position: absolute;
   width: 180px;
@@ -46,15 +45,9 @@
 
 .channels-info {
   display: inline-block;
-  width: calc(100% - 370px);
+  width: 77%;
   margin-left: 70px;
   margin-top: -20px;
-}
-
-.small-container {
-  .channels-info {
-    display: none;
-  }
 }
 
 .channels-info-item {
@@ -121,7 +114,6 @@
   line-height: 24px;
   text-align: center;
   font-size: 18px;
-  //color: $danger;
   span {
     display: block;
     font-size: 18px;
@@ -181,10 +173,6 @@
 }
 
 @media (max-width: 1465px) and (min-width: 1199px) {
-
-  .channels-info {
-    display: none;
-  }
   .traffic-chart {
     position: inherit;
     float: none;
