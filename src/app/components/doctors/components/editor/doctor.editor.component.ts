@@ -39,7 +39,6 @@ import { AutocompleterComponent } from '../../../ui/selector/components/autocomp
   selector: 'nga-doctor-editor',
   templateUrl: './doctor.editor.html',
   styleUrls: ['./doctor.editor.scss'],
-  outputs: ['init', 'loaded'],
 })
 export class DoctorEditorComponent extends LoadableComponent implements AfterViewInit {
   protected componentName: string = 'DoctorEditorComponent';
@@ -50,6 +49,8 @@ export class DoctorEditorComponent extends LoadableComponent implements AfterVie
 
   @Output() doctorChanged: EventEmitter<Doctor> = new EventEmitter<Doctor>();
   @Output() close: EventEmitter<boolean> = new EventEmitter();
+  @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
 
   @ViewChild('userSelector')
     private userSelectComponent: AutocompleterComponent;

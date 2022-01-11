@@ -25,13 +25,14 @@ import { SurveySelectComponent } from '../select/survey.select.component';
 @Component({
   selector: 'nga-surveys-selector',
   templateUrl: 'selector.html',
-  outputs: ['init', 'loaded'],
 })
 export class SurveysSelectorComponent extends LoadableComponent implements OnInit {
 
   @Input() caseId: number = 0;
   @Output() priceChanged: EventEmitter<number> = new EventEmitter<number>();
   @Output() changed: EventEmitter<Survey[]> = new EventEmitter<Survey[]>();
+  @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
 
   @ViewChild('selectSurveys')
     private selectSurveysComponent: SurveySelectComponent;

@@ -59,7 +59,6 @@ import { UiToastService } from '../../../ui/toast/ui.toast.service';
     </p-dialog>
   `,
   styleUrls: ['./form.viewer.scss'],
-  outputs: ['init', 'loaded'],
 })
 export class FormViewerComponent extends LoadableComponent {
   protected componentName: string = 'FormViewerComponent';
@@ -73,6 +72,10 @@ export class FormViewerComponent extends LoadableComponent {
    * Identifier of the source of the data for this form
    */
   @Input() formableId: number;
+
+  @Output() init: any;
+
+  @Output() loaded: any;
 
   /**
    * will be triggered event instead of real method
@@ -109,7 +112,7 @@ export class FormViewerComponent extends LoadableComponent {
           reject();
         }
       } else {
-        resolve();
+        resolve(true);
       }
     });
   }

@@ -27,7 +27,6 @@ import { LoadableComponent } from '../../../core/components/componentLoader';
 @Component({
   selector: 'nga-patient-editor',
   templateUrl: './patient.editor.html',
-  outputs: ['init', 'loaded'],
 })
 export class PatientEditorComponent extends LoadableComponent {
   @Input() initPatient(patient: Patient) {
@@ -35,6 +34,8 @@ export class PatientEditorComponent extends LoadableComponent {
   }
 
   @Output() changed: EventEmitter<Patient> = new EventEmitter<Patient>();
+  @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
 
   patient: Patient = new Patient();
   birthday: string = '';

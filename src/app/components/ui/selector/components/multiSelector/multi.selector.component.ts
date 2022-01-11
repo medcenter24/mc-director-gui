@@ -25,10 +25,12 @@ import { SelectorProviderMultipleComponent } from '../../provider/multiple';
 @Component({
   selector: 'nga-multi-selector',
   templateUrl: './multi.selector.html',
-  outputs: ['init', 'loaded'],
 })
 export class MultiSelectorComponent extends LoadableComponent implements OnInit {
   protected componentName: string = 'MultiSelectorComponent';
+
+  @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
 
   langLoaded: boolean = false;
   config: SelectorConfig;

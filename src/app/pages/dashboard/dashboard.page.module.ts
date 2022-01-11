@@ -22,14 +22,8 @@ import { NgaModule } from '../../theme/nga.module';
 import { DashboardPageComponent } from './dashboard.page.component';
 import { routing } from './dashboard.page.routing';
 import { PopularAppComponent } from './popularApp';
-import { PieChart } from './pieChart';
-import { Feed } from './feed';
-import { Todo } from './todo';
 import { CalendarComponent } from './calendar';
 import { CalendarService } from './calendar/calendar.service';
-import { FeedService } from './feed/feed.service';
-import { PieChartService } from './pieChart/pieChart.service';
-import { TodoService } from './todo/todo.service';
 import { AppTranslationModule } from '../../app.translation.module';
 import { StatusColorMapService } from '../../components/accident/components/status';
 import { TrafficChartComponent } from '../../components/statistics/trafficChart';
@@ -47,18 +41,12 @@ import { UiDateYearDropdownModule } from '../../components/ui/date/year/dropdown
   ],
   declarations: [
     PopularAppComponent,
-    PieChart,
     TrafficChartComponent,
-    Feed,
-    Todo,
     CalendarComponent,
     DashboardPageComponent,
   ],
   providers: [
     CalendarService,
-    FeedService,
-    PieChartService,
-    TodoService,
     StatusColorMapService,
     StatisticsService,
   ],

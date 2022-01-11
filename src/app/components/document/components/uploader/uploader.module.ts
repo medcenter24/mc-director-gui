@@ -23,7 +23,7 @@ import { FormsModule } from '@angular/forms';
 import { FileUploaderComponent } from './uploader.component';
 import { DocumentsService } from '../../documents.service';
 import { AutocompleterModule } from '../../../ui/selector/components/autocompleter';
-import { DropdownModule } from 'primeng';
+import { DropdownModule } from 'primeng/dropdown';
 
 @NgModule({
   imports: [

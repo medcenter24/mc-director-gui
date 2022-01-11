@@ -16,8 +16,8 @@
  */
 
 import {
-  Component, ElementRef,
-  OnInit, ViewChild,
+  Component, ElementRef, EventEmitter,
+  OnInit, Output, ViewChild,
 } from '@angular/core';
 import { LoadableComponent } from '../../../core/components/componentLoader';
 import { ActivatedRoute, Params, Router } from '@angular/router';
@@ -34,10 +34,12 @@ declare var $: any;
 @Component({
   selector: 'nga-form-editor',
   templateUrl: './form.editor.html',
-  outputs: ['init', 'loaded'],
 })
 export class FormEditorComponent extends LoadableComponent implements OnInit {
   protected componentName: string = 'FormEditorComponent';
+
+  @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
 
   isLoaded: boolean = false;
   form: Form;

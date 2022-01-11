@@ -26,12 +26,13 @@ import { LoggerComponent } from '../../../core/logger/LoggerComponent';
 @Component({
   selector: 'nga-accident-card',
   templateUrl: './accident.card.html',
-  outputs: ['init', 'loaded'],
 })
 export class AccidentCardComponent extends LoadableComponent implements OnInit {
 
   @Input() selectedAccidentId: number = 0;
   @Output() closed: EventEmitter<any> = new EventEmitter();
+  @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
 
   accident: Accident;
   patient: Patient;

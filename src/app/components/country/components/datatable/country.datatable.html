@@ -28,18 +28,18 @@
   appendTo="body"
   (onHide)="deselectAll()">
 
-  <div class="ui-g ui-fluid" *ngIf="model">
-    <div class="ui-g-12">
-      <div class="ui-g-3">
+  <div class="p-grid p-fluid" *ngIf="model">
+    <div class="p-col-12">
+      <div class="p-col-3">
         <label for="title" translate>Country</label>
       </div>
-      <div class="ui-g-9">
+      <div class="p-col-9">
         <input pInputText id="title" [(ngModel)]="model.title" />
       </div>
     </div>
   </div>
   <p-footer>
-    <div class="ui-dialog-buttonpane ui-helper-clearfix">
+    <div class="p-dialog-buttonpanep-helper-clearfix">
       <button type="button" *ngIf="model && model.id" pButton icon="fa fa-close" (click)="confirmDelete()" label="{{ 'Delete' | translate }}"></button>
       <button type="button" pButton icon="fa fa-check" (click)="save()" label="{{ 'Save' | translate }}"></button>
     </div>

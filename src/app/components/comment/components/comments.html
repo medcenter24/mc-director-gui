@@ -35,7 +35,7 @@
   </div>
   <div *ngIf="(!comments || !comments.length) && !showEditor" translate>There are no comments yet.</div>
 
-  <button pButton type="button" class="ui-button-secondary mt-3"
+  <button pButton type="button" class="p-button-secondary mt-3"
           label="{{ 'Comment' | translate }}"
           *ngIf="!showEditor" icon="fa fa-comment-o"
           (click)="showEditor = true"></button>

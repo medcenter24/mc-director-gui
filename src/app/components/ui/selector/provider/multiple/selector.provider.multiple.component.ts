@@ -24,10 +24,12 @@ import { LoadableComponent } from '../../../../core/components/componentLoader';
 @Component({
   selector: 'nga-selector-multiple',
   templateUrl: './selector.provider.multiple.html',
-  outputs: ['init', 'loaded'],
 })
 export class SelectorProviderMultipleComponent extends LoadableComponent implements OnInit {
   protected componentName: string = 'SelectorProviderMultipleComponent';
+
+  @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
 
   /**
    * Income configuration

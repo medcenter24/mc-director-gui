@@ -23,12 +23,13 @@ import { LoadableComponent } from '../../../../../core/components/componentLoade
 @Component({
   selector: 'nga-checkpoints-selector',
   templateUrl: './select.html',
-  outputs: ['init', 'loaded'],
 })
 export class AccidentCheckpointsSelectorComponent extends LoadableComponent implements OnInit {
 
   @Input() selectedCheckpoints: number[] = [];
   @Output() change: EventEmitter<number[]> = new EventEmitter<number[]>();
+  @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
 
   checkpoints: AccidentCheckpoint[] = [];
   isLoaded: boolean = false;

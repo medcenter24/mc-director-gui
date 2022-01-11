@@ -24,7 +24,6 @@ import { LoadableComponent } from '../../core/components/componentLoader';
 @Component({
   selector: 'nga-commentaries-component',
   templateUrl: './comments.html',
-  outputs: ['init', 'loaded'],
 })
 export class CommentsComponent extends LoadableComponent {
 
@@ -32,6 +31,8 @@ export class CommentsComponent extends LoadableComponent {
 
   @Input() comments: Commentary[] = [];
   @Output() message: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
 
   noPhoto: string = '';
   showEditor: boolean = false;

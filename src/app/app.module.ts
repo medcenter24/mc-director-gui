@@ -47,7 +47,7 @@ import { BaMenuService } from './theme';
 import { AuthenticationService } from './components/auth/authentication.service';
 import { BaThemeConfig, BaThemeConfigProvider } from './theme';
 import { EmailValidator, EqualPasswordsValidator } from './theme/validators';
-import { ProgressBarModule } from 'primeng';
+import { ProgressBarModule } from 'primeng/progressbar';
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -84,30 +84,31 @@ export function tokenGetter() {
   declarations: [
     AppComponent,
   ],
-  imports: [ // import Angular 's modules
-    BrowserModule,
-    BrowserAnimationsModule,
-    HttpClientModule,
-    FormsModule,
-    ReactiveFormsModule,
-    NgaModule,
-    PagesModule,
-    routing,
-    ConfirmDialogModule,
-    BlockUIModule,
-    AppTranslationModule,
-    JwtModule.forRoot( {
-      config: {
-        tokenGetter,
-        // whitelistedDomains: ['localhost:3001']
-        // blacklistedRoutes: ['localhost:3001/auth/']
-      },
-    } ),
-    LoggerModule,
-    UiToastModule,
-    NgaModule,
-    ProgressBarModule,
-  ],
+    imports: [ // import Angular 's modules
+        BrowserModule,
+        BrowserAnimationsModule,
+        HttpClientModule,
+        FormsModule,
+        ReactiveFormsModule,
+        NgaModule,
+        PagesModule,
+        routing,
+        ConfirmDialogModule,
+        BlockUIModule,
+        AppTranslationModule,
+        JwtModule.forRoot({
+            config: {
+                tokenGetter,
+                // whitelistedDomains: ['localhost:3001']
+                // blacklistedRoutes: ['localhost:3001/auth/']
+            },
+        }),
+        LoggerModule,
+        UiToastModule,
+        NgaModule,
+        ProgressBarModule,
+        ProgressBarModule,
+    ],
   exports: [],
   providers: [ // expose our Services and Providers into Angular 's dependency injection
     APP_PROVIDERS,

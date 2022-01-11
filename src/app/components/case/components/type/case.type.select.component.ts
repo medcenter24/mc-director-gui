@@ -23,7 +23,6 @@ import { LoadableComponent } from '../../../core/components/componentLoader';
 @Component({
   selector: 'nga-case-type-select',
   templateUrl: './case.type.select.html',
-  outputs: ['init', 'loaded'],
 })
 export class CaseTypeSelectComponent extends LoadableComponent implements OnInit {
 
@@ -31,6 +30,8 @@ export class CaseTypeSelectComponent extends LoadableComponent implements OnInit
 
   @Input() selectedCaseTypeId: string;
   @Output() selected: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
 
   caseTypes: SelectItem[] = [];
 

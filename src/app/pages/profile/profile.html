@@ -41,7 +41,7 @@
                                             [options]="languages"
                                             appendTo="body"
                                             [(ngModel)]="loggedUser.lang"
-                                            (onChange)="onLangChanged($event)"></p-dropdown>
+                                            (onChange)="onLangChanged()"></p-dropdown>
                                 </div>
                             </div>
                             <div class="col-3">
@@ -119,7 +119,7 @@
 
                     <button pButton type="button"
                             (click)="saveDirector()"
-                            label="{{ 'Save' | translate }}" class="ui-button-success"></button>
+                            label="{{ 'Save' | translate }}" class="p-button-success"></button>
                 </div>
 
             </div>

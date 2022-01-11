@@ -15,7 +15,7 @@
  * Copyright (c) 2019 (original work) MedCenter24.com;
  */
 
-import { Component, EventEmitter, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { CompanyService } from '../../company.service';
 import { Company } from '../../company';
 import { LoggedUserService } from '../../../auth/loggedUser.service';
@@ -27,11 +27,13 @@ import { LoadableComponent } from '../../../core/components/componentLoader';
 @Component({
   selector: 'nga-company-editor',
   templateUrl: 'company.editor.html',
-  outputs: ['init', 'loaded'],
 })
 export class CompanyEditorComponent extends LoadableComponent implements OnInit {
 
   protected componentName: string = 'CompanyEditorComponent';
+
+  @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
 
   defaultCompanyLogo: string = 'assets/img/theme/cardiogram.svg';
   pictureLogo: string = '';

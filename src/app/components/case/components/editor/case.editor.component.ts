@@ -44,13 +44,12 @@ import { PatientsService } from '../../../patient/patients.service';
 import { CaseFinanceComponent } from '../finance';
 import { Assistant, AssistantsService } from '../../../assistant';
 import { CaseEditorTabsService } from './case.editor.tabs.service';
-import { AccidentScenarioLineComponent }
-  from '../../../accident/components/scenario/components/line/accident.scenario.line.component';
+import { AccidentScenarioLineComponent } from '../../../accident/components/scenario/components/line/accident.scenario.line.component';
 import { Service } from '../../../service';
 import { AutocompleterComponent } from '../../../ui/selector/components/autocompleter';
 import { CitiesService } from '../../../city';
 import { Hospital, HospitalsService } from '../../../hospital';
-import { BaToolboxAction } from '../../../../theme/components/baToolbox';
+import { BaToolboxAction } from '../../../../theme/components';
 import { LoggerComponent } from '../../../core/logger/LoggerComponent';
 import { Breadcrumb } from '../../../../theme/components/baContentTop/breadcrumb';
 import { UiToastService } from '../../../ui/toast/ui.toast.service';
@@ -168,9 +167,9 @@ export class CaseEditorComponent extends LoadingComponent implements OnInit {
           {
             header: this.translate.instant('Warning'),
             message: this.translate.instant('The case has unsaved changes, would you like to save it?'),
-            accept: () => {
+            accept: value => {
               this.onSave();
-              resolve();
+              resolve(value);
             },
             reject: () => {
               if (reject) {
@@ -181,7 +180,7 @@ export class CaseEditorComponent extends LoadingComponent implements OnInit {
           },
         );
       } else {
-        resolve();
+        resolve(true);
       }
     });
   }
