@@ -15,7 +15,7 @@
  * Copyright (c) 2019 (original work) MedCenter24.com;
  */
 
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { LoadableComponent } from '../../../core/components/componentLoader';
 import { FinanceRule } from '../../finance.rule';
 import { FinanceCurrency } from '../currency/finance.currency';
@@ -23,10 +23,12 @@ import { FinanceCurrency } from '../currency/finance.currency';
 @Component({
   selector: 'nga-finance-info',
   templateUrl: './finance.info.html',
-  outputs: ['init', 'loaded'],
 })
 export class FinanceInfoComponent extends LoadableComponent {
   protected componentName: string = 'FinanceInfoComponent';
+
+  @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
 
   _financeRule: FinanceRule = new FinanceRule();
 

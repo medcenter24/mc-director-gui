@@ -15,7 +15,7 @@
  * Copyright (c) 2019 (original work) MedCenter24.com;
  */
 
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { LoadableComponent } from '../../../core/components/componentLoader';
 import { Doctor, DoctorsService } from '../../../doctors';
@@ -36,10 +36,12 @@ import { Breadcrumb } from '../../../../theme/components/baContentTop/breadcrumb
   selector: 'nga-finance-editor',
   templateUrl: './finance.editor.html',
   styleUrls: ['./finance.editor.scss'],
-  outputs: ['init', 'loaded'],
 })
 export class FinanceEditorComponent extends LoadableComponent implements OnInit {
   protected componentName: string = 'FinanceEditorComponent';
+
+  @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
 
   rule: FinanceRule = new FinanceRule();
 

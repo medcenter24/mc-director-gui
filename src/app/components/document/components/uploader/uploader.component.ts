@@ -31,7 +31,6 @@ declare var $: any;
 @Component({
   selector: 'nga-file-uploader',
   templateUrl: './uploader.html',
-  outputs: ['init', 'loaded'],
 })
 export class FileUploaderComponent extends LoadableComponent implements OnInit {
   protected componentName: string = 'FileUploaderComponent';
@@ -39,6 +38,8 @@ export class FileUploaderComponent extends LoadableComponent implements OnInit {
   @Input() documents: Document[] = [];
   @Input() url: string = '';
   @Output() changed: EventEmitter<any[]> = new EventEmitter<any[]>();
+  @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
 
   msgs: Message[] = [];
   langLoaded: boolean = false;

@@ -24,7 +24,6 @@ import { LoadableComponent } from '../../../../core/components/componentLoader';
 @Component({
   selector: 'nga-select-accident-type',
   templateUrl: './accident.type.select.html',
-  outputs: ['init', 'loaded'],
 })
 export class AccidentTypeSelectComponent extends LoadableComponent {
 
@@ -32,6 +31,8 @@ export class AccidentTypeSelectComponent extends LoadableComponent {
     this.selectType(id);
   }
   @Output() selected: EventEmitter<AccidentType> = new EventEmitter<AccidentType>();
+  @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
 
   isLoaded: boolean = false;
   selectedType: AccidentType = new AccidentType();

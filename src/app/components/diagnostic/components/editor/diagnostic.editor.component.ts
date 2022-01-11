@@ -31,7 +31,6 @@ import { AutocompleterComponent } from '../../../ui/selector/components/autocomp
 @Component({
   selector: 'nga-diagnostic-editor',
   templateUrl: './diagnostic.editor.html',
-  outputs: ['init', 'loaded'],
 })
 export class DiagnosticEditorComponent extends LoadableComponent implements OnInit, AfterViewInit {
   protected componentName: string = 'DiagnosticEditorComponent';
@@ -39,6 +38,8 @@ export class DiagnosticEditorComponent extends LoadableComponent implements OnIn
   @Input() diagnostic: Diagnostic = new Diagnostic();
   @Output() diagnosticSaved: EventEmitter<Diagnostic> = new EventEmitter<Diagnostic>();
   @Output() close: EventEmitter<null> = new EventEmitter<null>();
+  @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
 
   @ViewChild('diagnosticCategoryAutoCompleter')
     private categorySelectComponent: AutocompleterComponent;

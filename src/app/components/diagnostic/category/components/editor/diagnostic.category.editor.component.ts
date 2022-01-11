@@ -24,7 +24,6 @@ import { AutocompleterComponent } from '../../../../ui/selector/components/autoc
 @Component({
   selector: 'nga-diagnostic-category-editor',
   templateUrl: './diagnostic.category.editor.html',
-  outputs: ['init', 'loaded'],
 })
 export class DiagnosticCategoryEditorComponent extends LoadableComponent implements AfterViewInit {
   protected componentName: string = 'DiagnosticCategoryEditorComponent';
@@ -37,6 +36,8 @@ export class DiagnosticCategoryEditorComponent extends LoadableComponent impleme
     }
 
   @Output() updated: EventEmitter<DiagnosticCategory> = new EventEmitter<DiagnosticCategory>();
+  @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
 
   @ViewChild('diagnosticCategoryAutoCompleter')
     private categorySelectComponent: AutocompleterComponent;

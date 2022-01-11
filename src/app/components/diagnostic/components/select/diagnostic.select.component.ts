@@ -31,12 +31,13 @@ import {
 @Component({
   selector: 'nga-select-diagnostics',
   templateUrl: './select.html',
-  outputs: ['init', 'loaded'],
 })
 export class DiagnosticSelectComponent extends LoadableComponent implements OnInit {
 
-  @Output() chosenDiagnosticsChange: EventEmitter<Diagnostic[]> = new EventEmitter<Diagnostic[]>();
   @Input() chosenDiagnostics: Diagnostic[] = [];
+  @Output() chosenDiagnosticsChange: EventEmitter<Diagnostic[]> = new EventEmitter<Diagnostic[]>();
+  @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
 
   isLoaded: boolean = false;
   dataDiagnostics: SelectItem[] = [];

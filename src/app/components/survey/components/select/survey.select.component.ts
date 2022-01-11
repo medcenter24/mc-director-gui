@@ -31,12 +31,13 @@ import {
 @Component({
   selector: 'nga-select-surveys',
   templateUrl: './select.html',
-  outputs: ['init', 'loaded'],
 })
 export class SurveySelectComponent extends LoadableComponent implements OnInit {
 
-  @Output() chosenSurveysChange: EventEmitter<Survey[]> = new EventEmitter<Survey[]>();
   @Input() chosenSurveys: Survey[] = [];
+  @Output() chosenSurveysChange: EventEmitter<Survey[]> = new EventEmitter<Survey[]>();
+  @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
 
   isLoaded: boolean = false;
   dataSurveys: SelectItem[] = [];

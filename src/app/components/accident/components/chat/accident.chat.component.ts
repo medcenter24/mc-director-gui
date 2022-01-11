@@ -15,7 +15,7 @@
  * Copyright (c) 2019 (original work) MedCenter24.com;
  */
 
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { LoadableComponent } from '../../../core/components/componentLoader';
 import { Accident } from '../../accident';
 import { CasesService } from '../../../case/cases.service';
@@ -26,13 +26,14 @@ import { DateHelper } from '../../../../helpers/date.helper';
 @Component({
   selector: 'nga-accident-chat',
   templateUrl: './chat.html',
-  outputs: ['init', 'loaded'],
 })
 export class AccidentChatComponent extends LoadableComponent implements OnInit {
 
   protected componentName: string = 'AccidentChatComponent';
 
   @Input() accident: Accident;
+  @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
 
   @ViewChild('commentariesComponent')
     private commentariesComponent: CommentsComponent;

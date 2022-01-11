@@ -25,12 +25,13 @@ import { SelectServicesComponent } from '../select';
 @Component({
   selector: 'nga-services-selector',
   templateUrl: 'selector.html',
-  outputs: ['init', 'loaded'],
 })
 export class ServiceSelectorComponent extends LoadableComponent implements OnInit {
 
   @Input() caseId: number = 0;
   @Output() changedServices: EventEmitter<Service[]> = new EventEmitter<Service[]>();
+  @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
 
   @ViewChild('selectServices')
     private selectServicesComponent: SelectServicesComponent;
