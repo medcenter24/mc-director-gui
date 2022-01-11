@@ -15,7 +15,7 @@
  * Copyright (c) 2019 (original work) MedCenter24.com;
  */
 
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { LoadableComponent } from '../../../core/components/componentLoader';
 import { Accident } from '../../../accident/accident';
 import { TranslateService } from '@ngx-translate/core';
@@ -26,12 +26,13 @@ import { CasesService } from '../../cases.service';
   selector: 'nga-case-finance',
   templateUrl: './case.finance.html',
   styleUrls: ['./case.finance.scss'],
-  outputs: ['init', 'loaded'],
 })
 export class CaseFinanceComponent extends LoadableComponent implements OnInit {
   protected componentName: string = 'CaseFinanceComponent';
 
   @Input() accident: Accident;
+  @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
 
   types: string[] = ['income', 'assistant', 'caseable'];
   paymentViewers: PaymentViewer[] = [];

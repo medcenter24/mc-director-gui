@@ -36,7 +36,6 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'nga-datatable',
   templateUrl: './datatable.html',
-  outputs: ['init', 'loaded'],
 })
 export class DatatableComponent extends LoadableComponent {
   protected componentName: string = 'DatatableComponent';
@@ -57,6 +56,8 @@ export class DatatableComponent extends LoadableComponent {
   @Output() sorted: EventEmitter<void> = new EventEmitter<void>();
   @Output() filtered: EventEmitter<void> = new EventEmitter<void>();
   @Output() pagination: EventEmitter<void> = new EventEmitter<void>();
+  @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
 
   /**
    * it is used by this component only

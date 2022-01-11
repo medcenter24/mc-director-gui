@@ -26,7 +26,6 @@ import { SearchFilter } from '../../../../core/loadable/search.filter';
 @Component({
   selector: 'nga-autocompleter',
   templateUrl: './autocompleter.html',
-  outputs: ['init', 'loaded'],
 })
 export class AutocompleterComponent extends LoadableComponent implements OnInit {
   protected componentName: string = 'AutocompleterComponent';
@@ -64,6 +63,9 @@ export class AutocompleterComponent extends LoadableComponent implements OnInit 
    * @type {EventEmitter<any>}
    */
   @Output() selected: EventEmitter<any> = new EventEmitter<any>();
+
+  @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
 
   /**
    * Direct access to the child element

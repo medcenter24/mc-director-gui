@@ -25,7 +25,6 @@ import { LoggerComponent } from '../../../core/logger/LoggerComponent';
 @Component({
   selector: 'nga-diagnostics-selector',
   templateUrl: 'selector.html',
-  outputs: ['init', 'loaded'],
 })
 export class DiagnosticsSelectorComponent extends LoadableComponent implements OnInit {
   protected componentName: string = 'DiagnosticsSelectorComponent';
@@ -33,6 +32,8 @@ export class DiagnosticsSelectorComponent extends LoadableComponent implements O
   @Input() caseId: number = 0;
   @Output() changed: EventEmitter<Diagnostic[]> = new EventEmitter<Diagnostic[]>();
   @Output() diagnosticsLoaded: EventEmitter<Diagnostic[]> = new EventEmitter<Diagnostic[]>();
+  @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
   @ViewChild('selectDiagnostics')
     private selectDiagnosticsComponent: DiagnosticSelectComponent;
 

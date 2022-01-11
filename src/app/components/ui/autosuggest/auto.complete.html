@@ -15,23 +15,21 @@
   ~ Copyright (c) 2019 (original work) MedCenter24.com;
   -->
 
-<div class="ui-inputgroup">
-  <p-autoComplete
-    *ngIf="provider && conf"
-    [(ngModel)]="provider.selected"
-    [suggestions]="provider.filtered"
-    [dropdown]="true"
-    (completeMethod)="provider.filter($event)"
-    (onSelect)="onSelect()"
-    [placeholder]="conf.placeholder"
-    [field]="conf.fieldKey"
-    [minLength]="conf.minLength"
-    [multiple]="conf.isMultiple"
-    (onUnselect)="onSelect()"
-    appendTo="body"
-  ></p-autoComplete>
-  <span class="text-muted small justify-content-center align-self-center pl-1"
-        *ngIf="provider && provider.hasOwnProperty('total')"
-        translate [translateParams]="{amount: provider.filtered.length, total: provider.total}"
-  >amount_of_total</span>
-</div>
+<p-autoComplete
+  *ngIf="provider && conf"
+  [(ngModel)]="provider.selected"
+  [suggestions]="provider.filtered"
+  [dropdown]="true"
+  (completeMethod)="provider.filter($event)"
+  (onSelect)="onSelect()"
+  [placeholder]="conf.placeholder"
+  [field]="conf.fieldKey"
+  [minLength]="conf.minLength"
+  [multiple]="conf.isMultiple"
+  (onUnselect)="onSelect()"
+  appendTo="body"
+></p-autoComplete>
+<span class="text-muted small justify-content-center pl-1"
+      *ngIf="provider && provider.hasOwnProperty('total')"
+      translate [translateParams]="{amount: provider.filtered.length, total: provider.total}"
+>amount_of_total</span>

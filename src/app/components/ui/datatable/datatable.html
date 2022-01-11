@@ -32,11 +32,12 @@
   [tableStyleClass]="getConfig().get('tableClass')"
 >
   <ng-template pTemplate="caption" *ngIf="getConfig().get('captionPanel')">
-    <div class="ui-helper-clearfix">
+    <div class="p-helper-clearfix">
       <button
         *ngIf="getConfig().get('csvExportAll')"
-        class="mr-1 pull-left"
-        type="button" pButton
+        class="mr-1"
+        type="button"
+        pButton
         icon="fa fa-file-o" iconPos="left"
         [label]="getConfig().get('csvExportAllTitle')"
         (click)="datatable.exportCSV()"
@@ -45,20 +46,17 @@
       <button
         *ngIf="getConfig().get('csvExportSelections')"
         type="button"
-        pButton icon="fa fa-file"
+        pButton
+        icon="fa fa-file"
         iconPos="left"
         [label]="getConfig().get('csvExportSelectionsTitle')"
         (click)="datatable.exportCSV({selectionOnly:true})"
-        class="pull-left"
       ></button>
 
-      <div
-        *ngIf="getConfig().get('captionPanelActions') && getConfig().get('captionPanelActions').length"
-        class="pull-left"
-      >
+      <div *ngIf="getConfig().get('captionPanelActions') && getConfig().get('captionPanelActions').length">
         <i
           *ngIf="getConfig().get('csvExportAll') || getConfig().get('csvExportSelections')"
-          class="fa fa-bars pull-left pr-2 pl-2"
+          class="fa fa-bars pr-2 pl-2"
         ></i>
         <button
           *ngFor="let action of getConfig().get('captionPanelActions')"
@@ -66,7 +64,7 @@
           [icon]="action.icon"
           (click)="action.run($event)"
           [label]="action.title"
-          [class]="'pull-left mr-1' + (action.visible ? '' : ' invisible')"
+          [class]="'mr-1' + (action.visible ? '' : ' invisible')"
         ></button>
       </div>
     </div>

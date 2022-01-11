@@ -15,7 +15,7 @@
  * Copyright (c) 2019 (original work) MedCenter24.com;
  */
 
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { LoadableComponent } from '../../../core/components/componentLoader';
 import { Accident } from '../../accident';
 
@@ -23,13 +23,14 @@ import { Accident } from '../../accident';
   selector: 'nga-accident-activity',
   templateUrl: './activity.html',
   styleUrls: ['./activity.scss'],
-  outputs: ['init', 'loaded'],
 })
 export class AccidentActivityComponent extends LoadableComponent implements OnInit {
 
   protected componentName: string = 'CaseActivityComponent';
 
   @Input() accident: Accident;
+  @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
 
   selectedTab = null;
   tabs: any[] = [

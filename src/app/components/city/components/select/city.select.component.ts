@@ -15,7 +15,7 @@
  * Copyright (c) 2019 (original work) MedCenter24.com;
  */
 
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { CitiesService } from '../../cities.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AbstractAutoCompleteController } from '../../../ui/autocompleter';
@@ -23,11 +23,13 @@ import { AbstractAutoCompleteController } from '../../../ui/autocompleter';
 @Component({
   selector: 'nga-select-city',
   templateUrl: '../../../ui/autocompleter/autocompleter.tpl.html',
-  outputs: ['init', 'loaded'],
 })
 export class CitySelectComponent extends AbstractAutoCompleteController {
 
   protected componentName = 'CitySelectComponent';
+
+  @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
 
   constructor (
     private citiesService: CitiesService,

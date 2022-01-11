@@ -25,13 +25,13 @@ import { DateHelper } from '../../../../helpers/date.helper';
 @Component({
   selector: 'nga-ui-date-picker',
   template: `
-    <div class="ui-inputgroup">
+    <div class="p-inputgroup">
       <ng2-flatpickr
         *ngIf="initialized"
         [config]="datePickerOptions"
         [(ngModel)]="pickedDate"
-        addClass="ui-inputtext"></ng2-flatpickr>
-      <button pButton type="button" icon="pi pi-search" class="ui-button-warn" (click)="onSearch()"></button>
+        pInputText></ng2-flatpickr>
+      <button pButton type="button" icon="pi pi-search" class="p-button-warn" (click)="onSearch()"></button>
     </div>
   `,
 })

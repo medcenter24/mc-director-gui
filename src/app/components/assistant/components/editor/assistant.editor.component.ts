@@ -25,13 +25,14 @@ import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'nga-assistant-editor',
   templateUrl: './editor.html',
-  outputs: ['init', 'loaded'],
 })
 export class AssistantEditorComponent extends LoadableComponent {
   protected componentName: string = 'AssistantEditorComponent';
 
   @Input() assistant: Assistant;
   @Output() assistantSaved: EventEmitter<Assistant> = new EventEmitter<Assistant>();
+  @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
 
   constructor(
     private service: AssistantsService,

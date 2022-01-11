@@ -59,7 +59,7 @@
                         <td>
                             <button *ngIf="!isImported(file.id)" pButton type="button" class="mr-2" (click)="importFile(file)" icon="fa fa-download" label="{{ 'Import' | translate }}"></button>
                             <button pButton type="button" (click)="deleteFile(file)" class="mr-2" icon="fa fa-trash" label="{{ 'Delete' | translate }}"></button>
-                            <button pButton type="button" (click)="report(file)" [disabled]="!isImported(file.id)" class="ui-button-secondary btn-report" icon="fa fa-trash" label="{{ 'Report' | translate }}"></button>
+                            <button pButton type="button" (click)="report(file)" [disabled]="!isImported(file.id)" class="p-button-secondary btn-report" icon="fa fa-trash" label="{{ 'Report' | translate }}"></button>
                         </td>
                     </tr>
                 </tbody>
@@ -68,7 +68,7 @@
     </p-fileUpload>
 
     <p-footer *ngIf="selectedFiles.length">
-        <div class="ui-dialog-buttonpane ui-helper-clearfix">
+        <div class="p-dialog-buttonpane p-helper-clearfix">
             <button pButton [disabled]="true" class="mr-2" label="{{ selectedFiles.length }}"></button>
             <button pButton (click)="importFile($event)" class="mr-2" type="button" icon="fa fa-download" label="{{ 'Import' | translate }}"></button>
             <button pButton (click)="deleteFile($event)" type="button" icon="fa fa-trash" label="{{ 'Delete' | translate }}"></button>

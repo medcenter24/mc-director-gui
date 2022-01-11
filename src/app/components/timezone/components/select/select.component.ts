@@ -22,12 +22,13 @@ import { TimezoneService } from '../../timezone.service';
 @Component({
   selector: 'nga-select-timezone',
   templateUrl: './select.html',
-  outputs: ['init', 'loaded'],
 })
 export class TimezoneSelectComponent extends LoadableComponent implements OnInit {
 
   @Input() timezone: string;
   @Output() change: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
 
   timezones: string[] = [];
   filteredTimezones: string[] = [];

@@ -30,12 +30,12 @@
   [style]="{width : '400px'}"
   (onHide)="deselectAll()">
 
-  <div class="ui-g ui-fluid" *ngIf="model">
-    <div class="ui-g-12">
-      <div class="ui-g-3">
+  <div class="p-grid p-fluid" *ngIf="model">
+    <div class="p-col-12">
+      <div class="p-col-3">
         <label translate>Title</label>
       </div>
-      <div class="ui-g-9">
+      <div class="p-col-9">
         <input
           pInputText
           [(ngModel)]="model.title"
@@ -43,11 +43,11 @@
         />
       </div>
     </div>
-    <div class="ui-g-12">
-      <div class="ui-g-3">
+    <div class="p-col-12">
+      <div class="p-col-3">
         <label translate>Description</label>
       </div>
-      <div class="ui-g-9">
+      <div class="p-col-9">
         <input
           pInputText
           [(ngModel)]="model.description"
@@ -55,11 +55,11 @@
         />
       </div>
     </div>
-    <div class="ui-g-12">
-      <div class="ui-g-3">
+    <div class="p-col-12">
+      <div class="p-col-3">
         <label translate>Diseases</label>
       </div>
-      <div class="ui-g-9">
+      <div class="p-col-9">
         <nga-multi-selector
           [service]="diseaseService"
           placeholder="Select Diseases"
@@ -71,17 +71,17 @@
         ></nga-multi-selector>
       </div>
     </div>
-    <div class="ui-g-12">
-      <div class="ui-g-3">
+    <div class="p-col-12">
+      <div class="p-col-3">
         <label translate>{{ isActive ? 'Active' : 'Inactive' }}</label>
       </div>
-      <div class="ui-g-9">
+      <div class="p-col-9">
         <p-inputSwitch [(ngModel)]="isActive"></p-inputSwitch>
       </div>
     </div>
   </div>
   <p-footer>
-    <div class="ui-dialog-buttonpane ui-helper-clearfix">
+    <div class="p-dialog-buttonpane p-helper-clearfix">
       <button type="button" *ngIf="model && model.id" pButton icon="fa fa-close" (click)="confirmDelete()" label="{{ 'Delete' | translate }}"></button>
       <button type="button" pButton icon="fa fa-check" (click)="save()" label="{{ 'Save' | translate }}"></button>
     </div>
