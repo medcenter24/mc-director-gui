@@ -15,10 +15,9 @@
  * Copyright (c) 2019 (original work) MedCenter24.com;
  */
 
-import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { LoadableComponent } from '../../../../../core/components/componentLoader';
 import { AccidentScenario } from '../../scenario';
-import 'style-loader!./line.scss';
 import { CasesService } from '../../../../../case/cases.service';
 import { LoggerComponent } from '../../../../../core/logger/LoggerComponent';
 
@@ -26,11 +25,13 @@ import { LoggerComponent } from '../../../../../core/logger/LoggerComponent';
   selector: 'nga-accident-scenario',
   templateUrl: './line.html',
   encapsulation: ViewEncapsulation.None,
-  outputs: ['init', 'loaded'],
+  styleUrls: ['./line.scss'],
 })
 export class AccidentScenarioLineComponent extends LoadableComponent implements OnInit {
 
   @Input() accidentId: number = 0;
+  @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
 
   isLoaded: boolean = false;
   steps: AccidentScenario[] = [];

@@ -29,20 +29,20 @@
   appendTo="body"
   (onHide)="deselectAll()">
 
-  <div class="ui-g ui-fluid" *ngIf="city">
-    <div class="ui-g-12">
-      <div class="ui-g-3">
+  <div class="p-grid p-fluid" *ngIf="city">
+    <div class="p-col-12">
+      <div class="p-col-3">
         <label for="title" translate>City</label>
       </div>
-      <div class="ui-g-9">
+      <div class="p-col-9">
         <input pInputText id="title" [(ngModel)]="city.title" />
       </div>
     </div>
-    <div class="ui-g-12">
-      <div class="ui-g-3">
+    <div class="p-col-12">
+      <div class="p-col-3">
         <label for="title" translate>Region</label>
       </div>
-      <div class="ui-g-9">
+      <div class="p-col-9">
         <nga-autocompleter
                 #regionAutocompleterComponent
                 [service]="regionService"
@@ -57,7 +57,7 @@
     </div>
   </div>
   <p-footer>
-    <div class="ui-dialog-buttonpane ui-helper-clearfix">
+    <div class="p-dialog-buttonpane p-helper-clearfix">
       <button type="button" *ngIf="city && city.id" pButton icon="fa fa-close" (click)="delete()" label="{{ 'Delete' | translate }}"></button>
       <button type="button" pButton icon="fa fa-check" (click)="save()" label="{{ 'Save' | translate }}"></button>
     </div>

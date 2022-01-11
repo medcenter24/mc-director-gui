@@ -529,16 +529,16 @@
             </div>
           </div>
         </div>
-        <button pButton type="button" class="ui-button-success pull-left offset-right20 mr-1" (click)="onSave()"
+        <button pButton type="button" class="p-button-success pull-left offset-right20 mr-1" (click)="onSave()"
                 [disabled]="!accidentForm.form.valid" label="{{ 'Save' | translate }}"></button>
 
         <b pTooltip="{{ 'All required (*) fields should be filled' | translate }}"
            class="badge badge-secondary pull-left">?</b>
 
-        <button pButton type="button" class="ui-button-secondary pull-right"
+        <button pButton type="button" class="p-button-secondary pull-right"
                 label="{{ 'Close' | translate }}" *ngIf="accident.id"
                 (click)="onClose()"></button>
-        <button pButton type="button" class="ui-button-danger pull-right offset-right10"
+        <button pButton type="button" class="p-button-danger pull-right offset-right10"
                 label="{{ 'Delete' | translate }}" *ngIf="accident.id"
                 (click)="onDelete()"></button>
       </form>

@@ -17,7 +17,7 @@
 <div class="toolbox-container" *ngIf="groups && groups.length">
     <div class="toolbox">
         <p-toolbar>
-            <div class="ui-toolbar-group-left">
+            <div class="p-toolbar-group-left">
                 <span class="toolbox-group group-{{ group ? group : 'default'}}" *ngFor="let group of groups">
                     <i class="pi pi-bars ml-2 mr-2" *ngIf="groups.indexOf(group)"></i>
                     <span class="toolbox-btn" *ngFor="let action of actions[groups.indexOf(group)]">

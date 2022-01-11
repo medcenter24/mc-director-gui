@@ -34,8 +34,8 @@
           [defaultPicture]="defaultCompanyLogo"
           [uploaderOptions]="uploaderLogoOptions"
           [eventToUpload]="eventLogoToUpload"
-          (onUpload)="startCompanyLogoUpload($event)"
-          (onUploadCompleted)="endCompanyLogoUpload($event)"
+          (onUpload)="startCompanyLogoUpload()"
+          (onUploadCompleted)="endCompanyLogoUpload()"
           (onDelete)="deleteCompanyLogo()"
         ></nga-picture-uploader>
       </div>
@@ -43,5 +43,5 @@
   </div>
   <button pButton type="button" label="{{ 'Save' | translate }}"
           (click)="saveCompany()"
-          class="ui-button-success"></button>
+          class="p-button-success"></button>
 </div>

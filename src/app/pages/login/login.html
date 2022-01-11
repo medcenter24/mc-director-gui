@@ -53,14 +53,14 @@
       </div>
       <div class="form-group row">
         <div class="col-sm-12">
-          <div *ngIf="showError" class="ui-messages ui-widget ui-corner-all ui-messages-error" style="display: block">
-            <!----><a class="ui-messages-close" (click)="showError = false">
+          <div *ngIf="showError" class="p-messages p-widget p-corner-all p-messages-error" style="display: block">
+            <!----><a class="p-messages-close" (click)="showError = false">
             <i class="fa fa-close"></i>
           </a>
             <ul>
               <!----><li>
-              <span class="ui-messages-summary">{{ 'Authorisation Failed' | translate}}</span>
-              <span class="ui-messages-detail">{{ 'Email or password is incorrect' | translate }}</span>
+              <span class="p-messages-summary">{{ 'Authorisation Failed' | translate}}</span>
+              <span class="p-messages-detail">{{ 'Email or password is incorrect' | translate }}</span>
             </li>
             </ul>
           </div>
