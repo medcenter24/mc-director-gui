@@ -31,19 +31,15 @@
               "node_modules/bootstrap/dist/css/bootstrap.css",
               "node_modules/typeface-exo/index.css",
               "node_modules/roboto-fontface/css/roboto/roboto-fontface.css",
-              "node_modules/font-awesome/scss/font-awesome.scss",
+              "node_modules/@fortawesome/fontawesome-free/scss/fontawesome.scss",
               "node_modules/pace-js/templates/pace-theme-flash.tmpl.css",
               "node_modules/flatpickr/dist/flatpickr.min.css",
               "src/app/@theme/styles/styles.scss",
-
               "src/app/theme/theme.scss",
               "src/styles.scss"
-
             ],
             "scripts": [
-
               "node_modules/jquery/dist/jquery.js",
-
               "node_modules/pace-js/pace.min.js",
               "node_modules/chart.js/dist/Chart.min.js",
               "node_modules/quill/dist/quill.js"
@@ -111,9 +107,7 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.spec.json",
             "scripts": [
-
               "node_modules/jquery/dist/jquery.js",
-
               "node_modules/pace-js/pace.min.js",
               "node_modules/chart.js/dist/Chart.min.js"
             ],
@@ -123,10 +117,8 @@
               "node_modules/roboto-fontface/css/roboto/sass/roboto-fontface.scss",
               "node_modules/font-awesome/scss/font-awesome.scss",
               "node_modules/pace-js/templates/pace-theme-flash.tmpl.css",
-
               "src/app/theme/theme.scss",
               "src/styles.scss",
-
               "src/app/@theme/styles/styles.scss"
             ],
             "assets": [

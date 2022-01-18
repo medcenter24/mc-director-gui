@@ -282,7 +282,7 @@ Primary style
       }
     }
 
-    @-moz-document url-prefix () {
+    @-moz-document url-prefix() {
       .cd-breadcrumb.triangle li::after,
       .cd-breadcrumb.triangle li > *::after {
         /* fix a bug on Firefix - tooth edge on css triangle */

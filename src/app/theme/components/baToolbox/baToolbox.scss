@@ -16,7 +16,7 @@
 
 @import '../../sass/conf/conf';
 
-:host /deep/ {
+:host ::ng-deep {
   .toolbox-container {
     height: 25px;
     .toolbox {
