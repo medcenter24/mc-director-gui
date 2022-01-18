@@ -16,7 +16,7 @@
  */
 
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import { BgMetrics } from './bgMetrics';
 
 @Injectable()
@@ -57,7 +57,7 @@ export class BaCardBlurHelper {
       positionY: (elemH - finalHeight) / 2};
   }
 
-  private _genBgImage():void {
+  private _genBgImage(): void {
     this.image = new Image();
     const computedStyle = getComputedStyle(document.body.querySelector('main'), ':before');
     this.image.src = computedStyle.backgroundImage.replace(/url\((['"])?(.*?)\1\)/gi, '$2');
@@ -66,6 +66,7 @@ export class BaCardBlurHelper {
   private _genImageLoadSubject(): void {
     this.imageLoadSubject = new Subject<void>();
     this.image.onerror = (err) => {
+      console.warn(err);
       this.imageLoadSubject.complete();
     };
     this.image.onload = () => {

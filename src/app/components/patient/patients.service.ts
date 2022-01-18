@@ -16,9 +16,6 @@
  */
 
 import { Injectable } from '@angular/core';
-
-import 'rxjs/add/operator/toPromise';
-
 import { Patient } from './patient';
 import { HttpService } from '../core/http/http.service';
 

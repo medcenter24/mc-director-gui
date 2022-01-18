@@ -21,7 +21,7 @@ import { HttpService } from '../core/http/http.service';
 import { LoadableServiceInterface } from '../core/loadable';
 import { Form } from './form';
 import { saveAs } from 'file-saver';
-import 'rxjs/add/operator/map';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class FormService extends HttpService implements LoadableServiceInterface {
@@ -47,7 +47,9 @@ export class FormService extends HttpService implements LoadableServiceInterface
     return this.http
       .get(this.getUrl(`${formId}/${formableId}/pdf`),
         { headers: this.getAuthHeaders(), responseType: 'blob' })
-      .map(res => res)
+      .pipe(
+        map(res => res),
+      )
       // todo to see if I can sent a title from a server side to make it more readable
       .subscribe(data => saveAs(data, `report_case_${formableId}_${formableId}.pdf`), err => this.handleError(err));
   }

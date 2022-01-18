@@ -18,7 +18,6 @@
 import { Injectable } from '@angular/core';
 import { AuthenticationService } from '../../auth/authentication.service';
 import { environment } from '../../../../environments/environment';
-import 'rxjs/add/operator/toPromise';
 import { GlobalState } from '../../../global.state';
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -27,6 +26,7 @@ import { LoadableServiceInterface } from '../loadable';
 import { ObjectHelper } from '../../../helpers/object.helper';
 import { UiToastService } from '../../ui/toast/ui.toast.service';
 import { TokenService } from '../../auth/token.service';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export abstract class HttpService implements LoadableServiceInterface {
@@ -62,6 +62,10 @@ export abstract class HttpService implements LoadableServiceInterface {
    */
   protected abstract getPrefix(): string;
 
+  toPromise(obs: Observable<any>): Promise<void> {
+    return new Promise((resolve, reject) => obs.subscribe({complete: resolve, error: reject}));
+  }
+
   /**
    * Loading filtered list of data resources
    * @param {Object} filters
@@ -69,8 +73,9 @@ export abstract class HttpService implements LoadableServiceInterface {
    */
   search (filters: Object): Promise<any> {
     filters = ObjectHelper.extend({}, filters);
-    return this.http.post(this.getUrl('search'), JSON.stringify(filters), { headers: this.getAuthHeaders() })
-      .toPromise()
+    return this.toPromise(
+      this.http.post(this.getUrl('search'), JSON.stringify(filters), { headers: this.getAuthHeaders() }),
+    )
       .then(response => {
         return Promise.resolve(response);
       })
@@ -81,7 +86,6 @@ export abstract class HttpService implements LoadableServiceInterface {
    * Get request
    * @param id
    * @param params
-   * @param body
    * @returns {Promise<any>}
    */
   protected get(id: string|number = null, params: any = null): Promise<any> {
@@ -93,7 +97,7 @@ export abstract class HttpService implements LoadableServiceInterface {
   /**
    * Delete request
    * @param id
-   * @returns {Promise<any|T>}
+   * @returns {Promise<any>}
    */
   protected remove(id: any): Promise<any> {
     return this.http.delete(this.getUrl(id), { headers: this.getAuthHeaders() })
@@ -105,7 +109,7 @@ export abstract class HttpService implements LoadableServiceInterface {
   /**
    * Create new resource
    * @param data
-   * @returns {Promise<any|T>}
+   * @returns {Promise<any>}
    */
   protected store(data): Promise<any> {
     return this.http
@@ -122,7 +126,7 @@ export abstract class HttpService implements LoadableServiceInterface {
    * Update resource
    * @param id
    * @param data
-   * @returns {Promise<any|T>}
+   * @returns {Promise<any>}
    */
   protected put(id, data): Promise<any> {
 
