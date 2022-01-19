@@ -34,18 +34,20 @@ describe('Loadable: Single Provider', () => {
       fields: ['id'],
       query: '123',
     });
-    service.search(filter)
-      .then(data => expect(data).toEqual([]) )
-      .catch(() => expect().nothing());
+    const obs = service.search(filter);
+    obs.subscribe({next: value => expect(value).toEqual([]), error: () => expect().nothing()});
     expect(conf.getNumTry()).toBe(1);
   });
 
   it('checkException', () => {
     expect(conf.getNumTry()).toBe(0);
     const filter = SearchFilter.instance();
-    service.search(filter)
-      .then(data => expect(data).toEqual([]))
-      .catch(msg => expect(msg).toBe('Single Loadable Provider must have [field] and [query] filters parameters'));
+    const obs = service.search(filter);
+    obs.subscribe(data => expect(data).toEqual([]));
+    obs.subscribe({
+      error: err =>
+        expect(err).toBe('Single Loadable Provider must have [field] and [query] filters parameters'),
+    });
     expect(conf.getNumTry()).toBe(1);
   });
 
@@ -54,19 +56,21 @@ describe('Loadable: Single Provider', () => {
       fields: ['id'],
       query: 1,
     });
-    service.search(filter)
-      .then(data => {
+    const obs = service.search(filter);
+    obs.subscribe({
+      next: data => {
         expect(data).toEqual([{
           id: 1,
           name: 'Peter',
           description: 'doctor',
         }]);
         done();
-      })
-      .catch(msg => {
+      },
+      error: msg => {
         expect(msg).toBeNull();
         done();
-      });
+      },
+    });
   });
 
   it ('single provider returns all filtered data without pagination', done => {
@@ -75,8 +79,9 @@ describe('Loadable: Single Provider', () => {
       query: '',
       rows: 1,
     });
-    service.search(filter)
-      .then(data => {
+    const obs = service.search(filter);
+    obs.subscribe({
+      next: data => {
         expect(data).toEqual([{
           id: 1,
           name: 'Peter',
@@ -87,10 +92,11 @@ describe('Loadable: Single Provider', () => {
           description: 'director',
         }]);
         done();
-      })
-      .catch(msg => {
-        expect(msg).toBeNull();
+      },
+      error: err => {
+        expect(err).toBeNull();
         done();
-      });
+      },
+    });
   });
 });

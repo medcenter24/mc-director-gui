@@ -91,7 +91,7 @@ export class FinanceEditorComponent extends LoadableComponent implements OnInit 
           });
 
           this.startLoader();
-          this.financeService.getFinanceRule(id).then((financeRule: FinanceRule) => {
+          this.financeService.getFinanceRule(id).subscribe({next: (financeRule: FinanceRule) => {
             this.stopLoader();
 
             this.translateService.get('Finance').subscribe((trans: string) => {
@@ -103,7 +103,7 @@ export class FinanceEditorComponent extends LoadableComponent implements OnInit 
 
             this.rule = financeRule;
             this.isLoaded = true;
-          }).catch(() => this.stopLoader());
+          }, error: () => this.stopLoader()});
         } else {
             this.isLoaded = true;
 
@@ -162,17 +162,16 @@ export class FinanceEditorComponent extends LoadableComponent implements OnInit 
     const postfix = 'SaveRule';
     this.startLoader(postfix);
     this.financeService.save(this.rule)
-      .then(rule => {
+      .subscribe({next: rule => {
         this.stopLoader(postfix);
         if (!this.rule || !this.rule.id) {
           this.router.navigate([`pages/finance/conditions/${rule.id}`]).then();
         } else {
           this.rule = rule;
         }
-      })
-      .catch(() => {
+      }, error: () => {
         this.stopLoader(postfix);
-      });
+      }});
   }
 
   deleteFinanceRule(): void {
@@ -184,13 +183,12 @@ export class FinanceEditorComponent extends LoadableComponent implements OnInit 
           const postfix = 'DeleteRule';
           this.startLoader(postfix);
           this.financeService.destroy(this.rule)
-            .then(() => {
+            .subscribe({next: () => {
               this.stopLoader(postfix);
               this.router.navigate([`pages/finance/conditions`]).then();
-            })
-            .catch(() => {
+            }, error: () => {
               this.stopLoader(postfix);
-            });
+            }});
         },
         icon: 'fa fa-window-close-o red',
       },

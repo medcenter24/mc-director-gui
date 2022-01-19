@@ -15,8 +15,9 @@
  * Copyright (c) 2019 (original work) MedCenter24.com;
  */
 
-import { SearchableServiceInterface } from '../searchable.service.interface';
-import { SearchFilter } from '../search.filter';
+import {SearchableServiceInterface} from '../searchable.service.interface';
+import {SearchFilter} from '../search.filter';
+import {Observable} from "rxjs";
 
 /**
  * Downloading data from the server only once for the current request, then filtering and other things
@@ -42,31 +43,39 @@ export class SingleLoadableProvider implements SearchableServiceInterface {
     public config: SearchableServiceInterface,
   ) { }
 
-  search(filter: SearchFilter): Promise<any> {
-    return new Promise<any>((resolve, reject) => {
+  search(filter: SearchFilter): Observable<any> {
+    return new Observable(subscriber => {
       if (!filter || !filter.hasOwnProperty('fields') || !filter.hasOwnProperty('query')) {
-        reject('Single Loadable Provider must have [field] and [query] filters parameters');
+        subscriber.error('Single Loadable Provider must have [field] and [query] filters parameters');
       }
+
       if (!this.loaded) {
-        this.loadData(filter)
-          .then(() => resolve(this.filtering(filter)))
-          .catch(error => {
-            reject(error);
-          });
+        const obsLoad = this.loadData(filter);
+        obsLoad.subscribe({
+          next: data => {
+            this.data = data;
+            this.filtering(filter);
+          },
+        });
       } else {
-        resolve(this.filtering(filter));
+        this.filtering(filter);
       }
     });
   }
 
-  private loadData(filter: SearchFilter): Promise<any> {
+  private loadData(filter: SearchFilter): Observable<any> {
     filter.rows = 0; // to load all data, without paginating
-    return this.config.search(filter).then(resp => {
-      this.data = resp.data;
-      this.loaded = true;
-    }).catch(() => {
-      this.loaded = false;
+    const obs = this.config.search(filter);
+    obs.subscribe({
+      next: resp => {
+        this.data = resp.data;
+        this.loaded = true;
+      },
+      error: () => {
+        this.loaded = false;
+      },
     });
+    return obs;
   }
 
   /**

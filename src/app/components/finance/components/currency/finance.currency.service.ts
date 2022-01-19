@@ -19,6 +19,7 @@ import { Injectable } from '@angular/core';
 import { HttpService } from '../../../core/http/http.service';
 import { LoadableServiceInterface } from '../../../core/loadable';
 import { FinanceCurrency } from './finance.currency';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class FinanceCurrencyService extends HttpService implements LoadableServiceInterface {
@@ -26,16 +27,17 @@ export class FinanceCurrencyService extends HttpService implements LoadableServi
     return 'director/currency';
   }
 
-  create(currency: FinanceCurrency): Promise<FinanceCurrency> {
+  create(currency: FinanceCurrency): Observable<FinanceCurrency> {
     return this.store(currency);
   }
 
-  save (currency: FinanceCurrency): Promise<FinanceCurrency> {
+  save (currency: FinanceCurrency): Observable<FinanceCurrency> {
     const action = currency.id ? this.put(currency.id, currency) : this.store(currency);
-    return action.then(response => response.data as FinanceCurrency);
+    action.subscribe(response => response.data as FinanceCurrency);
+    return action;
   }
 
-  destroy (currency: FinanceCurrency): Promise<any> {
+  destroy (currency: FinanceCurrency): Observable<any> {
     return this.remove(currency.id);
   }
 }

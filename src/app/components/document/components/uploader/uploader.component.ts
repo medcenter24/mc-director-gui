@@ -101,11 +101,11 @@ export class FileUploaderComponent extends LoadableComponent implements OnInit {
   updateFile(file): void {
     const postfix = 'Save';
     this.startLoader(postfix);
-    this.documentsService.update(file).then(() => {
+    this.documentsService.update(file).subscribe({next: () => {
       this.stopLoader(postfix);
-    }).catch(() => {
+    }, error: () => {
       this.stopLoader(postfix);
-    });
+    }});
   }
 
   deleteFile(file): void {
@@ -125,17 +125,17 @@ export class FileUploaderComponent extends LoadableComponent implements OnInit {
       const postfix = 'Deleter';
       this.startLoader(postfix);
       files.map(id => {
-        this.documentsService.deleteDocument(id).then(() => {
+        this.documentsService.deleteDocument(id).subscribe({next: () => {
           this.deleteFileFromGui(id);
           if (--this.deleterCounter <= 0) {
             this.stopLoader(postfix);
           }
-        }).catch(err => {
+        }, error: err => {
           this._logger.error(err);
           if (--this.deleterCounter <= 0) {
             this.stopLoader(postfix);
           }
-        });
+        }});
       });
     }
   }

@@ -69,12 +69,11 @@ export class CalendarComponent implements OnInit {
           this.eventsTimerId = setTimeout(() => {
             this._calendarService
               .loadEvents(params.startStr, params.endStr)
-              .then(events => {
+              .subscribe(events => {
                 statistics = [];
                 this.eventsTimerId = false;
                 callback(events);
-              })
-              .catch();
+              });
           }, 1000);
         },
         eventDataTransform: (event) => {

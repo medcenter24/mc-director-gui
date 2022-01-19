@@ -59,7 +59,7 @@ export class CompanyEditorComponent extends LoadableComponent implements OnInit 
   ngOnInit() {
     this.startLoader();
     this.loggedUserService.getCompany()
-      .then((company: Company) => {
+      .subscribe({next: (company: Company) => {
         this.stopLoader();
 
         this.company = company;
@@ -73,8 +73,7 @@ export class CompanyEditorComponent extends LoadableComponent implements OnInit 
           headers: { 'Authorization': `Bearer ${this.authService.getToken()}` },
         };
 
-      })
-      .catch(() => this.stopLoader());
+      }, error: () => this.stopLoader()});
 
     this._state.subscribe('token', (token) => {
       this.eventLogoToUpload.headers = { 'Authorization': `Bearer ${token}` };
@@ -85,8 +84,7 @@ export class CompanyEditorComponent extends LoadableComponent implements OnInit 
     const postfix = 'SaveCompany';
     this.startLoader(postfix);
     this.companyService.update(this.company)
-      .then(() => this.stopLoader(postfix))
-      .catch(() => this.stopLoader(postfix));
+      .subscribe({next: () => this.stopLoader(postfix), error: () => this.stopLoader(postfix)});
   }
 
   startCompanyLogoUpload(): void {
@@ -101,8 +99,10 @@ export class CompanyEditorComponent extends LoadableComponent implements OnInit 
     const postfix = 'DeleteCompanyLogo';
     this.startLoader(postfix);
     this.companyService.deleteLogo(this.company)
-      .then(() => this.stopLoader(postfix))
-      .catch(() => this.stopLoader(postfix));
+      .subscribe({
+        next: () => this.stopLoader(postfix),
+        error: () => this.stopLoader(postfix),
+      });
   }
 
 }

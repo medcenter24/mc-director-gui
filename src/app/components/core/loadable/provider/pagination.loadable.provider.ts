@@ -17,6 +17,7 @@
 
 import { SearchableServiceInterface } from '../searchable.service.interface';
 import { SearchFilter } from '../search.filter';
+import { Observable } from 'rxjs';
 
 export class PaginationLoadableProvider implements SearchableServiceInterface {
 
@@ -24,7 +25,7 @@ export class PaginationLoadableProvider implements SearchableServiceInterface {
     public config: SearchableServiceInterface,
   ) { }
 
-  search(filters: SearchFilter): Promise<any> {
+  search(filters: SearchFilter): Observable<any> {
     return this.config.search(filters);
   }
 }

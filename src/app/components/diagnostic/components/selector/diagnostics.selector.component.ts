@@ -70,16 +70,17 @@ export class DiagnosticsSelectorComponent extends LoadableComponent implements O
     if (this.caseId) {
       const postfix = 'SelectDiagnosticsLoaded';
       this.startLoader(postfix);
-      this.casesService.getCaseDiagnostics(this.caseId).then(diagnostics => {
+      const obs = this.casesService.getCaseDiagnostics(this.caseId);
+      obs.subscribe({ next: diagnostics => {
         this.stopLoader(postfix);
         this.caseDiagnostics = diagnostics;
         this.selectDiagnosticsComponent.reloadChosenDiagnostics(this.caseDiagnostics);
         // if I loaded diagnostics by the case id
         this.diagnosticsLoaded.emit(this.caseDiagnostics);
-      }).catch((err) => {
+      }, error: (err) => {
         this.stopLoader(postfix);
         this._logger.error(err);
-      });
+      }});
     }
   }
 

@@ -45,10 +45,10 @@ export class AssistantEditorComponent extends LoadableComponent {
   onSubmit(): void {
     const postfix = 'Delete';
     this.startLoader(postfix);
-    this.service.save(this.assistant).then(() => {
+    this.service.save(this.assistant).subscribe({next: () => {
       this.stopLoader(postfix);
       this.assistantSaved.emit(this.assistant);
-    }).catch(() => this.stopLoader(postfix));
+    }, error: () => this.stopLoader(postfix)});
   }
 
   onDelete(): void {
@@ -61,12 +61,11 @@ export class AssistantEditorComponent extends LoadableComponent {
           const postfix = 'Delete';
           this.startLoader(postfix);
           this.service.destroy(this.assistant)
-            .then(() => {
+            .subscribe({next: () => {
               this.assistantSaved.emit(this.assistant);
               this.assistant = null;
               this.stopLoader(postfix);
-            })
-            .catch(() => this.stopLoader(postfix));
+            }, error: () => this.stopLoader(postfix)});
         },
         icon: 'fa fa-window-close-o red',
       },

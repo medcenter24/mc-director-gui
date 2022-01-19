@@ -117,13 +117,12 @@ export class RegionDatatableComponent extends AbstractDatatableController {
     const postfix = 'Save';
     this.startLoader(postfix);
     this.regionService.save(this.region)
-      .then(() => {
+      .subscribe({next: () => {
         this.stopLoader(postfix);
         this.setRegion();
         this.displayDialog = false;
         this.datatable.refresh();
-      })
-      .catch(() => this.stopLoader(postfix));
+      }, error: () => this.stopLoader(postfix)});
   }
 
   onRowSelect(event) {
@@ -155,13 +154,12 @@ export class RegionDatatableComponent extends AbstractDatatableController {
           const postfix = 'Delete';
           this.startLoader(postfix);
           this.regionService.destroy(this.region)
-            .then(() => {
+            .subscribe({next: () => {
               this.stopLoader(postfix);
               this.setRegion();
               this.displayDialog = false;
               this.datatable.refresh();
-            })
-            .catch(() => this.stopLoader(postfix));
+            }, error: () => this.stopLoader(postfix)});
         },
         icon: 'fa fa-window-close-o red',
       },

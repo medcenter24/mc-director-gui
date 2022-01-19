@@ -15,13 +15,13 @@
  * Copyright (c) 2019 (original work) MedCenter24.com;
  */
 
-import { Component, Output, EventEmitter, Input, OnInit } from '@angular/core';
-import { Accident } from '../../accident';
-import { AccidentsService } from '../../accidents.service';
-import { PatientsService } from '../../../patient/patients.service';
-import { Patient } from '../../../patient/patient';
-import { LoadableComponent } from '../../../core/components/componentLoader';
-import { LoggerComponent } from '../../../core/logger/LoggerComponent';
+import {Component, Output, EventEmitter, Input, OnInit} from '@angular/core';
+import {Accident} from '../../accident';
+import {AccidentsService} from '../../accidents.service';
+import {PatientsService} from '../../../patient/patients.service';
+import {Patient} from '../../../patient/patient';
+import {LoadableComponent} from '../../../core/components/componentLoader';
+import {LoggerComponent} from '../../../core/logger/LoggerComponent';
 
 @Component({
   selector: 'nga-accident-card',
@@ -38,7 +38,7 @@ export class AccidentCardComponent extends LoadableComponent implements OnInit {
   patient: Patient;
   protected componentName: string = 'AccidentCardComponent';
 
-  constructor (
+  constructor(
     private accidentService: AccidentsService,
     private patientService: PatientsService,
     private _logger: LoggerComponent,
@@ -46,17 +46,19 @@ export class AccidentCardComponent extends LoadableComponent implements OnInit {
     super();
   }
 
-  ngOnInit () {
+  ngOnInit() {
     if (+this.selectedAccidentId) {
       const postfix = 'getAccident';
       this.startLoader(postfix);
-      this.accidentService.getAccident(this.selectedAccidentId).then(accident => {
-        this.stopLoader(postfix);
-        this.accident = accident;
-        this.loadPatient();
-      }).catch((err) => {
-        this._logger.error(err);
-        this.stopLoader(postfix);
+      this.accidentService.getAccident(this.selectedAccidentId).subscribe({
+        next: accident => {
+          this.stopLoader(postfix);
+          this.accident = accident;
+          this.loadPatient();
+        }, error: (err) => {
+          this._logger.error(err);
+          this.stopLoader(postfix);
+        },
       });
     }
   }
@@ -64,13 +66,13 @@ export class AccidentCardComponent extends LoadableComponent implements OnInit {
   private loadPatient(): void {
     const opName = 'getPatient';
     this.startLoader(opName);
-    this.patientService.getPatient(+this.accident.patientId).then((patient: Patient) => {
+    this.patientService.getPatient(+this.accident.patientId).subscribe({next: (patient: Patient) => {
       this.stopLoader(opName);
       this.patient = patient;
-    }).catch((err) => {
+    }, error: (err) => {
       this.stopLoader(opName);
       this._logger.error(err);
-    });
+    }});
   }
 
   closePanel(): void {

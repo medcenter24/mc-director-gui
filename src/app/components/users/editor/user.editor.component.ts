@@ -90,10 +90,10 @@ export class UserEditorComponent extends LoadableComponent implements OnInit {
     if (+id) {
       const postfix = 'User';
       this.startLoader(postfix);
-      this.service.getUser(id).then((user: User) => {
+      this.service.getUser(id).subscribe({next: (user: User) => {
         this.stopLoader(postfix);
         this.setUser(user);
-      }).catch(() => this.stopLoader(postfix));
+      }, error: () => this.stopLoader(postfix)});
     } else {
       this.setEmptyUser();
     }

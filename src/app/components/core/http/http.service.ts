@@ -62,86 +62,76 @@ export abstract class HttpService implements LoadableServiceInterface {
    */
   protected abstract getPrefix(): string;
 
-  toPromise(obs: Observable<any>): Promise<void> {
-    return new Promise((resolve, reject) => obs.subscribe({complete: resolve, error: reject}));
-  }
-
   /**
    * Loading filtered list of data resources
    * @param {Object} filters
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  search (filters: Object): Promise<any> {
+  search (filters: Object): Observable<any> {
     filters = ObjectHelper.extend({}, filters);
-    return this.toPromise(
-      this.http.post(this.getUrl('search'), JSON.stringify(filters), { headers: this.getAuthHeaders() }),
-    )
-      .then(response => {
-        return Promise.resolve(response);
-      })
-      .catch(error => this.handleError(error));
+    const obs = this.http.post(
+      this.getUrl('search'),
+      JSON.stringify(filters),
+      { headers: this.getAuthHeaders() },
+    );
+    obs.subscribe({ error: this.handleError });
+    return obs;
   }
 
   /**
    * Get request
    * @param id
    * @param params
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  protected get(id: string|number = null, params: any = null): Promise<any> {
-    return this.http.get(this.getUrl(id), { headers: this.getAuthHeaders(), params })
-      .toPromise()
-      .catch(error => this.handleError(error));
+  protected get(id: string|number = null, params: any = null): Observable<any> {
+    const obs = this.http.get(this.getUrl(id), { headers: this.getAuthHeaders(), params });
+    obs.subscribe({error: error => this.handleError(error)});
+    return obs;
   }
 
   /**
    * Delete request
    * @param id
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  protected remove(id: any): Promise<any> {
-    return this.http.delete(this.getUrl(id), { headers: this.getAuthHeaders() })
-      .toPromise()
-      .then(() => this.uiToastService.deleted())
-      .catch(error => this.handleError(error));
+  protected remove(id: any): Observable<any> {
+    const obs = this.http.delete(this.getUrl(id), { headers: this.getAuthHeaders() });
+    obs.subscribe({error: this.handleError});
+    return obs;
   }
 
   /**
    * Create new resource
    * @param data
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  protected store(data): Promise<any> {
-    return this.http
-      .post(this.getUrl(), JSON.stringify(data), { headers: this.getAuthHeaders() })
-      .toPromise()
-      .then(response => {
-        this.uiToastService.created();
-        return Promise.resolve(response);
-      })
-      .catch(error => this.handleError(error));
+  protected store(data): Observable<any> {
+    const obs = this.http.post(this.getUrl(), JSON.stringify(data), { headers: this.getAuthHeaders() });
+    obs.subscribe(response => {
+      this.uiToastService.created();
+      return response;
+    });
+    obs.subscribe({error: this.handleError});
+    return obs;
   }
 
   /**
    * Update resource
    * @param id
    * @param data
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  protected put(id, data): Promise<any> {
+  protected put(id, data): Observable<any> {
 
     if (!id) {
       this.uiToastService.httpError();
       return;
     }
-    return this.http
-      .put(this.getUrl(id), JSON.stringify(data), { headers: this.getAuthHeaders() })
-      .toPromise()
-      .then(response => {
-        this.uiToastService.saved();
-        return Promise.resolve(response);
-      })
-      .catch(error => this.handleError(error));
+    const obs = this.http.put(this.getUrl(id), JSON.stringify(data), { headers: this.getAuthHeaders() });
+    obs.subscribe(() => this.uiToastService.saved());
+    obs.subscribe({error: this.handleError});
+    return obs;
   }
 
   /**
@@ -177,7 +167,7 @@ export abstract class HttpService implements LoadableServiceInterface {
    * Should be implemented if needed
    * @param model
    */
-  destroy ( model: Object ): Promise<any> {
+  destroy ( model: Object ): Observable<any> {
     return undefined;
   }
 
@@ -185,7 +175,7 @@ export abstract class HttpService implements LoadableServiceInterface {
    * Should be implemented if needed
    * @param model
    */
-  save ( model: Object ): Promise<any> {
+  save ( model: Object ): Observable<any> {
     return undefined;
   }
 }

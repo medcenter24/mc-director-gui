@@ -17,6 +17,7 @@
 import { Injectable } from '@angular/core';
 import { Country } from './country';
 import { HttpService } from '../core/http/http.service';
+import {Observable} from 'rxjs';
 
 @Injectable()
 export class CountryService extends HttpService {
@@ -25,24 +26,27 @@ export class CountryService extends HttpService {
     return 'director/countries';
   }
 
-  delete (id: number): Promise<void> {
+  delete (id: number): Observable<void> {
     return this.remove(id);
   }
 
-  create (country: Country): Promise<Country> {
-    return this.store(country).then(res => res.json() as Country);
+  create (country: Country): Observable<Country> {
+    const obs = this.store(country);
+    obs.subscribe(res => res.json() as Country);
+    return obs;
   }
 
-  update (country: Country): Promise<Country> {
+  update (country: Country): Observable<Country> {
     return this.put(country.id, country);
   }
 
-  save (country: Country): Promise<Country> {
+  save (country: Country): Observable<Country> {
     const action = country.id ? this.put(country.id, country) : this.store(country);
-    return action.then(response => response.data as Country);
+    action.subscribe(response => response.data as Country);
+    return action;
   }
 
-  destroy (country: Country): Promise<any> {
+  destroy (country: Country): Observable<any> {
     return this.remove(country.id);
   }
 }

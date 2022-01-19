@@ -58,13 +58,13 @@ export class CaseFinanceComponent extends LoadableComponent implements OnInit {
    * @param types [income, assistant, caseable]
    */
   private reload(types: string[] = []): void {
-    this.caseService.getFinance(this.accident, types).then((paymentViewers: PaymentViewer[]) => {
+    this.caseService.getFinance(this.accident, types).subscribe((paymentViewers: PaymentViewer[]) => {
       this.updatePaymentViewers(paymentViewers);
     });
   }
 
   private save(type: string, data: Object): void {
-    this.caseService.saveFinance(this.accident, type, data).then((paymentViewers: PaymentViewer[]) => {
+    this.caseService.saveFinance(this.accident, type, data).subscribe((paymentViewers: PaymentViewer[]) => {
       this.updatePaymentViewers(paymentViewers);
     });
   }

@@ -69,15 +69,15 @@ export class ServiceSelectorComponent extends LoadableComponent implements OnIni
     this.stopLoader(name);
     if (this.caseId) {
       this.startLoader();
-      this.casesService.getCaseServices(this.caseId).then(services => {
+      this.casesService.getCaseServices(this.caseId).subscribe({next: services => {
         this.stopLoader();
         this.caseServices = services;
         this.selectServicesComponent.reloadChosenServices(this.caseServices);
         this.onServicesChanged();
-      }).catch((err) => {
+      }, error: (err) => {
         this.stopLoader();
         this._logger.error(err);
-      });
+      }});
     }
   }
 

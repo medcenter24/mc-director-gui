@@ -90,12 +90,11 @@ export class PatientEditorComponent extends LoadableComponent {
           const postfix = 'Delete';
           this.startLoader(postfix);
           this.patientService.delete(this.patient.id)
-            .then(() => {
+            .subscribe({next: () => {
               this.changed.emit(this.patient);
               this.patient = null;
               this.stopLoader(postfix);
-            })
-            .catch(() => this.stopLoader(postfix));
+            }, error: () => this.stopLoader(postfix)});
         },
         icon: 'fa fa-window-close-o red',
       },

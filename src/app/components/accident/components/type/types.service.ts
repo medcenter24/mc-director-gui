@@ -18,6 +18,7 @@
 import { Injectable } from '@angular/core';
 import { AccidentType } from './type';
 import { HttpService } from '../../../core/http/http.service';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class AccidentTypesService extends HttpService {
@@ -26,25 +27,29 @@ export class AccidentTypesService extends HttpService {
     return 'director/types';
   }
 
-  getTypes(): Promise<AccidentType[]> {
-    return this.get()
-      .then(response => response.data as AccidentType[]);
+  getTypes(): Observable<AccidentType[]> {
+    const obs = this.get();
+    obs.subscribe(response => response.data as AccidentType[]);
+    return obs;
   }
 
-  getType(id: number): Promise<AccidentType> {
-    return this.get(id)
-      .then(response => response.data as AccidentType);
+  getType(id: number): Observable<AccidentType> {
+    const obs = this.get(id);
+    obs.subscribe(response => response.data as AccidentType);
+    return obs;
   }
 
-  delete(id: number): Promise<void> {
+  delete(id: number): Observable<void> {
     return this.remove(id);
   }
 
-  create(type: AccidentType): Promise<AccidentType> {
-    return this.store(type).then(res => res.data as AccidentType);
+  create(type: AccidentType): Observable<AccidentType> {
+    const obs = this.store(type);
+    obs.subscribe(res => res.data as AccidentType);
+    return obs;
   }
 
-  update(type: AccidentType): Promise<AccidentType> {
+  update(type: AccidentType): Observable<AccidentType> {
     return this.put(type.id, type);
   }
 }

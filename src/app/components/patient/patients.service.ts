@@ -18,6 +18,7 @@
 import { Injectable } from '@angular/core';
 import { Patient } from './patient';
 import { HttpService } from '../core/http/http.service';
+import {Observable} from 'rxjs';
 
 @Injectable()
 export class PatientsService extends HttpService {
@@ -26,23 +27,29 @@ export class PatientsService extends HttpService {
     return 'director/patients';
   }
 
-  getPatients(): Promise<Patient[]> {
-    return this.get().then(response => response.data as Patient[]);
+  getPatients(): Observable<Patient[]> {
+    const obs = this.get();
+    obs.subscribe(response => response.data as Patient[]);
+    return obs;
   }
 
-  getPatient(id: number): Promise<Patient> {
-    return this.get(id).then(response => response.data as Patient);
+  getPatient(id: number): Observable<Patient> {
+    const obs = this.get(id);
+    obs.subscribe(response => response.data as Patient);
+    return obs;
   }
 
-  delete(id: number): Promise<void> {
+  delete(id: number): Observable<void> {
     return this.remove(id);
   }
 
-  create(patient: Patient): Promise<Patient> {
-    return this.store(patient).then(res => res as Patient);
+  create(patient: Patient): Observable<Patient> {
+    const obs = this.store(patient);
+    obs.subscribe(res => res as Patient);
+    return obs;
   }
 
-  update(patient: Patient): Promise<Patient> {
+  update(patient: Patient): Observable<Patient> {
     return this.put(patient.id, patient);
   }
 

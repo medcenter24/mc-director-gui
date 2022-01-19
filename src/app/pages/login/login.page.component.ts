@@ -69,7 +69,7 @@ export class LoginPageComponent implements OnInit {
     if (this.form.valid) {
       // your code goes here
       this.authenticationService.login(this.email.value, this.password.value)
-        .then(() => {
+        .subscribe({next: () => {
           this._state.notifyDataChanged('runLoadingProcess', true);
           let lastUri = this.storage.getItem('lastActiveUri');
           lastUri = lastUri && lastUri !== '/login' ? lastUri : '/';
@@ -88,11 +88,11 @@ export class LoginPageComponent implements OnInit {
           }
 
           this.submitted = false;
-        }, () => {
+        }, error: () => {
           this.showError = true;
           this._state.notifyDataChanged('runLoadingProcess', false);
           this.submitted = false;
-        });
+        }});
     }
   }
 }

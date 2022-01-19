@@ -19,6 +19,7 @@ import { Injectable } from '@angular/core';
 import { TrafficChartData } from './trafficChart/trafficChart.data';
 import { HttpService } from '../core/http/http.service';
 import { YearsList } from './years/yearsList';
+import {Observable} from 'rxjs';
 
 @Injectable()
 export class StatisticsService extends HttpService {
@@ -29,26 +30,40 @@ export class StatisticsService extends HttpService {
 
   /**
    * Loading doctors statistics
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  loadDoctorsTraffic(year: string = ''): Promise<TrafficChartData[]> {
-    return this.get('doctorsTraffic', { year })
-      .then(response => response.data as TrafficChartData[]);
+  loadDoctorsTraffic(year: string = ''): Observable<TrafficChartData[]> {
+    const obs = this.get('doctorsTraffic', { year });
+    let s;
+    const obsTransformed = new Observable<TrafficChartData[]>(subscriber => s = subscriber);
+    obs.subscribe(response => {
+      if (response && response.data) {
+        s.next(response.data as TrafficChartData[]);
+      }
+    });
+    return obsTransformed;
   }
 
   /**
    * Loading assistants stats
    * @param year
    */
-  loadAssistantsTraffic(year: string = ''): Promise<TrafficChartData[]> {
-    return this.get('assistantsTraffic', { year })
-      .then(response => response.data as TrafficChartData[]);
+  loadAssistantsTraffic(year: string = ''): Observable<TrafficChartData[]> {
+    const obs = this.get('assistantsTraffic', { year });
+    let s;
+    const obsTransformed = new Observable<TrafficChartData[]>(subscriber => s = subscriber);
+    obs.subscribe(response => s.next(response.data as TrafficChartData[]));
+    return obsTransformed;
   }
 
   /**
    * Loading valid years
    */
-  loadYears(): Promise<YearsList[]> {
-    return this.get('years').then(response => response.data as YearsList[]);
+  loadYears(): Observable<YearsList[]> {
+    const obs = this.get('years');
+    let s;
+    const obsTransformed = new Observable<YearsList[]>(subscriber => s = subscriber);
+    obs.subscribe(response => s.next(response.data as YearsList[]));
+    return obsTransformed;
   }
 }

@@ -122,16 +122,15 @@ export class FinanceCurrencyDatatableComponent extends AbstractDatatableControll
     const postfix = 'Save';
     this.startLoader(postfix);
     this.financeCurrencyService.save(this.currency)
-      .then(() => {
+      .subscribe({next: () => {
         this.stopLoader(postfix);
         this.setObject();
         this.displayDialog = false;
         this.datatable.refresh();
-      })
-      .catch((e) => {
+      }, error: (e) => {
         this._logger.error(e.toString());
         this.stopLoader(postfix);
-      });
+      }});
   }
 
   onRowSelect(event) {
@@ -155,15 +154,14 @@ export class FinanceCurrencyDatatableComponent extends AbstractDatatableControll
         accept: () => {
           this.startLoader(`${this.componentName}Delete`);
           this.financeCurrencyService.destroy(this.currency)
-            .then(() => {
+            .subscribe({next: () => {
               this.stopLoader(`${this.componentName}Delete`);
               this.setObject();
               this.displayDialog = false;
               this.datatable.refresh();
-            })
-            .catch(() => {
+            }, error: () => {
               this.stopLoader(`${this.componentName}Delete`);
-            });
+            }});
         },
         icon: 'fa fa-window-close-o red',
       },

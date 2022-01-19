@@ -83,33 +83,33 @@ export class DashboardPageComponent extends LoadingComponent implements OnInit {
   private loadDoctorsTraffic(): void {
     const loadingName = 'LoadingDoctorsTraffic';
     this.startLoader(loadingName);
-    this._statService.loadDoctorsTraffic(this.currentDocYear).then(
-      (trafficData: TrafficChartData[]) => {
-        this.stopLoader(loadingName);
-        this.doctorActivities = trafficData;
-      }).catch(() => this.stopLoader(loadingName));
+    this._statService.loadDoctorsTraffic(this.currentDocYear).subscribe({
+      next:
+        (trafficData: TrafficChartData[]) => {
+          this.stopLoader(loadingName);
+          this.doctorActivities = trafficData;
+        }, error: () => this.stopLoader(loadingName)});
   }
 
   private loadAssistantTraffic(): void {
     const loadingName = 'LoadingAssistantsTraffic';
     this.startLoader(loadingName);
-    this._statService.loadAssistantsTraffic(this.currentAssistYear).then(
-      (trafficData: TrafficChartData[]) => {
-        this.stopLoader(loadingName);
-        this.assistantActivities = trafficData;
-      }).catch(() => this.stopLoader(loadingName));
+    this._statService.loadAssistantsTraffic(this.currentAssistYear).subscribe({
+      next:
+        (trafficData: TrafficChartData[]) => {
+          this.stopLoader(loadingName);
+          this.assistantActivities = trafficData;
+        }, error: () => this.stopLoader(loadingName)});
   }
 
   private loadActiveYears(): void {
     const loadingName = 'LoadingYears';
     this.startLoader( loadingName );
     this._statService.loadYears()
-      .then(
-        ( years: YearsList[] ) => {
+      .subscribe({ next: ( years: YearsList[] ) => {
           this.stopLoader( loadingName );
           years.forEach((y: YearsList) => this.years.push({ label: y.year, value: y.year }));
-        } )
-      .catch( () => this.stopLoader( loadingName ) );
+        }, error: () => this.stopLoader( loadingName ) });
   }
 
   onDoctorYearChanged(year: string): void {

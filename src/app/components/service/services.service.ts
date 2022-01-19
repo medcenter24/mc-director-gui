@@ -19,6 +19,7 @@ import { Injectable } from '@angular/core';
 import { Service } from './service';
 import { HttpService } from '../core/http/http.service';
 import { LoadableServiceInterface } from '../core/loadable';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class ServicesService extends HttpService implements LoadableServiceInterface {
@@ -27,20 +28,25 @@ export class ServicesService extends HttpService implements LoadableServiceInter
     return 'director/services';
   }
 
-  getServices(filters: Object): Promise<Service[]> {
-    return this.search(filters).then(response => response.data as Service[]);
+  getServices(filters: Object): Observable<Service[]> {
+    const obs = this.search(filters);
+    obs.subscribe(response => response.data as Service[]);
+    return obs;
   }
 
-  getService(id: number): Promise<Service> {
-    return this.get(id).then(response => response.data as Service);
+  getService(id: number): Observable<Service> {
+    const obs = this.get(id);
+    obs.subscribe(response => response.data as Service);
+    return obs;
   }
 
-  save(service: Service): Promise<Service> {
+  save(service: Service): Observable<Service> {
     const action = service.id ? this.put(service.id, service) : this.store(service);
-    return action.then(response => response as Service);
+    action.subscribe(response => response as Service);
+    return action;
   }
 
-  destroy(service: Service): Promise<any> {
+  destroy(service: Service): Observable<any> {
     return this.remove(service.id);
   }
 }

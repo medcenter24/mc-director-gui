@@ -73,7 +73,7 @@ export class SurveySelectComponent extends LoadableComponent implements OnInit {
         ],
       },
     };
-    this.surveysService.getSurveys(statusFilter).then(surveys => {
+    this.surveysService.getSurveys(statusFilter).subscribe({next: surveys => {
       this.stopLoader();
 
       this.surveys = surveys;
@@ -90,10 +90,10 @@ export class SurveySelectComponent extends LoadableComponent implements OnInit {
       }
 
       this.isLoaded = true;
-    }).catch((err) => {
+    }, error: (err) => {
       this.stopLoader();
       this._logger.error(err);
-    });
+    }});
   }
 
    onChanged(event): void {

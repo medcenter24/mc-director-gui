@@ -15,11 +15,11 @@
  * Copyright (c) 2019 (original work) MedCenter24.com;
  */
 
-import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
-import { LoadableComponent } from '../../../../../core/components/componentLoader';
-import { AccidentScenario } from '../../scenario';
-import { CasesService } from '../../../../../case/cases.service';
-import { LoggerComponent } from '../../../../../core/logger/LoggerComponent';
+import {Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation} from '@angular/core';
+import {LoadableComponent} from '../../../../../core/components/componentLoader';
+import {AccidentScenario} from '../../scenario';
+import {CasesService} from '../../../../../case/cases.service';
+import {LoggerComponent} from '../../../../../core/logger/LoggerComponent';
 
 @Component({
   selector: 'nga-accident-scenario',
@@ -38,12 +38,12 @@ export class AccidentScenarioLineComponent extends LoadableComponent implements 
 
   protected componentName: string = 'AccidentScenarioComponent';
 
-  constructor (private caseService: CasesService,
-               private _logger: LoggerComponent) {
+  constructor(private caseService: CasesService,
+              private _logger: LoggerComponent) {
     super();
   }
 
-  ngOnInit () {
+  ngOnInit() {
     this.reload();
   }
 
@@ -52,13 +52,16 @@ export class AccidentScenarioLineComponent extends LoadableComponent implements 
    */
   reload(): void {
     this.startLoader();
-    this.caseService.getScenario(this.accidentId).then((scenario: AccidentScenario[]) => {
-      this.stopLoader();
-      this.steps = scenario;
-      this.isLoaded = true;
-    }).catch((err) => {
-      this.stopLoader();
-      this._logger.error(err);
+    const obs = this.caseService.getScenario(this.accidentId);
+    obs.subscribe({
+      next: (scenario: AccidentScenario[]) => {
+        this.stopLoader();
+        this.steps = scenario;
+        this.isLoaded = true;
+      }, error: (err) => {
+        this.stopLoader();
+        this._logger.error(err);
+      },
     });
   }
 }

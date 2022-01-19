@@ -19,6 +19,7 @@ import { Injectable } from '@angular/core';
 import { HttpService } from '../core/http/http.service';
 import { User } from '../users/user';
 import { Company } from '../company/company';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class LoggedUserService extends HttpService {
@@ -27,13 +28,15 @@ export class LoggedUserService extends HttpService {
     return 'user';
   }
 
-  getUser(): Promise <User> {
-    return this.get()
-      .then(response => response.data as User);
+  getUser(): Observable<User> {
+    const obs = this.get();
+    obs.subscribe(response => response.data as User);
+    return obs;
   }
 
-  getCompany(): Promise <Company> {
-    return this.get('company')
-        .then(response => response.data as Company);
+  getCompany(): Observable<Company> {
+    const obs = this.get('company');
+    obs.subscribe(response => response.data as Company);
+    return obs;
   }
 }

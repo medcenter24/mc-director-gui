@@ -16,12 +16,10 @@
  */
 
 import { Injectable } from '@angular/core';
-
-import 'rxjs/add/operator/toPromise';
-
 import { Survey } from './survey';
 import { HttpService } from '../core/http/http.service';
 import { LoadableServiceInterface } from '../core/loadable';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class SurveyService extends HttpService implements LoadableServiceInterface {
@@ -30,32 +28,39 @@ export class SurveyService extends HttpService implements LoadableServiceInterfa
     return 'director/surveys';
   }
 
-  getSurveys(filters: Object): Promise<Survey[]> {
-    return this.search(filters).then(response => response.data as Survey[]);
+  getSurveys(filters: Object): Observable<Survey[]> {
+    const obs = this.search(filters);
+    obs.subscribe(response => response.data as Survey[]);
+    return obs;
   }
 
-  getSurvey(id: number): Promise<Survey> {
-    return this.get(id).then(response => response.data as Survey);
+  getSurvey(id: number): Observable<Survey> {
+    const obs = this.get(id);
+    obs.subscribe(response => response.data as Survey);
+    return obs;
   }
 
-  delete(id: number): Promise<void> {
+  delete(id: number): Observable<void> {
     return this.remove(id);
   }
 
-  create(service: Survey): Promise<Survey> {
-    return this.store(service).then(res => res.json().data as Survey);
+  create(service: Survey): Observable<Survey> {
+    const obs = this.store(service);
+    obs.subscribe(res => res.json().data as Survey);
+    return obs;
   }
 
-  update(service: Survey): Promise<Survey> {
+  update(service: Survey): Observable<Survey> {
     return this.put(service.id, service);
   }
 
-  save(survey: Survey): Promise<Survey> {
+  save(survey: Survey): Observable<Survey> {
     const action = survey.id ? this.put(survey.id, survey) : this.store(survey);
-    return action.then(response => response as Survey);
+    action.subscribe(response => response as Survey);
+    return action;
   }
 
-  destroy(survey: Survey): Promise<any> {
+  destroy(survey: Survey): Observable<any> {
     return this.remove(survey.id);
   }
 }

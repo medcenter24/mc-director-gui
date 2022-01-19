@@ -135,13 +135,15 @@ export class FormViewerComponent extends LoadableComponent {
           const postfix = 'Print';
           this.startLoader( postfix );
           this.formService.getReportHtml( this.formId, this.formableId )
-            .then( html => {
-              this.stopLoader( postfix );
-              const newWin = window.frames[ 'printf' ];
-              newWin.document.write( `<body onload="window.print()">${html}</body>` );
-              newWin.document.close();
-            } )
-            .catch( () => this.stopLoader( postfix ) );
+            .subscribe({
+              next: html => {
+                this.stopLoader( postfix );
+                const newWin = window.frames[ 'printf' ];
+                newWin.document.write( `<body onload="window.print()">${html}</body>` );
+                newWin.document.close();
+              },
+              error: () => this.stopLoader( postfix ),
+            });
         } );
     }
   }
@@ -153,10 +155,10 @@ export class FormViewerComponent extends LoadableComponent {
       this.valid()
         .then( () => {
           this.formService.getReportHtml( this.formId, this.formableId )
-            .then( ( html: string ) => {
+            .subscribe( ( html: string ) => {
               this.formPreviewerVisible = true;
               this.previewContainer.nativeElement.innerHTML = html;
-            } ).catch();
+            });
         } );
     }
   }

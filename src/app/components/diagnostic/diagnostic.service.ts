@@ -19,6 +19,7 @@ import { Injectable } from '@angular/core';
 import { Diagnostic } from './diagnostic';
 import { HttpService } from '../core/http/http.service';
 import { LoadableServiceInterface } from '../core/loadable';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class DiagnosticService extends HttpService implements LoadableServiceInterface {
@@ -27,21 +28,27 @@ export class DiagnosticService extends HttpService implements LoadableServiceInt
     return 'director/diagnostics';
   }
 
-  getDiagnostics(filters: Object): Promise<Diagnostic[]> {
-    return this.search(filters).then(response => response.data as Diagnostic[]);
+  getDiagnostics(filters: Object): Observable<Diagnostic[]> {
+    const obs = this.search(filters);
+    obs.subscribe(response => response.data as Diagnostic[]);
+    return obs;
   }
 
-  delete(id: number): Promise<void> {
+  delete(id: number): Observable<void> {
     return this.remove(id);
   }
 
-  save(diagnostic: Diagnostic): Promise<Diagnostic> {
-    return diagnostic.id
-      ? this.put(diagnostic.id, diagnostic).then(res => res.data as Diagnostic)
-      : this.store(diagnostic);
+  save(diagnostic: Diagnostic): Observable<Diagnostic> {
+    if (diagnostic.id) {
+      const obs = this.put(diagnostic.id, diagnostic);
+      obs.subscribe(res => res.data as Diagnostic);
+      return obs;
+    } else {
+      return this.store(diagnostic);
+    }
   }
 
-  destroy(diagnostic: Diagnostic): Promise<any> {
+  destroy(diagnostic: Diagnostic): Observable<any> {
     return this.remove(diagnostic.id);
   }
 }

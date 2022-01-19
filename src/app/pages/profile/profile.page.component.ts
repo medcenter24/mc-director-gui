@@ -90,7 +90,7 @@ export class ProfilePageComponent extends LoadingComponent implements OnInit {
     });
 
     this.startLoader('getUser');
-    this.loggedUserService.getUser().then((user: User) => {
+    this.loggedUserService.getUser().subscribe({next: (user: User) => {
       this.stopLoader('getUser');
       this.loggedUser = user;
       this.directorPhotoUri = user.thumb200 ? user.thumb200 : '';
@@ -101,7 +101,7 @@ export class ProfilePageComponent extends LoadingComponent implements OnInit {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${this.authService.getToken()}` },
       };
-    }).catch(() => this.stopLoader('getUser'));
+    }, error: () => this.stopLoader('getUser')});
 
     this.tabs = [
         { id: 1, name: 'Director' },
@@ -131,10 +131,10 @@ export class ProfilePageComponent extends LoadingComponent implements OnInit {
     const opName = 'LangChange';
     this.startLoader(opName);
     this.usersService.update(this.loggedUser)
-      .then(() => {
+      .subscribe({next: () => {
         this.stopLoader(opName);
         this._state.notifyDataChanged('lang', this.loggedUser.lang);
-      }).catch(() => this.stopLoader(opName));
+      }, error: () => this.stopLoader(opName)});
   }
 
   refreshToken(): void {
@@ -145,13 +145,12 @@ export class ProfilePageComponent extends LoadingComponent implements OnInit {
     const opName = 'SaveDirector';
     this.startLoader(opName);
     this.usersService.update(this.loggedUser)
-      .then(() => {
+      .subscribe({next: () => {
         this.stopLoader(opName);
-      })
-      .catch(() => {
+      }, error: () => {
         this.stopLoader(opName);
         this.uiToastService.error();
-      });
+      }});
   }
 
   directorName(event): void {
@@ -176,26 +175,25 @@ export class ProfilePageComponent extends LoadingComponent implements OnInit {
 
     const opName: string = 'LoadUser';
     this.startLoader(opName);
-    this.loggedUserService.getUser().then((user: User) => {
+    this.loggedUserService.getUser().subscribe({next: (user: User) => {
       this.stopLoader(opName);
       this.loggedUser = user;
       this._state.notifyDataChanged('avatarB64', user.thumb45);
       this.directorPhotoUri = user.thumb200 ? user.thumb200 : '';
-    }).catch(() => this.stopLoader(opName));
+    }, error: () => this.stopLoader(opName)});
   }
 
   deletePhoto(): void {
     const opName = 'PhotoDelete';
     this.startLoader(opName);
     this.usersService.deletePhoto(this.loggedUser.id)
-    .then(() => {
+    .subscribe({next: () => {
       this.stopLoader(opName);
       this.uiToastService.saved();
-    })
-    .catch(() => {
+    }, error: () => {
       this.stopLoader(opName);
       this.uiToastService.error();
-    });
+    }});
   }
 
   timezoneChanged(tz): void {
@@ -206,8 +204,7 @@ export class ProfilePageComponent extends LoadingComponent implements OnInit {
     const opName = 'Tz';
     this.startLoader(opName);
     this.usersService.update(this.loggedUser)
-      .then(() => this.stopLoader(opName))
-      .catch(() => this.stopLoader(opName));
+      .subscribe({next: () => this.stopLoader(opName), error: () => this.stopLoader(opName)});
   }
 
   private setTokensData(token): void {

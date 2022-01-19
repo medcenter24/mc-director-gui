@@ -45,13 +45,13 @@ export class AccidentHistoryComponent extends LoadableComponent implements OnIni
 
   ngOnInit() {
     this.startLoader();
-    this.caseService.getHistory(this.accident).then(response => {
+    this.caseService.getHistory(this.accident).subscribe({next: response => {
       this.stopLoader();
       response.map((row) => {
         row.createdFormatted = DateHelper.toEuropeFormatWithTime(row.createdAt);
         return row;
       });
       this.history = response;
-    }).catch(() => this.stopLoader());
+    }, error: () => this.stopLoader()});
   }
 }

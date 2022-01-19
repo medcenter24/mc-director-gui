@@ -16,19 +16,20 @@
  */
 
 import { SearchableServiceInterface } from './searchable.service.interface';
+import { Observable } from 'rxjs';
 
 export interface LoadableServiceInterface extends SearchableServiceInterface {
   /**
    * Save model
    * @param {Object} model
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  save(model: Object): Promise<any>;
+  save(model: Object): Observable<any>;
 
   /**
    * Destroy model
    * @param {Object} model
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  destroy(model: Object): Promise<any>;
+  destroy(model: Object): Observable<any>;
 }

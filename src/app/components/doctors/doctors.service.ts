@@ -20,6 +20,7 @@ import { Doctor } from './doctor';
 import { HttpService } from '../core/http/http.service';
 import { City } from '../city';
 import { LoadableServiceInterface } from '../core/loadable';
+import {Observable} from 'rxjs';
 
 @Injectable()
 export class DoctorsService extends HttpService implements LoadableServiceInterface {
@@ -28,44 +29,57 @@ export class DoctorsService extends HttpService implements LoadableServiceInterf
     return 'director/doctors';
   }
 
-  getDoctors(): Promise<Doctor[]> {
-    return this.get().then(response => response.data as Doctor[]);
+  getDoctors(): Observable<Doctor[]> {
+    const obs = this.get();
+    obs.subscribe(response => response.data as Doctor[]);
+    return obs;
   }
 
-  getDoctor(id: number): Promise<Doctor> {
-    return this.get(id).then(response => response.data as Doctor);
+  getDoctor(id: number): Observable<Doctor> {
+    const obs = this.get(id);
+    obs.subscribe(response => response.data as Doctor);
+    return obs;
   }
 
-  delete(id: number): Promise<void> {
+  delete(id: number): Observable<void> {
     return this.remove(id);
   }
 
-  create(doctor: Doctor): Promise<Doctor> {
-    return this.store(doctor).then(res => res as Doctor);
+  create(doctor: Doctor): Observable<Doctor> {
+    const obs = this.store(doctor);
+    obs.subscribe(res => res as Doctor);
+    return obs;
   }
 
-  update(doctor: Doctor): Promise<Doctor> {
-    return this.put(doctor.id, doctor).then(res => res.data as Doctor);
+  update(doctor: Doctor): Observable<Doctor> {
+    const obs = this.put(doctor.id, doctor);
+    obs.subscribe(res => res.data as Doctor);
+    return obs;
   }
 
-  getDoctorCities(id: number): Promise<City[]> {
-    return this.get(`${id}/cities`).then(res => res.data as City[]);
+  getDoctorCities(id: number): Observable<City[]> {
+    const obs = this.get(`${id}/cities`);
+    obs.subscribe(res => res.data as City[]);
+    return obs;
   }
 
-  setDoctorCities(id: number, cities: City[]): Promise<any> {
+  setDoctorCities(id: number, cities: City[]): Observable<any> {
     return this.put(`${id}/cities`, { cities: cities.map(x => x.id) });
   }
 
-  getDoctorsByCity(cityId: number): Promise<Doctor[]> {
-    return this.get(`cities/${cityId}`).then(res => res.data as Doctor[]);
+  getDoctorsByCity(cityId: number): Observable<Doctor[]> {
+    const obs = this.get(`cities/${cityId}`);
+    obs.subscribe(res => res.data as Doctor[]);
+    return obs;
   }
 
-  save (doctor: Doctor): Promise<Doctor> {
+  save (doctor: Doctor): Observable<Doctor> {
     const action = doctor.id ? this.put(doctor.id, doctor) : this.store(doctor);
-    return action.then(response => response.data as Doctor);
+    action.subscribe(response => response.data as Doctor);
+    return action;
   }
 
-  destroy (doctor: Doctor): Promise<any> {
+  destroy (doctor: Doctor): Observable<any> {
     return this.remove(doctor.id);
   }
 }

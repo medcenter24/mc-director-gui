@@ -19,6 +19,7 @@ import { Injectable } from '@angular/core';
 import { HttpService } from '../../../components/core/http/http.service';
 import { CalendarEvent } from './calendar';
 import { DateHelper } from '../../../helpers/date.helper';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class CalendarService extends HttpService {
@@ -28,12 +29,13 @@ export class CalendarService extends HttpService {
   }
 
   /**
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  loadEvents(start: string, end: string): Promise<CalendarEvent[]> {
+  loadEvents(start: string, end: string): Observable<CalendarEvent[]> {
     const startDate = DateHelper.getDate(start);
     const endDate = DateHelper.getDate(end);
-    return this.get(null, { start: DateHelper.getUnixDate(startDate), end: DateHelper.getUnixDate(endDate) })
-      .then(response => response.data as CalendarEvent[]);
+    const obs = this.get(null, { start: DateHelper.getUnixDate(startDate), end: DateHelper.getUnixDate(endDate) });
+    obs.subscribe(response => response.data as CalendarEvent[]);
+    return obs;
   }
 }

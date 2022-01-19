@@ -32,7 +32,7 @@ export class DatatableDataProvider {
     if (this.searchService && typeof this.searchService['search'] === 'function') {
       return this.searchService
         .search(datatableRequestBuilder)
-        .then(( response: DatatableResponse ) => {
+        .subscribe(( response: DatatableResponse ) => {
           // this.updatePaginatorState(response);
           return response;
         } );

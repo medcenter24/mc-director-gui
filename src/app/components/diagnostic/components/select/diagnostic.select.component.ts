@@ -75,7 +75,8 @@ export class DiagnosticSelectComponent extends LoadableComponent implements OnIn
       },
     };
 
-    this.diagnosticsService.getDiagnostics(statusFilter).then(diagnostics => {
+    const obsDiag = this.diagnosticsService.getDiagnostics(statusFilter);
+    obsDiag.subscribe(diagnostics => {
       this.diagnostics = diagnostics;
       this.dataDiagnostics = diagnostics.map(x => {
         return {
@@ -90,10 +91,11 @@ export class DiagnosticSelectComponent extends LoadableComponent implements OnIn
       }
       this.isLoaded = true;
       this.stopLoader();
-    }).catch((err) => {
-      this.stopLoader();
-      this._logger.error(err);
     });
+    obsDiag.subscribe({error: err => {
+        this.stopLoader();
+        this._logger.error(err);
+      }});
   }
 
    onChanged(event): void {

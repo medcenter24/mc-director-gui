@@ -57,7 +57,7 @@ export class FormsOptionsEditorComponent implements OnInit {
 
   ngOnInit(): void {
     this.formOptionService.getOptions('accident')
-      .then(data => {
+      .subscribe(data => {
         this.parameters = data;
         this.formOptionsLoaded.emit(this.parameters);
       });

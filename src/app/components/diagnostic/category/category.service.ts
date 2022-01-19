@@ -19,6 +19,7 @@ import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/toPromise';
 import { DiagnosticCategory } from './category';
 import { HttpService } from '../../core/http/http.service';
+import {Observable} from 'rxjs';
 
 @Injectable()
 export class DiagnosticCategoryService extends HttpService {
@@ -27,19 +28,26 @@ export class DiagnosticCategoryService extends HttpService {
         return 'director/diagnostics/categories';
     }
 
-    getCategory(id: number): Promise<DiagnosticCategory> {
-        return this.get(id)
-          .then(response => response.data as DiagnosticCategory);
+    getCategory(id: number): Observable<DiagnosticCategory> {
+        const obs = this.get(id);
+        obs.subscribe(response => response.data as DiagnosticCategory);
+        return obs;
     }
 
-    delete(id: number): Promise<void> {
+    delete(id: number): Observable<void> {
         return this.remove(id);
     }
 
-    save(category: DiagnosticCategory): Promise<DiagnosticCategory> {
-        return category.id
-          ? this.put(category.id, category).then(res => res.data as DiagnosticCategory)
-          : this.store(category).then(res => res as DiagnosticCategory);
+    save(category: DiagnosticCategory): Observable<DiagnosticCategory> {
+      if (category.id) {
+        const obs = this.put(category.id, category);
+        obs.subscribe(res => res.data as DiagnosticCategory);
+        return obs;
+      } else {
+        const obs = this.store(category);
+        obs.subscribe(res => res as DiagnosticCategory);
+        return obs;
+      }
     }
 }
 

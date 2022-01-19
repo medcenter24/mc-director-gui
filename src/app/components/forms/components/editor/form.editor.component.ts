@@ -85,12 +85,12 @@ export class FormEditorComponent extends LoadableComponent implements OnInit {
             this.startLoader();
 
             this.formService.getForm(id)
-              .then((form: Form) => {
+              .subscribe({next: (form: Form) => {
                 this.stopLoader();
                 this._state.notifyDataChanged('changeTitle', `${this.translateService.instant('Template')} · ${form.title}`);
                 this.form = form;
                 this.readyToLoad();
-              }).catch(() => this.stopLoader());
+              }, error: () => this.stopLoader()});
           } else {
             this.form = new Form();
             this.readyToLoad();
@@ -150,12 +150,11 @@ export class FormEditorComponent extends LoadableComponent implements OnInit {
           const postfix = 'Delete';
           this.startLoader(postfix);
           this.formService.destroy(this.form)
-            .then(() => {
+            .subscribe({next: () => {
               this.goToList().then(() => this.stopLoader(postfix));
-            })
-            .catch(() => {
+            }, error: () => {
               this.stopLoader(postfix);
-            });
+            }});
         },
         icon: 'fa fa-window-close-o red',
       },
@@ -167,15 +166,14 @@ export class FormEditorComponent extends LoadableComponent implements OnInit {
     this.startLoader(postfix);
     const previousId = this.form.id;
     this.formService.save(form)
-      .then(savedForm => {
+      .subscribe({next: savedForm => {
         this.stopLoader(postfix);
         if (!previousId) {
           this.router.navigate([`pages/settings/forms/${savedForm.id}`]).then();
         }/* else {
           this.form = savedForm;
         }*/
-      })
-      .catch(() => this.stopLoader(postfix) );
+      }, error: () => this.stopLoader(postfix) });
   }
 
   setSelectedVar(formParam: FormOption): void {

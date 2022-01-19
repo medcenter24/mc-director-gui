@@ -18,6 +18,7 @@
 import { Injectable } from '@angular/core';
 import { User } from './user';
 import { HttpService } from '../core/http/http.service';
+import {Observable} from 'rxjs';
 
 @Injectable()
 export class UsersService extends HttpService {
@@ -26,27 +27,35 @@ export class UsersService extends HttpService {
     return 'director/users';
   }
 
-  getUsers(): Promise<User[]> {
-    return this.get().then(response => response.data as User[]);
+  getUsers(): Observable<User[]> {
+    const obs = this.get();
+    obs.subscribe(response => response.data as User[]);
+    return obs;
   }
 
-  getUser(id: number): Promise<User> {
-    return this.get(id).then(response => response.data as User);
+  getUser(id: number): Observable<User> {
+    const obs = this.get(id);
+    obs.subscribe(response => response.data as User);
+    return obs;
   }
 
-  delete(id: number): Promise<void> {
+  delete(id: number): Observable<void> {
     return this.remove(id);
   }
 
-  create(user: User): Promise<User> {
-    return this.store(user).then(res => res as User);
+  create(user: User): Observable<User> {
+    const obs = this.store(user);
+    obs.subscribe(res => res as User);
+    return obs;
   }
 
-  update(user: User): Promise<User> {
-    return this.put(user.id, user).then(res => res as User);
+  update(user: User): Observable<User> {
+    const obs = this.put(user.id, user);
+    obs.subscribe(res => res as User);
+    return obs;
   }
 
-  deletePhoto(userId: number): Promise<void> {
+  deletePhoto(userId: number): Observable<void> {
       return this.remove(`${userId}/photo`);
   }
 }

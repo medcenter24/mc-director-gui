@@ -18,6 +18,7 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from '../core/http/http.service';
 import { Period } from './period';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class PeriodService extends HttpService {
@@ -25,12 +26,13 @@ export class PeriodService extends HttpService {
     return 'director/periods';
   }
 
-  save (datePeriod: Period): Promise<Period> {
+  save (datePeriod: Period): Observable<Period> {
     const action = datePeriod.id ? this.put(datePeriod.id, datePeriod) : this.store(datePeriod);
-    return action.then(response => response.data as Period);
+    action.subscribe(response => response.data as Period);
+    return action;
   }
 
-  destroy (datePeriod: Period): Promise<any> {
+  destroy (datePeriod: Period): Observable<any> {
     return this.remove(datePeriod.id);
   }
 }

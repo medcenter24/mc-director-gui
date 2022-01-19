@@ -48,6 +48,7 @@ const translationOptions = {
     useFactory: (createTranslateLoader),
     deps: [HttpClient],
   },
+  defaultLanguage: 'en',
 };
 
 @NgModule({
@@ -67,11 +68,10 @@ export class AppTranslationModule {
     private translate: TranslateService,
     private _state: GlobalState,
   ) {
-
     translate.addLangs(['en', 'ru']);
     translate.setDefaultLang('en');
     let lang = localStorage.getItem('lang');
-    if (!lang || !lang.length) {
+    if (lang !== 'ru') {
       lang = 'en';
     }
     translate.use(lang);

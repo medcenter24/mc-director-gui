@@ -18,6 +18,7 @@
 import { Injectable } from '@angular/core';
 import { Accident } from './accident';
 import { HttpService } from '../core/http/http.service';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class AccidentsService extends HttpService {
@@ -26,33 +27,37 @@ export class AccidentsService extends HttpService {
     return 'director/accidents';
   }
 
-  getAccidents(): Promise<Accident[]> {
-    return this.get()
-        .then(response => response.data as Accident[]);
+  getAccidents(): Observable<Accident[]> {
+    const obs = this.get();
+    obs.subscribe(response => response.data as Accident[]);
+    return obs;
   }
 
-  getAccident(id: number): Promise<Accident> {
-    return this.get(id)
-        .then(response => response.data as Accident);
+  getAccident(id: number): Observable<Accident> {
+    const obs = this.get(id);
+    obs.subscribe(response => response.data as Accident);
+    return obs;
   }
 
-  delete(id: number): Promise<void> {
+  delete(id: number): Observable<void> {
     return this.remove(id);
   }
 
-  destroy ( model: Accident ): Promise<any> {
+  destroy ( model: Accident ): Observable<any> {
     return this.delete(model.id);
   }
 
-  create(accident: Accident): Promise<Accident> {
-    return this.store(accident).then(res => res.data as Accident);
+  create(accident: Accident): Observable<Accident> {
+    const obs = this.store(accident);
+    obs.subscribe(res => res.data as Accident);
+    return obs;
   }
 
-  update(accident: Accident): Promise<Accident> {
+  update(accident: Accident): Observable<Accident> {
     return this.put(accident.id, accident);
   }
 
-  save ( model: Accident ): Promise<any> {
+  save ( model: Accident ): Observable<any> {
     return model.id ? this.update(model) : this.create(model);
   }
 }

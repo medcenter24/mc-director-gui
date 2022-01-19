@@ -164,13 +164,12 @@ export class PeriodDatatableComponent extends AbstractDatatableController {
     this.datePeriod.from = `${this.dowFrom} ${this.timeFrom}`;
     this.datePeriod.to = `${this.dowTo} ${this.timeTo}`;
     this.datePeriodService.save(this.datePeriod)
-      .then(() => {
+      .subscribe({next: () => {
         this.stopLoader(postfix);
         this.setPeriod();
         this.displayDialog = false;
         this.periodDatatable.refresh();
-      })
-      .catch(() => this.stopLoader(postfix));
+      }, error: () => this.stopLoader(postfix)});
   }
 
   delete() {
@@ -182,13 +181,12 @@ export class PeriodDatatableComponent extends AbstractDatatableController {
           const postfix = 'Delete';
           this.startLoader(postfix);
           this.datePeriodService.destroy(this.datePeriod)
-            .then(() => {
+            .subscribe({next: () => {
               this.stopLoader(postfix);
               this.setPeriod();
               this.displayDialog = false;
               this.periodDatatable.refresh();
-            })
-            .catch(() => this.stopLoader(postfix));
+            }, error: () => this.stopLoader(postfix)});
         },
         icon: 'fa fa-window-close-o red',
       },

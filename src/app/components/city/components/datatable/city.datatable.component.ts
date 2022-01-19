@@ -118,15 +118,12 @@ export class CityDatatableComponent extends AbstractDatatableController {
     const postfix = 'Save';
     this.startLoader(postfix);
     this.citiesService.save(this.city)
-      .then(() => {
+      .subscribe({next: () => {
         this.stopLoader(postfix);
         this.setCity();
         this.displayDialog = false;
         this.cityDatatableComponent.refresh();
-      })
-      .catch(() => {
-        this.stopLoader(postfix);
-      });
+      }, error: () => this.stopLoader(postfix) });
   }
 
   onRowSelect(event) {
@@ -158,13 +155,12 @@ export class CityDatatableComponent extends AbstractDatatableController {
           const postfix = 'Delete';
           this.startLoader(postfix);
           this.citiesService.destroy(this.city)
-            .then(() => {
+            .subscribe({next: () => {
               this.stopLoader(postfix);
               this.setCity();
               this.displayDialog = false;
               this.cityDatatableComponent.refresh();
-            })
-            .catch(() => this.stopLoader(postfix));
+            }, error: () => this.stopLoader(postfix)});
         },
         icon: 'fa fa-window-close-o red',
       },

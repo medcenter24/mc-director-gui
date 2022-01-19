@@ -18,6 +18,7 @@
 import { Injectable } from '@angular/core';
 import { City } from './city';
 import { HttpService } from '../core/http/http.service';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class CitiesService extends HttpService {
@@ -26,32 +27,39 @@ export class CitiesService extends HttpService {
     return 'director/cities';
   }
 
-  getCities(): Promise<City[]> {
-    return this.get().then(response => response.data as City[]);
+  getCities(): Observable<City[]> {
+    const obs = this.get();
+    obs.subscribe(response => response.data as City[]);
+    return obs;
   }
 
-  getCity (id: number): Promise<City> {
-    return this.get(id).then(response => response.data as City);
+  getCity (id: number): Observable<City> {
+    const obs = this.get(id);
+    obs.subscribe(response => response.data as City);
+    return obs;
   }
 
-  delete (id: number): Promise<void> {
+  delete (id: number): Observable<void> {
     return this.remove(id);
   }
 
-  create (city: City): Promise<City> {
-    return this.store(city).then(res => res.json() as City);
+  create (city: City): Observable<City> {
+    const obs = this.store(city);
+    obs.subscribe(res => res.json() as City);
+    return obs;
   }
 
-  update (city: City): Promise<City> {
+  update (city: City): Observable<City> {
     return this.put(city.id, city);
   }
 
-  save (city: City): Promise<City> {
+  save (city: City): Observable<City> {
     const action = city.id ? this.put(city.id, city) : this.store(city);
-    return action.then(response => response.data as City);
+    action.subscribe(response => response.data as City);
+    return action;
   }
 
-  destroy (city: City): Promise<any> {
+  destroy (city: City): Observable<any> {
     return this.remove(city.id);
   }
 }

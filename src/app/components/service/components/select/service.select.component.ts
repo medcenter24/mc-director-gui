@@ -74,7 +74,7 @@ export class SelectServicesComponent extends LoadableComponent implements OnInit
         ],
       },
     };
-    this.servicesService.getServices(statusFilter).then(services => {
+    this.servicesService.getServices(statusFilter).subscribe({next: services => {
       this.stopLoader('init');
 
       this.services = services;
@@ -90,10 +90,10 @@ export class SelectServicesComponent extends LoadableComponent implements OnInit
         this.selectedServices = [];
       }
       this.isLoaded = true;
-    }).catch((err) => {
+    }, error: (err) => {
       this.stopLoader('init');
       this._logger.error(err);
-    });
+    }});
   }
 
    onChanged(event): void {
