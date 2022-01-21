@@ -134,15 +134,15 @@ export class DatatableComponent extends LoadableComponent {
       ) {
         this.setLoading(true);
         this.getConfig().get( 'dataProvider' ).search( requestBuilder )
-          .then( ( response: DatatableResponse ) => {
+          .subscribe( { next: ( response: DatatableResponse ) => {
             this.setLoading( false );
             this.data = response.data;
             this.total = response.meta.pagination.total;
             this.rows = this.data.length;
             this.setUri(requestBuilder.toUrl());
-          } ).catch( () => {
+          }, error: () => {
             this.setLoading( false );
-          } );
+          } });
       }
     }, 500);
   }

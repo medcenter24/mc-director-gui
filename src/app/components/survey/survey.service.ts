@@ -20,6 +20,7 @@ import { Survey } from './survey';
 import { HttpService } from '../core/http/http.service';
 import { LoadableServiceInterface } from '../core/loadable';
 import { Observable } from 'rxjs';
+import {ObservableTransformer} from '../../helpers/observable.transformer';
 
 @Injectable()
 export class SurveyService extends HttpService implements LoadableServiceInterface {
@@ -30,14 +31,12 @@ export class SurveyService extends HttpService implements LoadableServiceInterfa
 
   getSurveys(filters: Object): Observable<Survey[]> {
     const obs = this.search(filters);
-    obs.subscribe(response => response.data as Survey[]);
-    return obs;
+    return new ObservableTransformer().transform(obs, r => r.data as Survey[]);
   }
 
   getSurvey(id: number): Observable<Survey> {
     const obs = this.get(id);
-    obs.subscribe(response => response.data as Survey);
-    return obs;
+    return new ObservableTransformer().transform(obs, r => r.data as Survey);
   }
 
   delete(id: number): Observable<void> {
@@ -46,8 +45,7 @@ export class SurveyService extends HttpService implements LoadableServiceInterfa
 
   create(service: Survey): Observable<Survey> {
     const obs = this.store(service);
-    obs.subscribe(res => res.json().data as Survey);
-    return obs;
+    return new ObservableTransformer().transform(obs, r => r.data as Survey);
   }
 
   update(service: Survey): Observable<Survey> {
@@ -55,9 +53,8 @@ export class SurveyService extends HttpService implements LoadableServiceInterfa
   }
 
   save(survey: Survey): Observable<Survey> {
-    const action = survey.id ? this.put(survey.id, survey) : this.store(survey);
-    action.subscribe(response => response as Survey);
-    return action;
+    const obs = survey.id ? this.put(survey.id, survey) : this.store(survey);
+    return new ObservableTransformer().transform(obs, r => r.data as Survey);
   }
 
   destroy(survey: Survey): Observable<any> {

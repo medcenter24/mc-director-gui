@@ -18,6 +18,7 @@
 import { AutoCompleteProvider } from './auto.complete.provider';
 import { AutoCompleteSrcConfig } from '../auto.complete.src.config';
 import { FilterRequestField } from '../../../../core/http/request/fields';
+import {Observable} from 'rxjs';
 
 /**
  * Loads only limit count of rows and for each request going to the server
@@ -46,7 +47,7 @@ export class AutoCompleteLoadableProvider implements AutoCompleteProvider {
    * Load Data
    * @param event
    */
-  loadData(event): Promise<any> {
+  loadData(event): Observable<any> {
     const filterRequestField = new FilterRequestField(
       this.config.fieldKey,
       event.query,
@@ -56,7 +57,7 @@ export class AutoCompleteLoadableProvider implements AutoCompleteProvider {
     return this.searchData(filterRequestField);
   }
 
-  private searchData(filterRequestField: FilterRequestField): Promise<any> {
+  private searchData(filterRequestField: FilterRequestField): Observable<any> {
     return this.config.dataProvider({
       filter: {
         fields: [
@@ -67,7 +68,7 @@ export class AutoCompleteLoadableProvider implements AutoCompleteProvider {
   }
 
   filter(event): void {
-    this.loadData(event).then(response => {
+    this.loadData(event).subscribe(response => {
       this.total = response.meta.pagination.total;
       return this.filtered = response.data;
     });
@@ -81,7 +82,7 @@ export class AutoCompleteLoadableProvider implements AutoCompleteProvider {
   selectItems(items: any, fieldName: string = null): void {
     // if int id provided - try to load resource with the service
     if (typeof items === 'number' && items) {
-      this.findByField(items, fieldName).then(res => {
+      this.findByField(items, fieldName).subscribe(res => {
         if (res.hasOwnProperty('data') && res['data'].length) {
           this.selected = res.data[0];
         } else {
@@ -93,7 +94,7 @@ export class AutoCompleteLoadableProvider implements AutoCompleteProvider {
     }
   }
 
-  private findByField(id: number, fieldName: string = null): Promise<any> {
+  private findByField(id: number, fieldName: string = null): Observable<any> {
     const filterRequestField = new FilterRequestField(
       fieldName ?? 'id',
       `${id}`,

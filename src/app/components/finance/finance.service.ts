@@ -19,6 +19,7 @@ import { Injectable } from '@angular/core';
 import { HttpService } from '../core/http/http.service';
 import { FinanceRule } from './finance.rule';
 import {Observable} from 'rxjs';
+import {ObservableTransformer} from '../../helpers/observable.transformer';
 
 @Injectable()
 export class FinanceService extends HttpService {
@@ -28,8 +29,7 @@ export class FinanceService extends HttpService {
 
   getFinanceRule(id: number): Observable<FinanceRule> {
     const obs = this.get(id);
-    obs.subscribe(response => response.data as FinanceRule);
-    return obs;
+    return new ObservableTransformer().transform(obs, r => r.data as FinanceRule);
   }
 
   create(financeRule: FinanceRule): Observable<FinanceRule> {
@@ -37,15 +37,8 @@ export class FinanceService extends HttpService {
   }
 
   save (finance: FinanceRule): Observable<FinanceRule> {
-    if (finance.id) {
-      const obs = this.put(finance.id, finance);
-      obs.subscribe(response => response.data as FinanceRule);
-      return obs;
-    } else {
-      const obs = this.store(finance);
-      obs.subscribe(response => response as FinanceRule);
-      return obs;
-    }
+    const obs = finance.id ? this.put(finance.id, finance) : this.store(finance);
+    return new ObservableTransformer().transform(obs, r => r.data as FinanceRule);
   }
 
   destroy (financeRule: FinanceRule): Observable<any> {

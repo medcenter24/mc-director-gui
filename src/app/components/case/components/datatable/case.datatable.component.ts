@@ -196,13 +196,14 @@ export class CaseDatatableComponent extends AbstractDatatableController implemen
   }
 
   getRequestBuilder (): DatatableRequestBuilder {
-
     const requestBuilder = super.getRequestBuilder();
+
     requestBuilder.setSorter(new RequestBuilder([
       new SortRequestField('id'),
       new SortRequestField('patientName'),
       new SortRequestField('createdAt'),
     ]));
+
     requestBuilder.setFilter(new RequestBuilder([
       new FilterRequestField('patientName', null, FilterRequestField.MATCH_CONTENTS, FilterRequestField.TYPE_TEXT),
       new FilterRequestField('refNum', null, FilterRequestField.MATCH_START_WITH, FilterRequestField.TYPE_TEXT),

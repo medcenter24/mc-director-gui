@@ -486,5 +486,8 @@
   "Incorrect Email or password": "Incorrect Email or password",
   "test": "en translation :param1",
   "no_diseases_assigned": "Diseases are not assigned",
-  "amount_of_total": "{{amount}} of {{total}}"
+  "amount_of_total": "{{amount}} of {{total}}",
+  "Change Picture": "Change Picture",
+  "Default Picture Mock": "Default Picture Mock",
+  "Loaded Picture": "Loaded Picture"
 }

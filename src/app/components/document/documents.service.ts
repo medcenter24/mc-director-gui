@@ -20,6 +20,7 @@ import { HttpService } from '../core/http/http.service';
 import { saveAs } from 'file-saver';
 import { Document } from './document';
 import { Observable } from 'rxjs';
+import {ObservableTransformer} from '../../helpers/observable.transformer';
 
 @Injectable()
 export class DocumentsService extends HttpService {
@@ -40,7 +41,6 @@ export class DocumentsService extends HttpService {
 
   update(document: Document): Observable<Document> {
     const obs = this.put( document.id, document );
-    obs.subscribe( response => response as Document );
-    return obs;
+    return new ObservableTransformer().transform(obs, r => r.data as Document);
   }
 }

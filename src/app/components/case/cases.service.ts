@@ -31,6 +31,7 @@ import {AccidentHistory} from '../accident/components/history/history';
 import {Commentary} from '../comment/commentary';
 import {LoadableServiceInterface} from '../core/loadable';
 import {Observable} from 'rxjs';
+import {ObservableTransformer} from '../../helpers/observable.transformer';
 
 @Injectable()
 export class CasesService extends HttpService implements LoadableServiceInterface {
@@ -45,44 +46,37 @@ export class CasesService extends HttpService implements LoadableServiceInterfac
 
   getDocuments(id): Observable<Document[]> {
     const obs = this.get(`${id}/documents`);
-    obs.subscribe(response => response.data as Document[]);
-    return obs;
+    return new ObservableTransformer().transform(obs, r => r.data as Document[]);
   }
 
   getCaseServices(id: number): Observable<Service[]> {
     const obs = this.get(`${id}/services`);
-    obs.subscribe(response => response.data as Service[]);
-    return obs;
+    return new ObservableTransformer().transform(obs, r => r.data as Service[]);
   }
 
   getCaseDiagnostics(id: number): Observable<Diagnostic[]> {
     const obs = this.get(`${id}/diagnostics`);
-    obs.subscribe(response => response.data as Diagnostic[]);
-    return obs;
+    return new ObservableTransformer().transform(obs, r => r.data as Diagnostic[]);
   }
 
   getCaseSurveys(id: number): Observable<Survey[]> {
     const obs = this.get(`${id}/surveys`);
-    obs.subscribe(response => response.data as Survey[]);
-    return obs;
+    return new ObservableTransformer().transform(obs, r => r.data as Survey[]);
   }
 
   getCheckpoints(id: number): Observable<AccidentCheckpoint[]> {
     const obs = this.get(`${id}/checkpoints`);
-    obs.subscribe(response => response.data as AccidentCheckpoint[]);
-    return obs;
+    return new ObservableTransformer().transform(obs, r => r.data as AccidentCheckpoint[]);
   }
 
   getDoctorCase(id: number): Observable<DoctorAccident> {
     const obs = this.get(`${id}/doctorcase`);
-    obs.subscribe(response => response.data as DoctorAccident);
-    return obs;
+    return new ObservableTransformer().transform(obs, r => r.data as DoctorAccident);
   }
 
   getHospitalCase(id: number): Observable<HospitalAccident> {
     const obs = this.get(`${id}/hospitalcase`);
-    obs.subscribe(response => response.data as HospitalAccident);
-    return obs;
+    return new ObservableTransformer().transform(obs, r => r.data as HospitalAccident);
   }
 
   getImportUrl(): string {
@@ -103,33 +97,29 @@ export class CasesService extends HttpService implements LoadableServiceInterfac
 
   getScenario(id: number): Observable<AccidentScenario[]> {
     const obs = this.get(`${id}/scenario`);
-    obs.subscribe(response => response.data as AccidentScenario[]);
-    return obs;
+    return new ObservableTransformer().transform(obs, r => r.data as AccidentScenario[]);
   }
 
   getHistory(accident: Accident): Observable<AccidentHistory[]> {
     const obs = this.get(`${accident.id}/history`);
-    obs.subscribe(response => response.data as AccidentHistory[]);
-    return obs;
+    return new ObservableTransformer().transform(obs, r => r.data as AccidentHistory[]);
   }
 
   getCommentaries(accident: Accident): Observable<Commentary[]> {
     const obs = this.get(`${accident.id}/comments`);
-    obs.subscribe(response => response.data as Commentary[]);
-    return obs;
+    return new ObservableTransformer().transform(obs, r => r.data as Commentary[]);
   }
 
-  createComment(accident: Accident, text: string): Observable<any> {
+  createComment(accident: Accident, text: string): Observable<Commentary> {
     const obs = this.http.post(
       this.getUrl(`${accident.id}/comments`),
       JSON.stringify({text}),
       {headers: this.getAuthHeaders()},
     );
     obs.subscribe({
-      next: response => response as Commentary,
       error: error => this.handleError(error),
     });
-    return obs;
+    return new ObservableTransformer().transform(obs, r => r.data as Commentary);
   }
 
   getFinance(accident: Accident, types: string[]): Observable<PaymentViewer[]> {
@@ -138,25 +128,11 @@ export class CasesService extends HttpService implements LoadableServiceInterfac
       typesUri = `?types=${types.join(',')}`;
     }
     const obs = this.get(`${accident.id}/finance${typesUri}`);
-    obs.subscribe(response => {
-        let res = [];
-        if (response && 'data' in response) {
-          res = response['data'] as PaymentViewer[];
-        }
-        return res;
-      });
-    return obs;
+    return new ObservableTransformer().transform(obs, r => r.data as PaymentViewer[]);
   }
 
   saveFinance(accident: Accident, type: string, data: Object): Observable<PaymentViewer[]> {
     const obs = this.put(`${accident.id}/finance/${type}`, data);
-    obs.subscribe(response => {
-        let res = null;
-        if (response && 'data' in response) {
-          res = response['data'] as PaymentViewer[];
-        }
-        return res;
-      });
-    return obs;
+    return new ObservableTransformer().transform(obs, r => r.data as PaymentViewer[]);
   }
 }

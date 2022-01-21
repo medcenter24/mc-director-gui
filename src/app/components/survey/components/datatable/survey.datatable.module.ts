@@ -30,6 +30,7 @@ import { SurveyService } from '../../survey.service';
 import { SurveyDatatableComponent } from './survey.datatable.component';
 import { SurveyStatusService } from '../../survey.status.service';
 import { MultiSelectorModule } from '../../../ui/selector/components/multiSelector';
+import {InputTextModule} from "primeng/inputtext";
 
 @NgModule({
     imports: [
@@ -43,6 +44,7 @@ import { MultiSelectorModule } from '../../../ui/selector/components/multiSelect
         ConfirmDialogModule,
         InputSwitchModule,
         MultiSelectorModule,
+        InputTextModule,
     ],
   providers: [
     SurveyService,

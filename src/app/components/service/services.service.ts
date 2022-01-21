@@ -20,6 +20,7 @@ import { Service } from './service';
 import { HttpService } from '../core/http/http.service';
 import { LoadableServiceInterface } from '../core/loadable';
 import { Observable } from 'rxjs';
+import {ObservableTransformer} from '../../helpers/observable.transformer';
 
 @Injectable()
 export class ServicesService extends HttpService implements LoadableServiceInterface {
@@ -30,20 +31,17 @@ export class ServicesService extends HttpService implements LoadableServiceInter
 
   getServices(filters: Object): Observable<Service[]> {
     const obs = this.search(filters);
-    obs.subscribe(response => response.data as Service[]);
-    return obs;
+    return new ObservableTransformer().transform(obs, r => r.data as Service[]);
   }
 
   getService(id: number): Observable<Service> {
     const obs = this.get(id);
-    obs.subscribe(response => response.data as Service);
-    return obs;
+    return new ObservableTransformer().transform(obs, r => r.data as Service);
   }
 
   save(service: Service): Observable<Service> {
-    const action = service.id ? this.put(service.id, service) : this.store(service);
-    action.subscribe(response => response as Service);
-    return action;
+    const obs = service.id ? this.put(service.id, service) : this.store(service);
+    return new ObservableTransformer().transform(obs, r => r.data as Service);
   }
 
   destroy(service: Service): Observable<any> {

@@ -50,20 +50,14 @@ export class UserEditorComponent extends LoadableComponent implements OnInit {
   }
 
   onSubmit(): void {
-    let service;
     const postfix = 'Submit';
     this.startLoader(postfix);
-    if (this.user.id) {
-      service = this.service.update(this.user);
-    } else {
-      service = this.service.create(this.user);
-    }
-
-    service.then((user: User) => {
+    const obs = this.user.id ? this.service.update(this.user) : this.service.create(this.user);
+    obs.subscribe({ next: (user: User) => {
       this.stopLoader(postfix);
       this.setUser(user);
       this.saved.emit(user);
-    }).catch(() => this.stopLoader(postfix));
+    }, error: () => this.stopLoader(postfix)});
   }
 
   onUserChanged(user: User): void {

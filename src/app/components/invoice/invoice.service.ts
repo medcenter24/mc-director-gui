@@ -22,6 +22,7 @@ import { Form } from '../forms';
 import { Upload } from '../upload/upload';
 import { Invoice } from './invoice';
 import { Observable } from 'rxjs';
+import {ObservableTransformer} from '../../helpers/observable.transformer';
 
 @Injectable()
 export class InvoiceService extends HttpService {
@@ -31,9 +32,8 @@ export class InvoiceService extends HttpService {
   }
 
   save(invoice: any): Observable<Invoice> {
-    const action = invoice && +invoice.id ? this.put(invoice.id, invoice) : this.store(invoice);
-    action.subscribe(response => response as Invoice);
-    return action;
+    const obs = invoice && +invoice.id ? this.put(invoice.id, invoice) : this.store(invoice);
+    return new ObservableTransformer().transform(obs, r => r.data as Invoice);
   }
 
   assignFile(invoice: Invoice, file: Upload): Observable<Invoice> {
@@ -52,13 +52,11 @@ export class InvoiceService extends HttpService {
 
   getForm(invoice: Invoice): Observable<Form> {
     const obs = this.get(`${invoice.id}/form`);
-    obs.subscribe(response => response.data as Form);
-    return obs;
+    return new ObservableTransformer().transform(obs, r => r.data as Form);
   }
 
   getFile(invoice: Invoice): Observable<Upload> {
     const obs = this.get(`${invoice.id}/file`);
-    obs.subscribe(response => response.data as Upload);
-    return obs;
+    return new ObservableTransformer().transform(obs, r => r.data as Upload);
   }
 }

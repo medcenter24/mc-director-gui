@@ -20,6 +20,7 @@ import { TrafficChartData } from './trafficChart/trafficChart.data';
 import { HttpService } from '../core/http/http.service';
 import { YearsList } from './years/yearsList';
 import {Observable} from 'rxjs';
+import {ObservableTransformer} from '../../helpers/observable.transformer';
 
 @Injectable()
 export class StatisticsService extends HttpService {
@@ -33,15 +34,10 @@ export class StatisticsService extends HttpService {
    * @returns {Observable<any>}
    */
   loadDoctorsTraffic(year: string = ''): Observable<TrafficChartData[]> {
-    const obs = this.get('doctorsTraffic', { year });
-    let s;
-    const obsTransformed = new Observable<TrafficChartData[]>(subscriber => s = subscriber);
-    obs.subscribe(response => {
-      if (response && response.data) {
-        s.next(response.data as TrafficChartData[]);
-      }
-    });
-    return obsTransformed;
+    return new ObservableTransformer().transform(
+      this.get('doctorsTraffic', { year }),
+      r => r.data as TrafficChartData[],
+    );
   }
 
   /**
@@ -49,21 +45,19 @@ export class StatisticsService extends HttpService {
    * @param year
    */
   loadAssistantsTraffic(year: string = ''): Observable<TrafficChartData[]> {
-    const obs = this.get('assistantsTraffic', { year });
-    let s;
-    const obsTransformed = new Observable<TrafficChartData[]>(subscriber => s = subscriber);
-    obs.subscribe(response => s.next(response.data as TrafficChartData[]));
-    return obsTransformed;
+    return new ObservableTransformer().transform(
+      this.get('assistantsTraffic', { year }),
+      r => r.data as TrafficChartData[],
+    );
   }
 
   /**
    * Loading valid years
    */
   loadYears(): Observable<YearsList[]> {
-    const obs = this.get('years');
-    let s;
-    const obsTransformed = new Observable<YearsList[]>(subscriber => s = subscriber);
-    obs.subscribe(response => s.next(response.data as YearsList[]));
-    return obsTransformed;
+    return new ObservableTransformer().transform(
+      this.get('years'),
+      r => r.data as YearsList[],
+    );
   }
 }

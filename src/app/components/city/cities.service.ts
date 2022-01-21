@@ -19,6 +19,7 @@ import { Injectable } from '@angular/core';
 import { City } from './city';
 import { HttpService } from '../core/http/http.service';
 import { Observable } from 'rxjs';
+import {ObservableTransformer} from '../../helpers/observable.transformer';
 
 @Injectable()
 export class CitiesService extends HttpService {
@@ -29,14 +30,12 @@ export class CitiesService extends HttpService {
 
   getCities(): Observable<City[]> {
     const obs = this.get();
-    obs.subscribe(response => response.data as City[]);
-    return obs;
+    return new ObservableTransformer().transform(obs, r => r.data as City[]);
   }
 
   getCity (id: number): Observable<City> {
     const obs = this.get(id);
-    obs.subscribe(response => response.data as City);
-    return obs;
+    return new ObservableTransformer().transform(obs, r => r.data as City);
   }
 
   delete (id: number): Observable<void> {
@@ -45,8 +44,7 @@ export class CitiesService extends HttpService {
 
   create (city: City): Observable<City> {
     const obs = this.store(city);
-    obs.subscribe(res => res.json() as City);
-    return obs;
+    return new ObservableTransformer().transform(obs, r => r.data as City);
   }
 
   update (city: City): Observable<City> {
@@ -54,9 +52,8 @@ export class CitiesService extends HttpService {
   }
 
   save (city: City): Observable<City> {
-    const action = city.id ? this.put(city.id, city) : this.store(city);
-    action.subscribe(response => response.data as City);
-    return action;
+    const obs = city.id ? this.put(city.id, city) : this.store(city);
+    return new ObservableTransformer().transform(obs, r => r.data as City[]);
   }
 
   destroy (city: City): Observable<any> {

@@ -19,6 +19,7 @@ import { Injectable } from '@angular/core';
 import { AccidentCheckpoint } from './checkpoint';
 import { HttpService } from '../../../core/http/http.service';
 import { Observable } from 'rxjs';
+import {ObservableTransformer} from '../../../../helpers/observable.transformer';
 
 @Injectable()
 export class AccidentCheckpointsService extends HttpService {
@@ -28,9 +29,8 @@ export class AccidentCheckpointsService extends HttpService {
   }
 
   save (checkpoint: AccidentCheckpoint): Observable<AccidentCheckpoint> {
-    const action = checkpoint.id ? this.put(checkpoint.id, checkpoint) : this.store(checkpoint);
-    action.subscribe(response => response.data as AccidentCheckpoint);
-    return action;
+    const obs = checkpoint.id ? this.put(checkpoint.id, checkpoint) : this.store(checkpoint);
+    return new ObservableTransformer().transform(obs, r => r.data as AccidentCheckpoint);
   }
 
   destroy (checkpoint: AccidentCheckpoint): Observable<any> {

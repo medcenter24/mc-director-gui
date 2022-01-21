@@ -17,7 +17,7 @@
 
 import {SearchableServiceInterface} from '../searchable.service.interface';
 import {SearchFilter} from '../search.filter';
-import {Observable} from "rxjs";
+import {Observable} from 'rxjs';
 
 /**
  * Downloading data from the server only once for the current request, then filtering and other things

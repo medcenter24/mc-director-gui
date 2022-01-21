@@ -26,19 +26,21 @@ import { InputMaskModule } from 'primeng/inputmask';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { DiseaseService } from '../../disease.service';
 import { DiseaseDatatableComponent } from './disease.datatable.component';
+import {InputTextModule} from 'primeng/inputtext';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    AppTranslationModule,
-    DialogModule,
-    ButtonModule,
-    DatatableModule,
-    InputMaskModule,
-    ConfirmDialogModule,
-    InputSwitchModule,
-  ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        AppTranslationModule,
+        DialogModule,
+        ButtonModule,
+        DatatableModule,
+        InputMaskModule,
+        ConfirmDialogModule,
+        InputSwitchModule,
+        InputTextModule,
+    ],
   providers: [
     DiseaseService,
   ],

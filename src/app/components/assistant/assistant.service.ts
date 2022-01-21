@@ -20,6 +20,7 @@ import { Assistant } from './assistant';
 import { HttpService } from '../core/http/http.service';
 import { AccidentCheckpoint } from '../accident/components/checkpoint/checkpoint';
 import { Observable } from 'rxjs';
+import {ObservableTransformer} from '../../helpers/observable.transformer';
 
 @Injectable()
 export class AssistantsService extends HttpService {
@@ -33,8 +34,7 @@ export class AssistantsService extends HttpService {
   }
 
   save (assistant: Assistant): Observable<any> {
-    const action = assistant.id ? this.put(assistant.id, assistant) : this.store(assistant);
-    action.subscribe(response => response.data as AccidentCheckpoint);
-    return action;
+    const obs = assistant.id ? this.put(assistant.id, assistant) : this.store(assistant);
+    return new ObservableTransformer().transform(obs, r => r.data as AccidentCheckpoint);
   }
 }

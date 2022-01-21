@@ -19,6 +19,7 @@ import { Injectable } from '@angular/core';
 import { FormOption } from './form.option';
 import { HttpService } from '../../../core/http/http.service';
 import { Observable } from 'rxjs';
+import {ObservableTransformer} from '../../../../helpers/observable.transformer';
 
 @Injectable()
 export class FormOptionService extends HttpService {
@@ -29,8 +30,7 @@ export class FormOptionService extends HttpService {
 
   private getFormOptions(filters): Observable<FormOption[]> {
     const obs = this.search(filters);
-    obs.subscribe(response => response.data as FormOption[]);
-    return obs;
+    return new ObservableTransformer().transform(obs, r => r.data as FormOption[]);
   }
 
   getOptions(type: string): Observable<FormOption[]> {
@@ -39,7 +39,7 @@ export class FormOptionService extends HttpService {
 
   get(key: string): Observable<any> {
     const obs = this.getFormOptions({ key });
-    obs.subscribe((options: FormOption[]) => options.find((formOption: FormOption) => formOption.key === key));
-    return obs;
+    return new ObservableTransformer()
+      .transform(obs, (options: FormOption[]) => options.find((formOption: FormOption) => formOption.key === key));
   }
 }

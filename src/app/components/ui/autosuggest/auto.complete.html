@@ -17,7 +17,7 @@
 
 <p-autoComplete
   *ngIf="provider && conf"
-  [(ngModel)]="provider.selected"
+  [(ngModel)]="selected"
   [suggestions]="provider.filtered"
   [dropdown]="true"
   (completeMethod)="provider.filter($event)"

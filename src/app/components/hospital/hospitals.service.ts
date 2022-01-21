@@ -19,6 +19,7 @@ import { Injectable } from '@angular/core';
 import { Hospital } from './hospital';
 import { HttpService } from '../core/http/http.service';
 import {Observable} from 'rxjs';
+import {ObservableTransformer} from '../../helpers/observable.transformer';
 
 @Injectable()
 export class HospitalsService extends HttpService {
@@ -29,14 +30,12 @@ export class HospitalsService extends HttpService {
 
   getHospitals(): Observable<Hospital[]> {
     const obs = this.get();
-    obs.subscribe(response => response.data as Hospital[]);
-    return obs;
+    return new ObservableTransformer().transform(obs, r => r.data as Hospital[]);
   }
 
   getHospital(id: number): Observable<Hospital> {
     const obs = this.get(id);
-    obs.subscribe(response => response.data as Hospital);
-    return obs;
+    return new ObservableTransformer().transform(obs, r => r.data as Hospital);
   }
 
   delete(id: number): Observable<void> {
@@ -45,8 +44,7 @@ export class HospitalsService extends HttpService {
 
   create(hospital: Hospital): Observable<Hospital> {
     const obs = this.store(hospital);
-    obs.subscribe(res => res.json() as Hospital);
-    return obs;
+    return new ObservableTransformer().transform(obs, r => r.data as Hospital);
   }
 
   update(hospital: Hospital): Observable<Hospital> {
@@ -54,9 +52,8 @@ export class HospitalsService extends HttpService {
   }
 
   save (hospital: Hospital): Observable<Hospital> {
-    const action = hospital.id ? this.put(hospital.id, hospital) : this.store(hospital);
-    action.subscribe(response => response.data as Hospital);
-    return action;
+    const obs = hospital.id ? this.put(hospital.id, hospital) : this.store(hospital);
+    return new ObservableTransformer().transform(obs, r => r.data as Hospital);
   }
 
   destroy (hospital: Hospital): Observable<any> {

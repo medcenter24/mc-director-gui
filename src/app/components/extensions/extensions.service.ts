@@ -17,6 +17,8 @@
 
 import { Injectable } from '@angular/core';
 import { HttpService } from '../core/http/http.service';
+import {Observable} from 'rxjs';
+import {ObservableTransformer} from '../../helpers/observable.transformer';
 
 @Injectable()
 export class ExtensionsService extends HttpService {
@@ -25,8 +27,8 @@ export class ExtensionsService extends HttpService {
     return 'system/extensions';
   }
 
-  isPackageInstalled(extName: string): Promise<Boolean> {
-    return this.get(`${extName}`)
-      .then(resp => resp.installed as Boolean);
+  isPackageInstalled(extName: string): Observable<Boolean> {
+    const obs = this.get(`${extName}`);
+    return new ObservableTransformer().transform(obs, r => r.installed as Boolean);
   }
 }

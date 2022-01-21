@@ -128,21 +128,24 @@ export abstract class AbstractDatatableController extends LoadingComponent imple
     const postfix = 'Save';
     this.startLoader(postfix);
     this.getService().save(this.model)
-      .subscribe({next: (model: Object) => {
-        this.displayDialog = false;
-        if (!this.model.id) {
-          // refresh on adding
-          this.refresh();
-        } else {
-          this.updateModel(model);
-        }
-        // to close popup
-        this.setModel();
-        this.stopLoader(postfix);
-      }, error: e => {
-        console.error(e);
-        this.stopLoader(postfix);
-      }});
+      .subscribe({
+        next: (model: Object) => {
+          this.displayDialog = false;
+          if (!this.model.id) {
+            // refresh on adding
+            this.refresh();
+          } else {
+            this.updateModel(model);
+          }
+          // to close popup
+          this.setModel();
+          this.stopLoader(postfix);
+        },
+        error: e => {
+          console.error(e);
+          this.stopLoader(postfix);
+        },
+      });
   }
 
   protected onRowSelect(event) {

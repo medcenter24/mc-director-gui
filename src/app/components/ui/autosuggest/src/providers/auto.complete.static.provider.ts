@@ -18,6 +18,7 @@
 import { AutoCompleteProvider } from './auto.complete.provider';
 import { AutoCompleteSrcConfig } from '../auto.complete.src.config';
 import { ChangeDetectorRef } from '@angular/core';
+import {Observable} from 'rxjs';
 
 /**
  * Load all the data and store it for application
@@ -80,14 +81,14 @@ export class AutoCompleteStaticProvider implements AutoCompleteProvider {
    * Load Data
    * @param event
    */
-  loadData(event): Promise<any> {
+  loadData(event): Observable<any> {
     return this.config.dataProvider({}).then(resp => {
       this.data = resp.data;
       this.filtered = this.data;
       this.loaded = true;
       return this.data;
     }).catch(e => {
-      console.debug('Error on auto complete static provider', e);
+      console.error('Error on auto complete static provider', e);
       this.loaded = false;
     });
   }
@@ -101,7 +102,7 @@ export class AutoCompleteStaticProvider implements AutoCompleteProvider {
    * @param {Function} func
    */
   private afterLoaded(func: Function) {
-    this.loaded ? func(this.data) : this.loadData(event).then(data => {
+    this.loaded ? func(this.data) : this.loadData('').subscribe(data => {
       func(data);
     });
   }

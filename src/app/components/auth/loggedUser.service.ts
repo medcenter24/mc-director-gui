@@ -20,6 +20,7 @@ import { HttpService } from '../core/http/http.service';
 import { User } from '../users/user';
 import { Company } from '../company/company';
 import { Observable } from 'rxjs';
+import {ObservableTransformer} from '../../helpers/observable.transformer';
 
 @Injectable()
 export class LoggedUserService extends HttpService {
@@ -29,14 +30,10 @@ export class LoggedUserService extends HttpService {
   }
 
   getUser(): Observable<User> {
-    const obs = this.get();
-    obs.subscribe(response => response.data as User);
-    return obs;
+    return new ObservableTransformer().transform(this.get(), r => r.data as User);
   }
 
   getCompany(): Observable<Company> {
-    const obs = this.get('company');
-    obs.subscribe(response => response.data as Company);
-    return obs;
+    return new ObservableTransformer().transform(this.get('company'), r => r.data as Company);
   }
 }

@@ -19,6 +19,7 @@ import { Injectable } from '@angular/core';
 import { HttpService } from '../core/http/http.service';
 import { Period } from './period';
 import { Observable } from 'rxjs';
+import {ObservableTransformer} from '../../helpers/observable.transformer';
 
 @Injectable()
 export class PeriodService extends HttpService {
@@ -27,9 +28,8 @@ export class PeriodService extends HttpService {
   }
 
   save (datePeriod: Period): Observable<Period> {
-    const action = datePeriod.id ? this.put(datePeriod.id, datePeriod) : this.store(datePeriod);
-    action.subscribe(response => response.data as Period);
-    return action;
+    const obs = datePeriod.id ? this.put(datePeriod.id, datePeriod) : this.store(datePeriod);
+    return new ObservableTransformer().transform(obs, r => r.data as Period);
   }
 
   destroy (datePeriod: Period): Observable<any> {

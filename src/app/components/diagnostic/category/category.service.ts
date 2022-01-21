@@ -15,39 +15,31 @@
  * Copyright (c) 2019 (original work) MedCenter24.com;
  */
 
-import { Injectable } from '@angular/core';
-import 'rxjs/add/operator/toPromise';
-import { DiagnosticCategory } from './category';
-import { HttpService } from '../../core/http/http.service';
+import {Injectable} from '@angular/core';
+import {DiagnosticCategory} from './category';
+import {HttpService} from '../../core/http/http.service';
 import {Observable} from 'rxjs';
+import {ObservableTransformer} from '../../../helpers/observable.transformer';
 
 @Injectable()
 export class DiagnosticCategoryService extends HttpService {
 
-    protected getPrefix(): string {
-        return 'director/diagnostics/categories';
-    }
+  protected getPrefix(): string {
+    return 'director/diagnostics/categories';
+  }
 
-    getCategory(id: number): Observable<DiagnosticCategory> {
-        const obs = this.get(id);
-        obs.subscribe(response => response.data as DiagnosticCategory);
-        return obs;
-    }
+  getCategory(id: number): Observable<DiagnosticCategory> {
+    const obs = this.get(id);
+    return new ObservableTransformer().transform(obs, r => r.data as DiagnosticCategory);
+  }
 
-    delete(id: number): Observable<void> {
-        return this.remove(id);
-    }
+  delete(id: number): Observable<void> {
+    return this.remove(id);
+  }
 
-    save(category: DiagnosticCategory): Observable<DiagnosticCategory> {
-      if (category.id) {
-        const obs = this.put(category.id, category);
-        obs.subscribe(res => res.data as DiagnosticCategory);
-        return obs;
-      } else {
-        const obs = this.store(category);
-        obs.subscribe(res => res as DiagnosticCategory);
-        return obs;
-      }
-    }
+  save(category: DiagnosticCategory): Observable<DiagnosticCategory> {
+    const obs = category.id ? this.put(category.id, category) : this.store(category);
+    return new ObservableTransformer().transform(obs, r => r.data as DiagnosticCategory);
+  }
 }
 

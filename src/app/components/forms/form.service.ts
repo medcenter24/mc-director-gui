@@ -22,6 +22,7 @@ import { LoadableServiceInterface } from '../core/loadable';
 import { Form } from './form';
 import { saveAs } from 'file-saver';
 import { map } from 'rxjs/operators';
+import {ObservableTransformer} from '../../helpers/observable.transformer';
 
 @Injectable()
 export class FormService extends HttpService implements LoadableServiceInterface {
@@ -31,14 +32,12 @@ export class FormService extends HttpService implements LoadableServiceInterface
 
   getForm(id: number): Observable<Form> {
     const obs = this.get(id);
-    obs.subscribe(response => response.data as Form);
-    return obs;
+    return new ObservableTransformer().transform(obs, r => r.data as Form);
   }
 
   save (form: Form): Observable<Form> {
-    const action = form.id ? this.put(form.id, form) : this.store(form);
-    action.subscribe(response => response as Form);
-    return action;
+    const obs = form.id ? this.put(form.id, form) : this.store(form);
+    return new ObservableTransformer().transform(obs, r => r.data as Form);
   }
 
   destroy (form: Form): Observable<any> {
@@ -60,7 +59,6 @@ export class FormService extends HttpService implements LoadableServiceInterface
 
   getReportHtml(formId: number, formableId: number): Observable<string> {
     const obs = this.get(`${formId}/${formableId}/html`);
-    obs.subscribe(response => response.data as string);
-    return obs;
+    return new ObservableTransformer().transform(obs, r => r.data as string);
   }
 }

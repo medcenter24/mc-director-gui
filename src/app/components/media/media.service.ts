@@ -19,6 +19,7 @@ import { Injectable } from '@angular/core';
 import { Media } from './media';
 import { HttpService } from '../core/http/http.service';
 import {Observable} from 'rxjs';
+import {ObservableTransformer} from '../../helpers/observable.transformer';
 
 @Injectable()
 export class MediaService extends HttpService {
@@ -29,8 +30,7 @@ export class MediaService extends HttpService {
 
   getUploaded(): Observable<any> {
     const obs = this.get();
-    obs.subscribe(response => response as Media[]);
-    return obs;
+    return new ObservableTransformer().transform(obs, r => r.data as Media[]);
   }
 
   deleteFile(id: number): Observable<void> {

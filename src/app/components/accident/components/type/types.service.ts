@@ -19,6 +19,7 @@ import { Injectable } from '@angular/core';
 import { AccidentType } from './type';
 import { HttpService } from '../../../core/http/http.service';
 import { Observable } from 'rxjs';
+import {ObservableTransformer} from '../../../../helpers/observable.transformer';
 
 @Injectable()
 export class AccidentTypesService extends HttpService {
@@ -28,15 +29,11 @@ export class AccidentTypesService extends HttpService {
   }
 
   getTypes(): Observable<AccidentType[]> {
-    const obs = this.get();
-    obs.subscribe(response => response.data as AccidentType[]);
-    return obs;
+    return new ObservableTransformer().transform(this.get(), r => r.data as AccidentType[]);
   }
 
   getType(id: number): Observable<AccidentType> {
-    const obs = this.get(id);
-    obs.subscribe(response => response.data as AccidentType);
-    return obs;
+    return new ObservableTransformer().transform(this.get(id), r => r.data as AccidentType);
   }
 
   delete(id: number): Observable<void> {
@@ -44,9 +41,7 @@ export class AccidentTypesService extends HttpService {
   }
 
   create(type: AccidentType): Observable<AccidentType> {
-    const obs = this.store(type);
-    obs.subscribe(res => res.data as AccidentType);
-    return obs;
+    return new ObservableTransformer().transform(this.store(type), r => r.data as AccidentType);
   }
 
   update(type: AccidentType): Observable<AccidentType> {

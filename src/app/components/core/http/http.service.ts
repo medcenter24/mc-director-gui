@@ -27,6 +27,7 @@ import { ObjectHelper } from '../../../helpers/object.helper';
 import { UiToastService } from '../../ui/toast/ui.toast.service';
 import { TokenService } from '../../auth/token.service';
 import { Observable } from 'rxjs';
+import {ObservableTransformer} from '../../../helpers/observable.transformer';
 
 @Injectable()
 export abstract class HttpService implements LoadableServiceInterface {
@@ -63,19 +64,28 @@ export abstract class HttpService implements LoadableServiceInterface {
   protected abstract getPrefix(): string;
 
   /**
+   * each `next` calls data from the server, so I need to create new observer, to give it control on the loaded data
+   * @protected
+   */
+  protected httpDataObserver(obs: Observable<any>): Observable<any> {
+    return new ObservableTransformer()
+      .transform(obs, r => r, e => {
+        this.handleError(e);
+      });
+  }
+
+  /**
    * Loading filtered list of data resources
    * @param {Object} filters
    * @returns {Observable<any>}
    */
   search (filters: Object): Observable<any> {
     filters = ObjectHelper.extend({}, filters);
-    const obs = this.http.post(
+    return this.httpDataObserver(this.http.post(
       this.getUrl('search'),
       JSON.stringify(filters),
       { headers: this.getAuthHeaders() },
-    );
-    obs.subscribe({ error: this.handleError });
-    return obs;
+    ));
   }
 
   /**
@@ -85,9 +95,7 @@ export abstract class HttpService implements LoadableServiceInterface {
    * @returns {Observable<any>}
    */
   protected get(id: string|number = null, params: any = null): Observable<any> {
-    const obs = this.http.get(this.getUrl(id), { headers: this.getAuthHeaders(), params });
-    obs.subscribe({error: error => this.handleError(error)});
-    return obs;
+    return this.httpDataObserver(this.http.get(this.getUrl(id), { headers: this.getAuthHeaders(), params }));
   }
 
   /**
@@ -96,9 +104,7 @@ export abstract class HttpService implements LoadableServiceInterface {
    * @returns {Observable<any>}
    */
   protected remove(id: any): Observable<any> {
-    const obs = this.http.delete(this.getUrl(id), { headers: this.getAuthHeaders() });
-    obs.subscribe({error: this.handleError});
-    return obs;
+    return this.httpDataObserver(this.http.delete(this.getUrl(id), { headers: this.getAuthHeaders() }));
   }
 
   /**
@@ -108,12 +114,11 @@ export abstract class HttpService implements LoadableServiceInterface {
    */
   protected store(data): Observable<any> {
     const obs = this.http.post(this.getUrl(), JSON.stringify(data), { headers: this.getAuthHeaders() });
-    obs.subscribe(response => {
-      this.uiToastService.created();
-      return response;
-    });
-    obs.subscribe({error: this.handleError});
-    return obs;
+    return new ObservableTransformer()
+      .transform(obs, r => {
+        this.uiToastService.created();
+        return r;
+      }, e => this.handleError(e));
   }
 
   /**
@@ -123,24 +128,24 @@ export abstract class HttpService implements LoadableServiceInterface {
    * @returns {Observable<any>}
    */
   protected put(id, data): Observable<any> {
-
     if (!id) {
       this.uiToastService.httpError();
       return;
     }
     const obs = this.http.put(this.getUrl(id), JSON.stringify(data), { headers: this.getAuthHeaders() });
-    obs.subscribe(() => this.uiToastService.saved());
-    obs.subscribe({error: this.handleError});
-    return obs;
+
+    return new ObservableTransformer()
+      .transform(obs, r => {
+        this.uiToastService.saved();
+        return r;
+      }, e => this.handleError(e));
   }
 
   /**
    * Overlapping errors
    * @param error
-   * @returns {Promise<never>}
    */
-  protected handleError(error: any): Promise<any> {
-
+  protected handleError(error: any) {
     if (!environment.production) {
       this._logger.error(error);
     }
@@ -159,8 +164,6 @@ export abstract class HttpService implements LoadableServiceInterface {
     } else {
       this.uiToastService.httpError();
     }
-
-    return Promise.reject(error);
   }
 
   /**

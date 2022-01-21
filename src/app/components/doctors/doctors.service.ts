@@ -21,6 +21,7 @@ import { HttpService } from '../core/http/http.service';
 import { City } from '../city';
 import { LoadableServiceInterface } from '../core/loadable';
 import {Observable} from 'rxjs';
+import {ObservableTransformer} from '../../helpers/observable.transformer';
 
 @Injectable()
 export class DoctorsService extends HttpService implements LoadableServiceInterface {
@@ -31,14 +32,12 @@ export class DoctorsService extends HttpService implements LoadableServiceInterf
 
   getDoctors(): Observable<Doctor[]> {
     const obs = this.get();
-    obs.subscribe(response => response.data as Doctor[]);
-    return obs;
+    return new ObservableTransformer().transform(obs, r => r.data as Doctor[]);
   }
 
   getDoctor(id: number): Observable<Doctor> {
     const obs = this.get(id);
-    obs.subscribe(response => response.data as Doctor);
-    return obs;
+    return new ObservableTransformer().transform(obs, r => r.data as Doctor);
   }
 
   delete(id: number): Observable<void> {
@@ -47,20 +46,17 @@ export class DoctorsService extends HttpService implements LoadableServiceInterf
 
   create(doctor: Doctor): Observable<Doctor> {
     const obs = this.store(doctor);
-    obs.subscribe(res => res as Doctor);
-    return obs;
+    return new ObservableTransformer().transform(obs, r => r.data as Doctor);
   }
 
   update(doctor: Doctor): Observable<Doctor> {
     const obs = this.put(doctor.id, doctor);
-    obs.subscribe(res => res.data as Doctor);
-    return obs;
+    return new ObservableTransformer().transform(obs, r => r.data as Doctor);
   }
 
   getDoctorCities(id: number): Observable<City[]> {
     const obs = this.get(`${id}/cities`);
-    obs.subscribe(res => res.data as City[]);
-    return obs;
+    return new ObservableTransformer().transform(obs, r => r.data as City[]);
   }
 
   setDoctorCities(id: number, cities: City[]): Observable<any> {
@@ -69,14 +65,12 @@ export class DoctorsService extends HttpService implements LoadableServiceInterf
 
   getDoctorsByCity(cityId: number): Observable<Doctor[]> {
     const obs = this.get(`cities/${cityId}`);
-    obs.subscribe(res => res.data as Doctor[]);
-    return obs;
+    return new ObservableTransformer().transform(obs, r => r.data as Doctor[]);
   }
 
   save (doctor: Doctor): Observable<Doctor> {
-    const action = doctor.id ? this.put(doctor.id, doctor) : this.store(doctor);
-    action.subscribe(response => response.data as Doctor);
-    return action;
+    const obs = doctor.id ? this.put(doctor.id, doctor) : this.store(doctor);
+    return new ObservableTransformer().transform(obs, r => r.data as Doctor);
   }
 
   destroy (doctor: Doctor): Observable<any> {

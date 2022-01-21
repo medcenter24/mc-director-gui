@@ -20,6 +20,7 @@ import { Diagnostic } from './diagnostic';
 import { HttpService } from '../core/http/http.service';
 import { LoadableServiceInterface } from '../core/loadable';
 import { Observable } from 'rxjs';
+import {ObservableTransformer} from '../../helpers/observable.transformer';
 
 @Injectable()
 export class DiagnosticService extends HttpService implements LoadableServiceInterface {
@@ -30,8 +31,7 @@ export class DiagnosticService extends HttpService implements LoadableServiceInt
 
   getDiagnostics(filters: Object): Observable<Diagnostic[]> {
     const obs = this.search(filters);
-    obs.subscribe(response => response.data as Diagnostic[]);
-    return obs;
+    return new ObservableTransformer().transform(obs, r => r.data as Diagnostic[]);
   }
 
   delete(id: number): Observable<void> {
@@ -39,13 +39,8 @@ export class DiagnosticService extends HttpService implements LoadableServiceInt
   }
 
   save(diagnostic: Diagnostic): Observable<Diagnostic> {
-    if (diagnostic.id) {
-      const obs = this.put(diagnostic.id, diagnostic);
-      obs.subscribe(res => res.data as Diagnostic);
-      return obs;
-    } else {
-      return this.store(diagnostic);
-    }
+    const obs = diagnostic.id ? this.put(diagnostic.id, diagnostic) : this.store(diagnostic);
+    return new ObservableTransformer().transform(obs, r => r.data as Diagnostic);
   }
 
   destroy(diagnostic: Diagnostic): Observable<any> {

@@ -19,6 +19,7 @@ import { Injectable } from '@angular/core';
 import { User } from './user';
 import { HttpService } from '../core/http/http.service';
 import {Observable} from 'rxjs';
+import {ObservableTransformer} from '../../helpers/observable.transformer';
 
 @Injectable()
 export class UsersService extends HttpService {
@@ -29,14 +30,12 @@ export class UsersService extends HttpService {
 
   getUsers(): Observable<User[]> {
     const obs = this.get();
-    obs.subscribe(response => response.data as User[]);
-    return obs;
+    return new ObservableTransformer().transform(obs, r => r.data as User[]);
   }
 
   getUser(id: number): Observable<User> {
     const obs = this.get(id);
-    obs.subscribe(response => response.data as User);
-    return obs;
+    return new ObservableTransformer().transform(obs, r => r.data as User);
   }
 
   delete(id: number): Observable<void> {
@@ -45,14 +44,12 @@ export class UsersService extends HttpService {
 
   create(user: User): Observable<User> {
     const obs = this.store(user);
-    obs.subscribe(res => res as User);
-    return obs;
+    return new ObservableTransformer().transform(obs, r => r.data as User);
   }
 
   update(user: User): Observable<User> {
     const obs = this.put(user.id, user);
-    obs.subscribe(res => res as User);
-    return obs;
+    return new ObservableTransformer().transform(obs, r => r.data as User);
   }
 
   deletePhoto(userId: number): Observable<void> {

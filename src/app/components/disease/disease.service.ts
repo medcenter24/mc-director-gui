@@ -19,6 +19,7 @@ import { Injectable } from '@angular/core';
 import { Disease } from './disease';
 import { HttpService } from '../core/http/http.service';
 import {Observable} from 'rxjs';
+import {ObservableTransformer} from '../../helpers/observable.transformer';
 
 @Injectable()
 export class DiseaseService extends HttpService {
@@ -28,9 +29,8 @@ export class DiseaseService extends HttpService {
   }
 
   save(disease: Disease): Observable<Disease> {
-    const action = disease.id ? this.put(disease.id, disease) : this.store(disease);
-    action.subscribe(response => response as Disease);
-    return action;
+    const obs = disease.id ? this.put(disease.id, disease) : this.store(disease);
+    return new ObservableTransformer().transform(obs, r => r.data as Disease);
   }
 
   destroy(disease: Disease): Observable<any> {

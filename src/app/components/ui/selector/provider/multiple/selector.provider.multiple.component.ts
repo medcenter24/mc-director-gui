@@ -20,7 +20,7 @@ import {SelectorConfig} from '../../selector.config';
 import {SearchFilter} from '../../../../core/loadable/search.filter';
 import {SelectorProviderMultipleAdapterComponent} from './adapter';
 import {LoadableComponent} from '../../../../core/components/componentLoader';
-import { Observable } from 'rxjs';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'nga-selector-multiple',
@@ -65,7 +65,7 @@ export class SelectorProviderMultipleComponent extends LoadableComponent impleme
   options: any[] = [];
 
   ngOnInit(): void {
-    this.loadData(null).subscribe(() => {
+    this.loadData(null).subscribe((r) => {
       this.selectItems(this.conf.preloaded);
     });
   }
@@ -111,7 +111,10 @@ export class SelectorProviderMultipleComponent extends LoadableComponent impleme
         this.stopLoader(postfix);
         this.options = response.data;
         return this.options;
-      }, error: () => this.stopLoader(postfix),
+      },
+      error: (e) => {
+        this.stopLoader(postfix);
+      },
     });
     return obs;
   }

@@ -19,6 +19,7 @@ import { Injectable } from '@angular/core';
 import { Patient } from './patient';
 import { HttpService } from '../core/http/http.service';
 import {Observable} from 'rxjs';
+import {ObservableTransformer} from '../../helpers/observable.transformer';
 
 @Injectable()
 export class PatientsService extends HttpService {
@@ -29,14 +30,12 @@ export class PatientsService extends HttpService {
 
   getPatients(): Observable<Patient[]> {
     const obs = this.get();
-    obs.subscribe(response => response.data as Patient[]);
-    return obs;
+    return new ObservableTransformer().transform(obs, r => r.data as Patient[]);
   }
 
   getPatient(id: number): Observable<Patient> {
     const obs = this.get(id);
-    obs.subscribe(response => response.data as Patient);
-    return obs;
+    return new ObservableTransformer().transform(obs, r => r.data as Patient);
   }
 
   delete(id: number): Observable<void> {
@@ -45,8 +44,7 @@ export class PatientsService extends HttpService {
 
   create(patient: Patient): Observable<Patient> {
     const obs = this.store(patient);
-    obs.subscribe(res => res as Patient);
-    return obs;
+    return new ObservableTransformer().transform(obs, r => r.data as Patient);
   }
 
   update(patient: Patient): Observable<Patient> {
