@@ -57,7 +57,7 @@ export class AutoCompleteStaticProvider implements AutoCompleteProvider {
     this.selectItems(config.preloaded);
   }
 
-  selectItems(items: any, fieldName: string = null): void {
+  selectItems(items: any, fieldName: string = null): Observable<any> {
     if (typeof items === 'string') {
       items = +items;
     }
@@ -75,6 +75,7 @@ export class AutoCompleteStaticProvider implements AutoCompleteProvider {
       // prevent ViewDestroyedError error
       // if click back while the page is loading
     }
+    return new Observable(subscriber => subscriber.next(this.selected));
   }
 
   /**

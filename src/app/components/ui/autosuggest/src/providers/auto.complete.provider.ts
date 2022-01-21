@@ -45,5 +45,5 @@ export interface AutoCompleteProvider {
    * @param {any} items
    * @param fieldName
    */
-  selectItems(items: any, fieldName: string): void;
+  selectItems(items: any, fieldName: string): Observable<any>;
 }

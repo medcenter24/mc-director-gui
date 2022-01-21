@@ -47,7 +47,9 @@ export class AutoCompleteComponent {
     this.provider = conf.provider === 'static'
       ? new AutoCompleteStaticProvider(conf, this._changeDetectionRef)
       : new AutoCompleteLoadableProvider(conf);
-    this.selected = this.provider.selected;
+    if (this.provider.selected) {
+      this.selected = this.provider.selected;
+    }
   }
 
   @Output() changed: EventEmitter<any> = new EventEmitter<any>();
@@ -62,6 +64,6 @@ export class AutoCompleteComponent {
   }
 
   selectItems(items: any, fieldName: string = null): void {
-    this.provider.selectItems(items, fieldName);
+    this.provider.selectItems(items, fieldName).subscribe(res => this.selected = res);
   }
 }

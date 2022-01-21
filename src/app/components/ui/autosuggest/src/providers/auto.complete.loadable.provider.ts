@@ -19,6 +19,7 @@ import { AutoCompleteProvider } from './auto.complete.provider';
 import { AutoCompleteSrcConfig } from '../auto.complete.src.config';
 import { FilterRequestField } from '../../../../core/http/request/fields';
 import {Observable} from 'rxjs';
+import {ObservableTransformer} from '../../../../../helpers/observable.transformer';
 
 /**
  * Loads only limit count of rows and for each request going to the server
@@ -79,18 +80,24 @@ export class AutoCompleteLoadableProvider implements AutoCompleteProvider {
    * @param {any} items
    * @param fieldName
    */
-  selectItems(items: any, fieldName: string = null): void {
+  selectItems(items: any, fieldName: string = null): Observable<any> {
     // if int id provided - try to load resource with the service
     if (typeof items === 'number' && items) {
-      this.findByField(items, fieldName).subscribe(res => {
-        if (res.hasOwnProperty('data') && res['data'].length) {
-          this.selected = res.data[0];
-        } else {
-          console.error(`Record with ID ${items} not found`);
-        }
-      });
+
+      return new ObservableTransformer()
+        .transform(
+          this.findByField(items, fieldName),
+            res => {
+              if (res.hasOwnProperty('data') && res['data'].length) {
+                this.selected = res.data[0];
+                return this.selected;
+              } else {
+                console.error(`Record with ID ${items} not found`);
+              }
+            });
     } else {
       this.selected = items;
+      return new Observable(subscriber => subscriber.next(this.selected));
     }
   }
 
