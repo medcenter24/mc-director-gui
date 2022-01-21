@@ -45,8 +45,13 @@ export class AutoCompleteComponent {
     this.conf = conf;
     // reload data provider
     this.provider = conf.provider === 'static'
-      ? new AutoCompleteStaticProvider(conf, this._changeDetectionRef)
+      ? new AutoCompleteStaticProvider(
+          conf,
+          this._changeDetectionRef,
+        (selected) => this.selected = selected,
+      )
       : new AutoCompleteLoadableProvider(conf);
+
     if (this.provider.selected) {
       this.selected = this.provider.selected;
     }
@@ -66,7 +71,9 @@ export class AutoCompleteComponent {
   selectItems(items: any, fieldName: string = null): void {
     if (items) {
       this.provider.selectItems(items, fieldName)
-        .subscribe(res => this.selected = res);
+        .subscribe(res => {
+          this.selected = res;
+        });
     }
   }
 }

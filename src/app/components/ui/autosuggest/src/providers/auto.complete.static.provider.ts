@@ -15,10 +15,11 @@
  * Copyright (c) 2019 (original work) MedCenter24.com;
  */
 
-import { AutoCompleteProvider } from './auto.complete.provider';
-import { AutoCompleteSrcConfig } from '../auto.complete.src.config';
-import { ChangeDetectorRef } from '@angular/core';
+import {AutoCompleteProvider} from './auto.complete.provider';
+import {AutoCompleteSrcConfig} from '../auto.complete.src.config';
+import {ChangeDetectorRef} from '@angular/core';
 import {Observable} from 'rxjs';
+import {ObservableTransformer} from '../../../../../helpers/observable.transformer';
 
 /**
  * Load all the data and store it for application
@@ -34,7 +35,7 @@ export class AutoCompleteStaticProvider implements AutoCompleteProvider {
   /**
    * Selected data
    */
-  selected: Object|Object[];
+  selected: Object | Object[];
 
   /**
    * All loaded data
@@ -47,35 +48,45 @@ export class AutoCompleteStaticProvider implements AutoCompleteProvider {
    */
   private loaded: boolean = false;
 
-  constructor (
+  constructor(
     private config: AutoCompleteSrcConfig,
     private _changeDetectionRef: ChangeDetectorRef,
+    private callback: Function = () => {},
   ) {
     if (!config.fieldKey) {
       console.info('Field key is empty');
     }
-    this.selectItems(config.preloaded);
+    this.selectItems(config.preloaded).subscribe(r => callback(r));
   }
 
   selectItems(items: any, fieldName: string = null): Observable<any> {
-    if (typeof items === 'string') {
-      items = +items;
-    }
-    if (typeof items === 'number') {
-      this.afterLoaded(() => {
-        fieldName = fieldName ?? 'id';
-        this.selected = this.data.find(v => v.hasOwnProperty(fieldName) && v[fieldName] === items);
-      });
-    } else {
-      this.selected = items;
-    }
-    try {
-      this._changeDetectionRef.detectChanges();
-    } catch (e) {
-      // prevent ViewDestroyedError error
-      // if click back while the page is loading
-    }
-    return new Observable(subscriber => subscriber.next(this.selected));
+    return new Observable(subscriber => {
+      if (typeof items === 'string') {
+        items = +items;
+      }
+      if (typeof items === 'number') {
+        this.afterLoaded(() => {
+          fieldName = fieldName ?? 'id';
+          this.selected = this.data.find(v => v.hasOwnProperty(fieldName) && v[fieldName] === items);
+          try {
+            this._changeDetectionRef.detectChanges();
+          } catch (e) {
+            // prevent ViewDestroyedError error
+            // if click back while the page is loading
+          }
+          subscriber.next(this.selected);
+        });
+      } else {
+        this.selected = items;
+        try {
+          this._changeDetectionRef.detectChanges();
+        } catch (e) {
+          // prevent ViewDestroyedError error
+          // if click back while the page is loading
+        }
+        subscriber.next(this.selected);
+      }
+    });
   }
 
   /**
@@ -83,15 +94,20 @@ export class AutoCompleteStaticProvider implements AutoCompleteProvider {
    * @param event
    */
   loadData(event): Observable<any> {
-    return this.config.dataProvider({}).then(resp => {
-      this.data = resp.data;
-      this.filtered = this.data;
-      this.loaded = true;
-      return this.data;
-    }).catch(e => {
-      console.error('Error on auto complete static provider', e);
-      this.loaded = false;
-    });
+    const obs = this.config.dataProvider({});
+    return new ObservableTransformer().transform(
+      obs,
+        resp => {
+          this.data = resp.data;
+          this.filtered = this.data;
+          this.loaded = true;
+          return this.data;
+        },
+        error => {
+          console.error('Error on auto complete static provider', error);
+          this.loaded = false;
+        },
+    );
   }
 
   filter(event): void {
@@ -103,9 +119,12 @@ export class AutoCompleteStaticProvider implements AutoCompleteProvider {
    * @param {Function} func
    */
   private afterLoaded(func: Function) {
-    this.loaded ? func(this.data) : this.loadData('').subscribe(data => {
-      func(data);
-    });
+    this.loaded
+      ? func(this.data)
+      : this.loadData('')
+          .subscribe(data => {
+            func(data);
+          });
   }
 
   /**
