@@ -64,6 +64,9 @@ export class AutoCompleteComponent {
   }
 
   selectItems(items: any, fieldName: string = null): void {
-    this.provider.selectItems(items, fieldName).subscribe(res => this.selected = res);
+    if (items) {
+      this.provider.selectItems(items, fieldName)
+        .subscribe(res => this.selected = res);
+    }
   }
 }

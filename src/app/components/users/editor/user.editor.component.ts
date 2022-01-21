@@ -53,11 +53,14 @@ export class UserEditorComponent extends LoadableComponent implements OnInit {
     const postfix = 'Submit';
     this.startLoader(postfix);
     const obs = this.user.id ? this.service.update(this.user) : this.service.create(this.user);
-    obs.subscribe({ next: (user: User) => {
-      this.stopLoader(postfix);
-      this.setUser(user);
-      this.saved.emit(user);
-    }, error: () => this.stopLoader(postfix)});
+    obs.subscribe({
+      next: user => {
+        this.stopLoader(postfix);
+        this.setUser(user);
+        this.saved.emit(user);
+      },
+      error: () => this.stopLoader(postfix),
+    });
   }
 
   onUserChanged(user: User): void {
