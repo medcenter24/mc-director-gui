@@ -69,7 +69,7 @@ export abstract class HttpService implements LoadableServiceInterface {
    */
   protected httpDataObserver(obs: Observable<any>): Observable<any> {
     return new ObservableTransformer()
-      .transform(obs, r => r, this.handleError);
+      .transform(obs, r => r, e => this.handleError(e));
   }
 
   /**

@@ -53,7 +53,10 @@ export class FormService extends HttpService implements LoadableServiceInterface
       );
 
       // todo to see if I can sent a title from a server side to make it more readable
-      obs.subscribe(data => saveAs(data, `report_case_${formableId}_${formableId}.pdf`), err => this.handleError(err));
+      obs.subscribe(
+        data => saveAs(data, `report_case_${formableId}_${formableId}.pdf`),
+          err => this.handleError(err),
+      );
       return obs;
   }
 

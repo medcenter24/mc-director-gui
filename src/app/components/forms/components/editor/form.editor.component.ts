@@ -78,9 +78,8 @@ export class FormEditorComponent extends LoadableComponent implements OnInit {
           this._state.notifyDataChanged('menu.activeLink', breadcrumbs);
           this._state.notifyDataChanged('changeTitle', title);
 
-          this.showToolbox();
-
           const id = +params['id'];
+          this.showToolbox(id);
           if (id) {
             this.startLoader();
 
@@ -99,7 +98,7 @@ export class FormEditorComponent extends LoadableComponent implements OnInit {
     });
   }
 
-  private showToolbox(): void {
+  private showToolbox(id: Number): void {
     const actions: BaToolboxAction[] = [];
     actions.push(new BaToolboxAction(this.translateService.instant('Back'), 'fa fa-angle-left', () => {
       this.goToList().then();
@@ -107,9 +106,11 @@ export class FormEditorComponent extends LoadableComponent implements OnInit {
     actions.push(new BaToolboxAction(this.translateService.instant('Save'), 'fa fa-save', () => {
       this.saveForm();
     }));
-    actions.push(new BaToolboxAction(this.translateService.instant('Delete'), 'fa fa-times', () => {
-      this.onDelete();
-    }));
+    if (id) {
+      actions.push(new BaToolboxAction(this.translateService.instant('Delete'), 'fa fa-times', () => {
+        this.onDelete();
+      }));
+    }
     actions.push(new BaToolboxAction(this.translateService.instant('Preview'), 'fa fa-eye', () => {
       this.onPreview();
     }));
@@ -166,14 +167,17 @@ export class FormEditorComponent extends LoadableComponent implements OnInit {
     this.startLoader(postfix);
     const previousId = this.form.id;
     this.formService.save(form)
-      .subscribe({next: savedForm => {
-        this.stopLoader(postfix);
-        if (!previousId) {
-          this.router.navigate([`pages/settings/forms/${savedForm.id}`]).then();
-        }/* else {
-          this.form = savedForm;
-        }*/
-      }, error: () => this.stopLoader(postfix) });
+      .subscribe({
+        next: savedForm => {
+          this.stopLoader(postfix);
+          if (!previousId) {
+            this.router.navigate([`pages/settings/forms/${savedForm.id}`]).then();
+          }/* else {
+            this.form = savedForm;
+          }*/
+        },
+        error: () => this.stopLoader(postfix),
+      });
   }
 
   setSelectedVar(formParam: FormOption): void {
