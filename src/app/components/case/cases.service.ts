@@ -32,6 +32,7 @@ import {Commentary} from '../comment/commentary';
 import {LoadableServiceInterface} from '../core/loadable';
 import {Observable} from 'rxjs';
 import {ObservableTransformer} from '../../helpers/observable.transformer';
+import {CaseAccident} from './case';
 
 @Injectable()
 export class CasesService extends HttpService implements LoadableServiceInterface {
@@ -83,8 +84,9 @@ export class CasesService extends HttpService implements LoadableServiceInterfac
     return `${this.getPrefix()}/importer`;
   }
 
-  saveCase(data): Observable<any> {
-    return data.accident.id ? this.put(data.accident.id, data) : this.store(data);
+  saveCase(data): Observable<CaseAccident> {
+    const obs = data.accident.id ? this.put(data.accident.id, data) : this.store(data);
+    return new ObservableTransformer().transform(obs, r => r.data as CaseAccident);
   }
 
   closeCase(id: number): Observable<any> {
@@ -116,10 +118,11 @@ export class CasesService extends HttpService implements LoadableServiceInterfac
       JSON.stringify({text}),
       {headers: this.getAuthHeaders()},
     );
-    obs.subscribe({
-      error: error => this.handleError(error),
-    });
-    return new ObservableTransformer().transform(obs, r => r.data as Commentary);
+    return new ObservableTransformer().transform(
+      obs,
+        r => r.data as Commentary,
+        error => this.handleError(error),
+    );
   }
 
   getFinance(accident: Accident, types: string[]): Observable<PaymentViewer[]> {
