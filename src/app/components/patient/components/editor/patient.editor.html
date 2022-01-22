@@ -68,11 +68,12 @@
         <div class="col-12">
             <span class="p-float-label">
                 <textarea
-                        id="patient-editor-comment"
-                        [rows]="3" [cols]="70"
-                        pInputTextarea
-                        (input)="changedPatientComment($event)"
-                >{{ patient.comment }}</textarea>
+                  [(ngModel)]="patient.comment"
+                  id="patient-editor-comment"
+                  [rows]="3"
+                  [cols]="70"
+                  pInputTextarea
+                ></textarea>
                 <label for="patient-editor-comment">{{ 'Commentary' | translate }}</label>
             </span>
         </div>

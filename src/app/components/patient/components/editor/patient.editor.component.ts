@@ -69,16 +69,19 @@ export class PatientEditorComponent extends LoadableComponent {
     if (this.patient.name && this.patient.name.length) {
       this.patient.name = this.patient.name.trim();
     }
-    let savePromise;
-    savePromise = this.patient.id ? this.patientService.update(this.patient)
+    const obs = this.patient.id
+      ? this.patientService.update(this.patient)
       : this.patientService.create(this.patient);
-    savePromise.then((patient) => {
-      this.stopLoader(postfix);
-      if (patient && patient.id) {
-        this.patient = patient;
-      }
-      this.changed.emit(this.patient);
-    }).catch(() => this.stopLoader(postfix));
+    obs.subscribe({
+      next: (patient) => {
+        this.stopLoader(postfix);
+        if (patient && patient.id) {
+          this.patient = patient;
+        }
+        this.changed.emit(this.patient);
+      },
+      error: () => this.stopLoader(postfix),
+    });
   }
 
   onDelete(): void {
@@ -111,9 +114,5 @@ export class PatientEditorComponent extends LoadableComponent {
 
   changedPatientAddress(event): void {
     this.patient.address = event.target.value;
-  }
-
-  changedPatientComment(event): void {
-    this.patient.comment = event.target.value;
   }
 }
