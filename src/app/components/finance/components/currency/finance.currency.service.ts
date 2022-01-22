@@ -20,6 +20,7 @@ import { HttpService } from '../../../core/http/http.service';
 import { LoadableServiceInterface } from '../../../core/loadable';
 import { FinanceCurrency } from './finance.currency';
 import { Observable } from 'rxjs';
+import {ObservableTransformer} from '../../../../helpers/observable.transformer';
 
 @Injectable()
 export class FinanceCurrencyService extends HttpService implements LoadableServiceInterface {
@@ -28,13 +29,15 @@ export class FinanceCurrencyService extends HttpService implements LoadableServi
   }
 
   create(currency: FinanceCurrency): Observable<FinanceCurrency> {
-    return this.store(currency);
+    const obs = this.store(currency);
+    return new ObservableTransformer()
+      .transform(obs, response => response.data as FinanceCurrency);
   }
 
   save (currency: FinanceCurrency): Observable<FinanceCurrency> {
-    const action = currency.id ? this.put(currency.id, currency) : this.store(currency);
-    action.subscribe(response => response.data as FinanceCurrency);
-    return action;
+    const obs = currency.id ? this.put(currency.id, currency) : this.store(currency);
+    return new ObservableTransformer()
+      .transform(obs, response => response.data as FinanceCurrency);
   }
 
   destroy (currency: FinanceCurrency): Observable<any> {

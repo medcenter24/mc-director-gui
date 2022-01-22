@@ -122,15 +122,17 @@ export class FinanceCurrencyDatatableComponent extends AbstractDatatableControll
     const postfix = 'Save';
     this.startLoader(postfix);
     this.financeCurrencyService.save(this.currency)
-      .subscribe({next: () => {
-        this.stopLoader(postfix);
-        this.setObject();
-        this.displayDialog = false;
-        this.datatable.refresh();
-      }, error: (e) => {
-        this._logger.error(e.toString());
-        this.stopLoader(postfix);
-      }});
+      .subscribe({
+        next: () => {
+          this.stopLoader(postfix);
+          this.setObject();
+          this.displayDialog = false;
+          this.datatable.refresh();
+        }, error: (e) => {
+          this._logger.error(e.toString());
+          this.stopLoader(postfix);
+        },
+      });
   }
 
   onRowSelect(event) {
