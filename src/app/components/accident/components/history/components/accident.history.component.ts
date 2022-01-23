@@ -15,7 +15,7 @@
  * Copyright (c) 2019 (original work) MedCenter24.com;
  */
 
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { LoadableComponent } from '../../../../core/components/componentLoader';
 import { Accident } from '../../../accident';
 import { CasesService } from '../../../../case/cases.service';
@@ -32,24 +32,26 @@ export class AccidentHistoryComponent extends LoadableComponent implements OnIni
   protected componentName: string = 'AccidentHistoryComponent';
 
   @Input() accident: Accident;
+  @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
 
   history: AccidentHistory[];
   noPhoto: string = '';
 
-  constructor(private caseService: CasesService, private dateHelper: DateHelper) {
+  constructor(private caseService: CasesService) {
     super();
     this.noPhoto = `${layoutPaths.images.profile}no-photo.png`;
   }
 
   ngOnInit() {
     this.startLoader();
-    this.caseService.getHistory(this.accident).then(response => {
+    this.caseService.getHistory(this.accident).subscribe({next: response => {
       this.stopLoader();
       response.map((row) => {
-        row.createdFormated = DateHelper.toEuropeFormatWithTime(row.created_at);
+        row.createdFormatted = DateHelper.toEuropeFormatWithTime(row.createdAt);
         return row;
       });
       this.history = response;
-    }).catch(() => this.stopLoader());
+    }, error: () => this.stopLoader()});
   }
 }

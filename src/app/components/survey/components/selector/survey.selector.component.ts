@@ -31,6 +31,8 @@ export class SurveysSelectorComponent extends LoadableComponent implements OnIni
   @Input() caseId: number = 0;
   @Output() priceChanged: EventEmitter<number> = new EventEmitter<number>();
   @Output() changed: EventEmitter<Survey[]> = new EventEmitter<Survey[]>();
+  @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
 
   @ViewChild('selectSurveys')
     private selectSurveysComponent: SurveySelectComponent;
@@ -69,15 +71,15 @@ export class SurveysSelectorComponent extends LoadableComponent implements OnIni
     if (this.caseId) {
       const postfix = 'SelectSurveysLoaded';
       this.startLoader(postfix);
-      this.casesService.getCaseSurveys(this.caseId).then(surveys => {
+      this.casesService.getCaseSurveys(this.caseId).subscribe({next: surveys => {
         this.stopLoader(postfix);
         this.caseSurveys = surveys;
         this.selectSurveysComponent.reloadChosenSurveys(this.caseSurveys);
         this.changed.emit(this.caseSurveys);
-      }).catch((err) => {
+      }, error: (err) => {
         this.stopLoader(postfix);
         this._logger.error(err);
-      });
+      }});
     }
   }
 

@@ -36,6 +36,8 @@ export class DiagnosticCategoryEditorComponent extends LoadableComponent impleme
     }
 
   @Output() updated: EventEmitter<DiagnosticCategory> = new EventEmitter<DiagnosticCategory>();
+  @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
 
   @ViewChild('diagnosticCategoryAutoCompleter')
     private categorySelectComponent: AutocompleterComponent;
@@ -60,11 +62,11 @@ export class DiagnosticCategoryEditorComponent extends LoadableComponent impleme
   onSubmit (): void {
     const postfix = 'SaveDiagnosticCategory';
     this.startLoader(postfix);
-    this.service.save(this.category).then((category: DiagnosticCategory) => {
+    this.service.save(this.category).subscribe({next: (category: DiagnosticCategory) => {
       this.stopLoader(postfix);
       this.category = category;
       this.updated.emit(category);
-    }).catch(() => this.stopLoader(postfix));
+    }, error: () => this.stopLoader(postfix)});
   }
 
   onCategoryChange (categoryId): void {
@@ -86,13 +88,13 @@ export class DiagnosticCategoryEditorComponent extends LoadableComponent impleme
     if (id) {
       const postfix = 'LoadCategory';
       this.startLoader(postfix);
-      this.service.getCategory(id).then((category) => {
+      this.service.getCategory(id).subscribe({next: (category) => {
         this.stopLoader(postfix);
         this.category = category;
         this.selectCategory(this.category);
-      }).catch(() => {
+      }, error: () => {
         this.stopLoader(postfix);
-      });
+      }});
     } else {
       this.category = new DiagnosticCategory();
     }

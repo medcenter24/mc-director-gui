@@ -24,6 +24,7 @@
         chooseLabel="{{ 'Choose' | translate }}"
         uploadLabel="{{ 'Upload' | translate}}"
         cancelLabel="{{ 'Cancel' | translate}}"
+        [title]="'No file chosen' | translate"
         [withCredentials]="true"
         [headers]="headers()"
         (onUpload)="handleUpload()"
@@ -46,7 +47,7 @@
             <tr *ngFor="let file of documents" class="row-file-{{ file.id }}">
                 <td>{{ file.id }}</td>
                 <td class="text-center">
-                    <img src="data:image/jpeg;base64,{{ file.b64thumb }}" width="120" alt="{{ file.title }}">
+                    <img src="{{ file.b64thumb }}" width="120" alt="{{ file.title }}">
                 </td>
                 <td>
                   <p-dropdown

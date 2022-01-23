@@ -34,8 +34,10 @@ import {
 })
 export class SurveySelectComponent extends LoadableComponent implements OnInit {
 
-  @Output() chosenSurveysChange: EventEmitter<Survey[]> = new EventEmitter<Survey[]>();
   @Input() chosenSurveys: Survey[] = [];
+  @Output() chosenSurveysChange: EventEmitter<Survey[]> = new EventEmitter<Survey[]>();
+  @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
 
   isLoaded: boolean = false;
   dataSurveys: SelectItem[] = [];
@@ -71,7 +73,7 @@ export class SurveySelectComponent extends LoadableComponent implements OnInit {
         ],
       },
     };
-    this.surveysService.getSurveys(statusFilter).then(surveys => {
+    this.surveysService.getSurveys(statusFilter).subscribe({next: surveys => {
       this.stopLoader();
 
       this.surveys = surveys;
@@ -88,10 +90,10 @@ export class SurveySelectComponent extends LoadableComponent implements OnInit {
       }
 
       this.isLoaded = true;
-    }).catch((err) => {
+    }, error: (err) => {
       this.stopLoader();
       this._logger.error(err);
-    });
+    }});
   }
 
    onChanged(event): void {

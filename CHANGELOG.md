@@ -13,3 +13,6 @@
 - autosave feature for the case editor form
 - deleted redundant components and libraries from the package.json file
 
+# Develop
+- angular 12
+- p-multiSelect without labels for services, surveys and diagnostics

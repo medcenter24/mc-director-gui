@@ -31,6 +31,8 @@ export class CommentsComponent extends LoadableComponent {
 
   @Input() comments: Commentary[] = [];
   @Output() message: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
 
   noPhoto: string = '';
   showEditor: boolean = false;
@@ -47,7 +49,7 @@ export class CommentsComponent extends LoadableComponent {
   }
 
   applyComment(comment: Commentary) {
-    comment.created_at = DateHelper.toEuropeFormatWithTime(comment.created_at);
+    comment.createdAt = DateHelper.toEuropeFormatWithTime(comment.createdAt);
     this.comments.push(comment);
   }
 }

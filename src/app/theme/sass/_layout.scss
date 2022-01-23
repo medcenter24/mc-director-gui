@@ -154,7 +154,7 @@ a {
 }
 
 .al-content {
-  padding: 8px 32px 80px 40px;
+  padding: 23px 32px 80px 40px;
 }
 
 @media screen and (max-width: $resXS) {
@@ -245,7 +245,7 @@ a {
   text-align: center;
 }
 
-.top-page-progress-bar .ui-progressbar {
+.top-page-progress-bar .p-progressbar {
   border: 0 none;
   position: fixed;
   top: 0;
@@ -254,7 +254,7 @@ a {
   width: 100%;
   background-color: white;
 
-  .ui-progressbar-value {
+  .p-progressbar-value {
     background-color: #e85656;
   }
 }

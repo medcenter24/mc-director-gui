@@ -16,12 +16,11 @@
  */
 
 import { Injectable } from '@angular/core';
-
-import 'rxjs/add/operator/toPromise';
-
 import { Survey } from './survey';
 import { HttpService } from '../core/http/http.service';
 import { LoadableServiceInterface } from '../core/loadable';
+import { Observable } from 'rxjs';
+import {ObservableTransformer} from '../../helpers/observable.transformer';
 
 @Injectable()
 export class SurveyService extends HttpService implements LoadableServiceInterface {
@@ -30,32 +29,35 @@ export class SurveyService extends HttpService implements LoadableServiceInterfa
     return 'director/surveys';
   }
 
-  getSurveys(filters: Object): Promise<Survey[]> {
-    return this.search(filters).then(response => response.data as Survey[]);
+  getSurveys(filters: Object): Observable<Survey[]> {
+    const obs = this.search(filters);
+    return new ObservableTransformer().transform(obs, r => r.data as Survey[]);
   }
 
-  getSurvey(id: number): Promise<Survey> {
-    return this.get(id).then(response => response.data as Survey);
+  getSurvey(id: number): Observable<Survey> {
+    const obs = this.get(id);
+    return new ObservableTransformer().transform(obs, r => r.data as Survey);
   }
 
-  delete(id: number): Promise<void> {
+  delete(id: number): Observable<void> {
     return this.remove(id);
   }
 
-  create(service: Survey): Promise<Survey> {
-    return this.store(service).then(res => res.json().data as Survey);
+  create(service: Survey): Observable<Survey> {
+    const obs = this.store(service);
+    return new ObservableTransformer().transform(obs, r => r.data as Survey);
   }
 
-  update(service: Survey): Promise<Survey> {
+  update(service: Survey): Observable<Survey> {
     return this.put(service.id, service);
   }
 
-  save(survey: Survey): Promise<Survey> {
-    const action = survey.id ? this.put(survey.id, survey) : this.store(survey);
-    return action.then(response => response as Survey);
+  save(survey: Survey): Observable<Survey> {
+    const obs = survey.id ? this.put(survey.id, survey) : this.store(survey);
+    return new ObservableTransformer().transform(obs, r => r.data as Survey);
   }
 
-  destroy(survey: Survey): Promise<any> {
+  destroy(survey: Survey): Observable<any> {
     return this.remove(survey.id);
   }
 }

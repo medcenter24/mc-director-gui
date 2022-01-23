@@ -34,8 +34,10 @@ import {
 })
 export class SelectServicesComponent extends LoadableComponent implements OnInit {
 
-  @Output() chosenServicesChange: EventEmitter<Service[]> = new EventEmitter<Service[]>();
   @Input() chosenServices: Service[] = [];
+  @Output() chosenServicesChange: EventEmitter<Service[]> = new EventEmitter<Service[]>();
+  @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
 
   isLoaded: boolean = false;
   dataServices: SelectItem[] = [];
@@ -51,7 +53,8 @@ export class SelectServicesComponent extends LoadableComponent implements OnInit
   }
 
   ngOnInit () {
-    this.startLoader();
+    this.startLoader('init');
+    // this.init.emit(`_${this.componentName}init`);
     const statusFilter = {
       'filter': {
         'fields': [
@@ -71,8 +74,8 @@ export class SelectServicesComponent extends LoadableComponent implements OnInit
         ],
       },
     };
-    this.servicesService.getServices(statusFilter).then(services => {
-      this.stopLoader();
+    this.servicesService.getServices(statusFilter).subscribe({next: services => {
+      this.stopLoader('init');
 
       this.services = services;
       this.dataServices = services.map(x => {
@@ -87,17 +90,16 @@ export class SelectServicesComponent extends LoadableComponent implements OnInit
         this.selectedServices = [];
       }
       this.isLoaded = true;
-    }).catch((err) => {
-      this.stopLoader();
+    }, error: (err) => {
+      this.stopLoader('init');
       this._logger.error(err);
-    });
+    }});
   }
 
    onChanged(event): void {
      const services = this.services.filter(function (service) {
        return event.value.indexOf(`${service.id}`) !== -1;
      });
-
      this.chosenServicesChange.emit(services);
    }
 

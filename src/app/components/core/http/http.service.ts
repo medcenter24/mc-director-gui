@@ -18,7 +18,6 @@
 import { Injectable } from '@angular/core';
 import { AuthenticationService } from '../../auth/authentication.service';
 import { environment } from '../../../../environments/environment';
-import 'rxjs/add/operator/toPromise';
 import { GlobalState } from '../../../global.state';
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -27,6 +26,8 @@ import { LoadableServiceInterface } from '../loadable';
 import { ObjectHelper } from '../../../helpers/object.helper';
 import { UiToastService } from '../../ui/toast/ui.toast.service';
 import { TokenService } from '../../auth/token.service';
+import { Observable } from 'rxjs';
+import {ObservableTransformer} from '../../../helpers/observable.transformer';
 
 @Injectable()
 export abstract class HttpService implements LoadableServiceInterface {
@@ -63,90 +64,86 @@ export abstract class HttpService implements LoadableServiceInterface {
   protected abstract getPrefix(): string;
 
   /**
+   * each `next` calls data from the server, so I need to create new observer, to give it control on the loaded data
+   * @protected
+   */
+  protected httpDataObserver(obs: Observable<any>): Observable<any> {
+    return new ObservableTransformer()
+      .transform(obs, r => r, e => this.handleError(e));
+  }
+
+  /**
    * Loading filtered list of data resources
    * @param {Object} filters
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  search (filters: Object): Promise<any> {
+  search (filters: Object): Observable<any> {
     filters = ObjectHelper.extend({}, filters);
-    return this.http.post(this.getUrl('search'), JSON.stringify(filters), { headers: this.getAuthHeaders() })
-      .toPromise()
-      .then(response => {
-        return Promise.resolve(response);
-      })
-      .catch(error => this.handleError(error));
+    return this.httpDataObserver(this.http.post(
+      this.getUrl('search'),
+      JSON.stringify(filters),
+      { headers: this.getAuthHeaders() },
+    ));
   }
 
   /**
    * Get request
    * @param id
    * @param params
-   * @param body
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  protected get(id: string|number = null, params: any = null): Promise<any> {
-    return this.http.get(this.getUrl(id), { headers: this.getAuthHeaders(), params })
-      .toPromise()
-      .catch(error => this.handleError(error));
+  protected get(id: string|number = null, params: any = null): Observable<any> {
+    return this.httpDataObserver(this.http.get(this.getUrl(id), { headers: this.getAuthHeaders(), params }));
   }
 
   /**
    * Delete request
    * @param id
-   * @returns {Promise<any|T>}
+   * @returns {Observable<any>}
    */
-  protected remove(id: any): Promise<any> {
-    return this.http.delete(this.getUrl(id), { headers: this.getAuthHeaders() })
-      .toPromise()
-      .then(() => this.uiToastService.deleted())
-      .catch(error => this.handleError(error));
+  protected remove(id: any): Observable<any> {
+    return this.httpDataObserver(this.http.delete(this.getUrl(id), { headers: this.getAuthHeaders() }));
   }
 
   /**
    * Create new resource
    * @param data
-   * @returns {Promise<any|T>}
+   * @returns {Observable<any>}
    */
-  protected store(data): Promise<any> {
-    return this.http
-      .post(this.getUrl(), JSON.stringify(data), { headers: this.getAuthHeaders() })
-      .toPromise()
-      .then(response => {
+  protected store(data): Observable<any> {
+    const obs = this.http.post(this.getUrl(), JSON.stringify(data), { headers: this.getAuthHeaders() });
+    return new ObservableTransformer()
+      .transform(obs, r => {
         this.uiToastService.created();
-        return Promise.resolve(response);
-      })
-      .catch(error => this.handleError(error));
+        return r;
+      }, e => this.handleError(e));
   }
 
   /**
    * Update resource
    * @param id
    * @param data
-   * @returns {Promise<any|T>}
+   * @returns {Observable<any>}
    */
-  protected put(id, data): Promise<any> {
-
+  protected put(id, data): Observable<any> {
     if (!id) {
       this.uiToastService.httpError();
       return;
     }
-    return this.http
-      .put(this.getUrl(id), JSON.stringify(data), { headers: this.getAuthHeaders() })
-      .toPromise()
-      .then(response => {
+    const obs = this.http.put(this.getUrl(id), JSON.stringify(data), { headers: this.getAuthHeaders() });
+
+    return new ObservableTransformer()
+      .transform(obs, r => {
         this.uiToastService.saved();
-        return Promise.resolve(response);
-      })
-      .catch(error => this.handleError(error));
+        return r;
+      }, e => this.handleError(e));
   }
 
   /**
    * Overlapping errors
    * @param error
-   * @returns {Promise<never>}
    */
-  protected handleError(error: any): Promise<any> {
-
+  protected handleError(error: any) {
     if (!environment.production) {
       this._logger.error(error);
     }
@@ -165,15 +162,13 @@ export abstract class HttpService implements LoadableServiceInterface {
     } else {
       this.uiToastService.httpError();
     }
-
-    return Promise.reject(error);
   }
 
   /**
    * Should be implemented if needed
    * @param model
    */
-  destroy ( model: Object ): Promise<any> {
+  destroy ( model: Object ): Observable<any> {
     return undefined;
   }
 
@@ -181,7 +176,7 @@ export abstract class HttpService implements LoadableServiceInterface {
    * Should be implemented if needed
    * @param model
    */
-  save ( model: Object ): Promise<any> {
+  save ( model: Object ): Observable<any> {
     return undefined;
   }
 }

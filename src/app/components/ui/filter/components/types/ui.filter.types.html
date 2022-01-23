@@ -17,9 +17,9 @@
 <div class="filter-component">
   <span *ngIf="isUndefined()" class="text-warning" translate>Undefined</span>
 
-  <div *ngIf="isText()" class="ui-inputgroup">
+  <div *ngIf="isText()" class="p-inputgroup">
     <input type="text" pInputText [(ngModel)]="value">
-    <button pButton type="button" icon="pi pi-search" class="ui-button-warn" (click)="onSearch(value)"></button>
+    <button pButton type="button" icon="pi pi-search" class="p-button-warn" (click)="onSearch(value)"></button>
   </div>
 
   <nga-auto-complete

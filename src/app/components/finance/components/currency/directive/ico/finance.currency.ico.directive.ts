@@ -72,7 +72,8 @@ export class FinanceCurrencyIcoDirective implements OnChanges {
   private setCurrency(): void {
     // currencies
     if (this.currencies === null) {
-      this.currencyService.search({}).then(response => {
+      const obs = this.currencyService.search({});
+      obs.subscribe(response => {
         this.currencies = response.data as FinanceCurrency[];
         this.setCurrencyFromCache();
       });

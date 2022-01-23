@@ -15,3 +15,4 @@
  * Copyright (c) 2019 (original work) MedCenter24.com;
  */
 
+export * from './assistant.editor.module';

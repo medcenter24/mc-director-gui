@@ -15,11 +15,12 @@
  * Copyright (c) 2019 (original work) MedCenter24.com;
  */
 
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { SelectorConfig } from '../../selector.config';
-import { SearchFilter } from '../../../../core/loadable/search.filter';
-import { SelectorProviderMultipleAdapterComponent } from './adapter';
-import { LoadableComponent } from '../../../../core/components/componentLoader';
+import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {SelectorConfig} from '../../selector.config';
+import {SearchFilter} from '../../../../core/loadable/search.filter';
+import {SelectorProviderMultipleAdapterComponent} from './adapter';
+import {LoadableComponent} from '../../../../core/components/componentLoader';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'nga-selector-multiple',
@@ -27,6 +28,9 @@ import { LoadableComponent } from '../../../../core/components/componentLoader';
 })
 export class SelectorProviderMultipleComponent extends LoadableComponent implements OnInit {
   protected componentName: string = 'SelectorProviderMultipleComponent';
+
+  @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
 
   /**
    * Income configuration
@@ -46,7 +50,7 @@ export class SelectorProviderMultipleComponent extends LoadableComponent impleme
    * Html adapter element
    */
   @ViewChild('selectorProviderMultipleAdapter')
-    adapter: SelectorProviderMultipleAdapterComponent;
+  adapter: SelectorProviderMultipleAdapterComponent;
 
   /**
    * Configuration for the current selector
@@ -61,7 +65,7 @@ export class SelectorProviderMultipleComponent extends LoadableComponent impleme
   options: any[] = [];
 
   ngOnInit(): void {
-    this.loadData(null).then(() => {
+    this.loadData(null).subscribe((r) => {
       this.selectItems(this.conf.preloaded);
     });
   }
@@ -96,17 +100,23 @@ export class SelectorProviderMultipleComponent extends LoadableComponent impleme
   /**
    * Load data according to the provided filter
    * @param {SearchFilter} filter
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  loadData(filter: SearchFilter = null): Promise<any> {
+  loadData(filter: SearchFilter = null): Observable<any> {
     const postfix = 'LoadData';
     this.startLoader(postfix);
-    return this.conf.dataProvider
-      .search(filter).then(response => {
+    const obs = this.conf.dataProvider.search(filter);
+    obs.subscribe({
+      next: response => {
         this.stopLoader(postfix);
         this.options = response.data;
         return this.options;
-      }).catch(() => this.stopLoader(postfix));
+      },
+      error: (e) => {
+        this.stopLoader(postfix);
+      },
+    });
+    return obs;
   }
 
   /**

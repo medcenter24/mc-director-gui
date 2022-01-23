@@ -18,11 +18,11 @@
 export class Commentary {
   constructor(
     public id: number = 0,
-    public user_id: number = 0,
-    public user_name: string = '',
-    public user_thumb: string = '',
+    public userId: number = 0,
+    public userName: string = '',
+    public userThumb: string = '',
     public body: string = '',
-    public created_at: string = '',
+    public createdAt: string = '',
     public formattedDate: string = '',
   ) {}
 }

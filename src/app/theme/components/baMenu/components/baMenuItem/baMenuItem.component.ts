@@ -15,7 +15,7 @@
  * Copyright (c) 2019 (original work) MedCenter24.com;
  */
 
-import {Component, Input, Output, EventEmitter} from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'ba-menu-item',
@@ -24,17 +24,17 @@ import {Component, Input, Output, EventEmitter} from '@angular/core';
 })
 export class BaMenuItem {
 
-  @Input() menuItem:any;
-  @Input() child:boolean = false;
+  @Input() menuItem: any;
+  @Input() child: boolean = false;
 
   @Output() itemHover = new EventEmitter<any>();
   @Output() toggleSubMenu = new EventEmitter<any>();
 
-  public onHoverItem($event):void {
+  onHoverItem($event): void {
     this.itemHover.emit($event);
   }
 
-  public onToggleSubMenu($event, item):boolean {
+  onToggleSubMenu($event, item): boolean {
     $event.item = item;
     this.toggleSubMenu.emit($event);
     return false;

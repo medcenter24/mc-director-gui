@@ -28,6 +28,8 @@ export class AccidentCheckpointsSelectorComponent extends LoadableComponent impl
 
   @Input() selectedCheckpoints: number[] = [];
   @Output() change: EventEmitter<number[]> = new EventEmitter<number[]>();
+  @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
 
   checkpoints: AccidentCheckpoint[] = [];
   isLoaded: boolean = false;
@@ -39,11 +41,13 @@ export class AccidentCheckpointsSelectorComponent extends LoadableComponent impl
   ngOnInit () {
     this.startLoader();
     this.isLoaded = false;
-    this.accidentCheckpointsService.search([]).then(response => {
+    const obs = this.accidentCheckpointsService.search([]);
+    obs.subscribe(response => {
       this.stopLoader();
       this.checkpoints = response.data as AccidentCheckpoint[];
       this.isLoaded = true;
-    }).catch(() => this.stopLoader());
+    });
+    obs.subscribe({error: this.stopLoader});
   }
 
   onChange(): void {

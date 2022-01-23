@@ -17,6 +17,7 @@
 
 import { SearchableServiceInterface } from '../../../components/core/loadable';
 import { SearchFilter } from '../../../components/core/loadable/search.filter';
+import {Observable} from 'rxjs';
 
 export class SimpleSearchProviderMock implements SearchableServiceInterface {
 
@@ -33,11 +34,11 @@ export class SimpleSearchProviderMock implements SearchableServiceInterface {
     }],
   };
 
-  search(filter: SearchFilter = null): Promise<any> {
+  search(filter: SearchFilter = null): Observable<any> {
     const filtered = this.data;
     if (filter && filter.first) {
       filtered.data = filtered.data.slice(filter.first, filter.rows);
     }
-    return new Promise<any>(resolve => resolve(filtered));
+    return new Observable<any>(subscriber => subscriber.next(filtered));
   }
 }

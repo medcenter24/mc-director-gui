@@ -16,7 +16,6 @@
  */
 
 import { ChangeDetectorRef, Component } from '@angular/core';
-
 import { GlobalState } from '../../../global.state';
 import { AuthenticationService } from '../../../components/auth/authentication.service';
 import { LocalStorageHelper } from '../../../helpers/local.storage.helper';
@@ -45,12 +44,12 @@ export class BaPageTopComponent {
       this.isMenuCollapsed = isCollapsed;
     });
     this._state.subscribe('avatarB64', (b64: string) => {
-        this.avatar = b64.length ? `data:image/jpeg;base64,${b64}` : `${layoutPaths.images.profile}no-photo.png`;
+        this.avatar = b64.length ? b64 : `${layoutPaths.images.profile}no-photo.png`;
     });
     this.avatar = this.storage.getItem('avatar');
 
     this.avatar = typeof this.avatar !== 'undefined' && this.avatar !== 'undefined' && this.avatar.length ?
-        `data:image/jpeg;base64,${this.avatar}` : `${layoutPaths.images.profile}no-photo.png`;
+        this.avatar : `${layoutPaths.images.profile}no-photo.png`;
   }
 
   toggleMenu() {

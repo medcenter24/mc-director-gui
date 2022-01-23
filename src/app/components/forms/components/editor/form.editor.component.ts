@@ -16,8 +16,8 @@
  */
 
 import {
-  Component, ElementRef,
-  OnInit, ViewChild,
+  Component, ElementRef, EventEmitter,
+  OnInit, Output, ViewChild,
 } from '@angular/core';
 import { LoadableComponent } from '../../../core/components/componentLoader';
 import { ActivatedRoute, Params, Router } from '@angular/router';
@@ -26,7 +26,7 @@ import { FormService } from '../../form.service';
 import { Form } from '../../form';
 import { TranslateService } from '@ngx-translate/core';
 import { FormOption } from '../options/form.option';
-import { BaToolboxAction } from '../../../../theme/components/baToolbox';
+import { BaToolboxAction } from '../../../../theme/components';
 import { Breadcrumb } from '../../../../theme/components/baContentTop/breadcrumb';
 import { FormsOptionsEditorComponent } from '../options/editor';
 declare var $: any;
@@ -37,6 +37,9 @@ declare var $: any;
 })
 export class FormEditorComponent extends LoadableComponent implements OnInit {
   protected componentName: string = 'FormEditorComponent';
+
+  @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
 
   isLoaded: boolean = false;
   form: Form;
@@ -75,19 +78,18 @@ export class FormEditorComponent extends LoadableComponent implements OnInit {
           this._state.notifyDataChanged('menu.activeLink', breadcrumbs);
           this._state.notifyDataChanged('changeTitle', title);
 
-          this.showToolbox();
-
           const id = +params['id'];
+          this.showToolbox(id);
           if (id) {
             this.startLoader();
 
             this.formService.getForm(id)
-              .then((form: Form) => {
+              .subscribe({next: (form: Form) => {
                 this.stopLoader();
                 this._state.notifyDataChanged('changeTitle', `${this.translateService.instant('Template')} · ${form.title}`);
                 this.form = form;
                 this.readyToLoad();
-              }).catch(() => this.stopLoader());
+              }, error: () => this.stopLoader()});
           } else {
             this.form = new Form();
             this.readyToLoad();
@@ -96,7 +98,7 @@ export class FormEditorComponent extends LoadableComponent implements OnInit {
     });
   }
 
-  private showToolbox(): void {
+  private showToolbox(id: Number): void {
     const actions: BaToolboxAction[] = [];
     actions.push(new BaToolboxAction(this.translateService.instant('Back'), 'fa fa-angle-left', () => {
       this.goToList().then();
@@ -104,9 +106,11 @@ export class FormEditorComponent extends LoadableComponent implements OnInit {
     actions.push(new BaToolboxAction(this.translateService.instant('Save'), 'fa fa-save', () => {
       this.saveForm();
     }));
-    actions.push(new BaToolboxAction(this.translateService.instant('Delete'), 'fa fa-times', () => {
-      this.onDelete();
-    }));
+    if (id) {
+      actions.push(new BaToolboxAction(this.translateService.instant('Delete'), 'fa fa-times', () => {
+        this.onDelete();
+      }));
+    }
     actions.push(new BaToolboxAction(this.translateService.instant('Preview'), 'fa fa-eye', () => {
       this.onPreview();
     }));
@@ -147,12 +151,11 @@ export class FormEditorComponent extends LoadableComponent implements OnInit {
           const postfix = 'Delete';
           this.startLoader(postfix);
           this.formService.destroy(this.form)
-            .then(() => {
+            .subscribe({next: () => {
               this.goToList().then(() => this.stopLoader(postfix));
-            })
-            .catch(() => {
+            }, error: () => {
               this.stopLoader(postfix);
-            });
+            }});
         },
         icon: 'fa fa-window-close-o red',
       },
@@ -164,15 +167,17 @@ export class FormEditorComponent extends LoadableComponent implements OnInit {
     this.startLoader(postfix);
     const previousId = this.form.id;
     this.formService.save(form)
-      .then(savedForm => {
-        this.stopLoader(postfix);
-        if (!previousId) {
-          this.router.navigate([`pages/settings/forms/${savedForm.id}`]).then();
-        }/* else {
-          this.form = savedForm;
-        }*/
-      })
-      .catch(() => this.stopLoader(postfix) );
+      .subscribe({
+        next: savedForm => {
+          this.stopLoader(postfix);
+          if (!previousId) {
+            this.router.navigate([`pages/settings/forms/${savedForm.id}`]).then();
+          }/* else {
+            this.form = savedForm;
+          }*/
+        },
+        error: () => this.stopLoader(postfix),
+      });
   }
 
   setSelectedVar(formParam: FormOption): void {

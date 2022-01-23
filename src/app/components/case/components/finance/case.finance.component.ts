@@ -15,7 +15,7 @@
  * Copyright (c) 2019 (original work) MedCenter24.com;
  */
 
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { LoadableComponent } from '../../../core/components/componentLoader';
 import { Accident } from '../../../accident/accident';
 import { TranslateService } from '@ngx-translate/core';
@@ -31,6 +31,8 @@ export class CaseFinanceComponent extends LoadableComponent implements OnInit {
   protected componentName: string = 'CaseFinanceComponent';
 
   @Input() accident: Accident;
+  @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
 
   types: string[] = ['income', 'assistant', 'caseable'];
   paymentViewers: PaymentViewer[] = [];
@@ -56,13 +58,13 @@ export class CaseFinanceComponent extends LoadableComponent implements OnInit {
    * @param types [income, assistant, caseable]
    */
   private reload(types: string[] = []): void {
-    this.caseService.getFinance(this.accident, types).then((paymentViewers: PaymentViewer[]) => {
+    this.caseService.getFinance(this.accident, types).subscribe((paymentViewers: PaymentViewer[]) => {
       this.updatePaymentViewers(paymentViewers);
     });
   }
 
   private save(type: string, data: Object): void {
-    this.caseService.saveFinance(this.accident, type, data).then((paymentViewers: PaymentViewer[]) => {
+    this.caseService.saveFinance(this.accident, type, data).subscribe((paymentViewers: PaymentViewer[]) => {
       this.updatePaymentViewers(paymentViewers);
     });
   }

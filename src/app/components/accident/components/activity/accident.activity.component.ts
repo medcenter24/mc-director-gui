@@ -15,7 +15,7 @@
  * Copyright (c) 2019 (original work) MedCenter24.com;
  */
 
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { LoadableComponent } from '../../../core/components/componentLoader';
 import { Accident } from '../../accident';
 
@@ -29,6 +29,8 @@ export class AccidentActivityComponent extends LoadableComponent implements OnIn
   protected componentName: string = 'CaseActivityComponent';
 
   @Input() accident: Accident;
+  @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
 
   selectedTab = null;
   tabs: any[] = [

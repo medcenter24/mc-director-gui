@@ -17,15 +17,15 @@
 
 <div class="accident-history-container">
     <div class="media mb-2" *ngFor="let event of history">
-        <img class="mr-3" *ngIf="event.user_id && event.user_thumb" [alt]="event.user_name" src="{{ 'data:image/jpeg;base64,' + event.user_thumb }}">
-        <img class="mr-3" *ngIf="!event.user_id || !event.user_thumb" alt="{{ 'System' | translate }}" width="45" src="{{ noPhoto }}">
+        <img class="mr-3" *ngIf="event.userId && event.userThumb" [alt]="event.userName" src="{{ event.userThumb }}">
+        <img class="mr-3" *ngIf="!event.userId || !event.userThumb" alt="{{ 'System' | translate }}" width="45" src="{{ noPhoto }}">
         <div class="media-body">
             <h5 class="mt-0">
-                <span *ngIf="event.user_id" class="mt-0">{{ event.user_name }}</span>
-                <span *ngIf="!event.user_id" class="mt-0 text-muted" translate>System</span>
+                <span *ngIf="event.userId" class="mt-0">{{ event.userName }}</span>
+                <span *ngIf="!event.userId" class="mt-0 text-muted" translate>System</span>
                 &nbsp;
                 <small>
-                    <span translate>made changes</span> - <span class="text-muted">{{ event.createdFormated }}</span>
+                    <span translate>made changes</span> - <span class="text-muted">{{ event.createdFormatted }}</span>
                 </small>
             </h5>
             <p><span translate>Status</span>&nbsp;<span class="accident-status_{{event.status}}" translate>{{ event.status }}</span></p>

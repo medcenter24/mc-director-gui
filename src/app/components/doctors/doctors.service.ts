@@ -20,6 +20,8 @@ import { Doctor } from './doctor';
 import { HttpService } from '../core/http/http.service';
 import { City } from '../city';
 import { LoadableServiceInterface } from '../core/loadable';
+import {Observable} from 'rxjs';
+import {ObservableTransformer} from '../../helpers/observable.transformer';
 
 @Injectable()
 export class DoctorsService extends HttpService implements LoadableServiceInterface {
@@ -28,44 +30,50 @@ export class DoctorsService extends HttpService implements LoadableServiceInterf
     return 'director/doctors';
   }
 
-  getDoctors(): Promise<Doctor[]> {
-    return this.get().then(response => response.data as Doctor[]);
+  getDoctors(): Observable<Doctor[]> {
+    const obs = this.get();
+    return new ObservableTransformer().transform(obs, r => r.data as Doctor[]);
   }
 
-  getDoctor(id: number): Promise<Doctor> {
-    return this.get(id).then(response => response.data as Doctor);
+  getDoctor(id: number): Observable<Doctor> {
+    const obs = this.get(id);
+    return new ObservableTransformer().transform(obs, r => r.data as Doctor);
   }
 
-  delete(id: number): Promise<void> {
+  delete(id: number): Observable<void> {
     return this.remove(id);
   }
 
-  create(doctor: Doctor): Promise<Doctor> {
-    return this.store(doctor).then(res => res as Doctor);
+  create(doctor: Doctor): Observable<Doctor> {
+    const obs = this.store(doctor);
+    return new ObservableTransformer().transform(obs, r => r.data as Doctor);
   }
 
-  update(doctor: Doctor): Promise<Doctor> {
-    return this.put(doctor.id, doctor).then(res => res.data as Doctor);
+  update(doctor: Doctor): Observable<Doctor> {
+    const obs = this.put(doctor.id, doctor);
+    return new ObservableTransformer().transform(obs, r => r.data as Doctor);
   }
 
-  getDoctorCities(id: number): Promise<City[]> {
-    return this.get(`${id}/cities`).then(res => res.data as City[]);
+  getDoctorCities(id: number): Observable<City[]> {
+    const obs = this.get(`${id}/cities`);
+    return new ObservableTransformer().transform(obs, r => r.data as City[]);
   }
 
-  setDoctorCities(id: number, cities: City[]): Promise<any> {
+  setDoctorCities(id: number, cities: City[]): Observable<any> {
     return this.put(`${id}/cities`, { cities: cities.map(x => x.id) });
   }
 
-  getDoctorsByCity(cityId: number): Promise<Doctor[]> {
-    return this.get(`cities/${cityId}`).then(res => res.data as Doctor[]);
+  getDoctorsByCity(cityId: number): Observable<Doctor[]> {
+    const obs = this.get(`cities/${cityId}`);
+    return new ObservableTransformer().transform(obs, r => r.data as Doctor[]);
   }
 
-  save (doctor: Doctor): Promise<Doctor> {
-    const action = doctor.id ? this.put(doctor.id, doctor) : this.store(doctor);
-    return action.then(response => response.data as Doctor);
+  save (doctor: Doctor): Observable<Doctor> {
+    const obs = doctor.id ? this.put(doctor.id, doctor) : this.store(doctor);
+    return new ObservableTransformer().transform(obs, r => r.data as Doctor);
   }
 
-  destroy (doctor: Doctor): Promise<any> {
+  destroy (doctor: Doctor): Observable<any> {
     return this.remove(doctor.id);
   }
 }

@@ -1,4 +1,6 @@
 {
+  "No file chosen": "Файл не выбран",
+  "No results found": "Ничего не найдено",
   "Back to Top": "Вверх",
   "Fixed Value": "Зафиксированное значение",
   "Invoice Value": "Значение из инвойса",
@@ -483,5 +485,8 @@
   "Password": "Пароль",
   "Incorrect Email or password": "Неправильный Е-Мейл или пароль",
   "Select Diseases": "Выбор болезней",
-  "no_diseases_assigned": "Болезни не назначены"
+  "no_diseases_assigned": "Болезни не назначены",
+  "Change Picture": "Изменить изображение",
+  "Default Picture Mock": "Заглушка без картинки",
+  "Loaded Picture": "Загруженное изображение"
 }

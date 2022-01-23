@@ -16,11 +16,10 @@
  */
 
 import { Injectable } from '@angular/core';
-
-import 'rxjs/add/operator/toPromise';
-
 import { Disease } from './disease';
 import { HttpService } from '../core/http/http.service';
+import {Observable} from 'rxjs';
+import {ObservableTransformer} from '../../helpers/observable.transformer';
 
 @Injectable()
 export class DiseaseService extends HttpService {
@@ -29,12 +28,12 @@ export class DiseaseService extends HttpService {
     return 'director/diseases';
   }
 
-  save(disease: Disease): Promise<Disease> {
-    const action = disease.id ? this.put(disease.id, disease) : this.store(disease);
-    return action.then(response => response as Disease);
+  save(disease: Disease): Observable<Disease> {
+    const obs = disease.id ? this.put(disease.id, disease) : this.store(disease);
+    return new ObservableTransformer().transform(obs, r => r.data as Disease);
   }
 
-  destroy(disease: Disease): Promise<any> {
+  destroy(disease: Disease): Observable<any> {
     return this.remove(disease.id);
   }
 }

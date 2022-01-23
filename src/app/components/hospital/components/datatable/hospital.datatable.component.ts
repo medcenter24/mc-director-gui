@@ -108,15 +108,14 @@ export class HospitalDatatableComponent extends AbstractDatatableController {
     const postfix = 'Save';
     this.startLoader(postfix);
     this.hospitalService.save(this.hospital)
-      .then(() => {
+      .subscribe({next: () => {
         this.stopLoader(postfix);
         this.setHospital();
         this.displayDialog = false;
         this.datatable.refresh();
-      })
-      .catch(() => {
+      }, error: () => {
         this.stopLoader(postfix);
-      });
+      }});
   }
 
   onRowSelect(event) {
@@ -141,15 +140,14 @@ export class HospitalDatatableComponent extends AbstractDatatableController {
           const postfix = 'Delete';
           this.startLoader(postfix);
           this.hospitalService.destroy(this.hospital)
-            .then(() => {
+            .subscribe({next: () => {
               this.stopLoader(postfix);
               this.setHospital();
               this.displayDialog = false;
               this.datatable.refresh();
-            })
-            .catch(() => {
+            }, error: () => {
               this.stopLoader(postfix);
-            });
+            }});
         },
         icon: 'fa fa-window-close-o red',
       },

@@ -15,17 +15,17 @@
  * Copyright (c) 2019 (original work) MedCenter24.com;
  */
 
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { NumbersHelper } from '../../../../helpers/numbers.helper';
-import { LoadableComponent } from '../../../core/components/componentLoader';
-import { Form, FormService } from '../../../forms';
-import { AutocompleterComponent } from '../../../ui/selector/components/autocompleter';
-import { Upload } from '../../../upload/upload';
-import { Invoice } from '../../invoice';
-import { InvoiceService } from '../../invoice.service';
-import { FormViewerComponent } from '../../../forms/components/viewer';
-import { UiToastService } from '../../../ui/toast/ui.toast.service';
-import { TranslateService } from '@ngx-translate/core';
+import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {NumbersHelper} from '../../../../helpers/numbers.helper';
+import {LoadableComponent} from '../../../core/components/componentLoader';
+import {Form, FormService} from '../../../forms';
+import {AutocompleterComponent} from '../../../ui/selector/components/autocompleter';
+import {Upload} from '../../../upload/upload';
+import {Invoice} from '../../invoice';
+import {InvoiceService} from '../../invoice.service';
+import {FormViewerComponent} from '../../../forms/components/viewer';
+import {UiToastService} from '../../../ui/toast/ui.toast.service';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'nga-invoice-editor',
@@ -34,11 +34,14 @@ import { TranslateService } from '@ngx-translate/core';
 export class InvoiceEditorComponent extends LoadableComponent implements OnInit {
   protected componentName: string = 'InvoiceEditorComponent';
 
+  @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
+
   @ViewChild('invoiceFormAutocompleter')
-    invoiceFormAutocompleter: AutocompleterComponent;
+  invoiceFormAutocompleter: AutocompleterComponent;
 
   @ViewChild('formViewerComponent')
-    formViewerComponent: FormViewerComponent;
+  formViewerComponent: FormViewerComponent;
 
   @Input() invoice: Invoice;
   @Input() label: string = 'Invoice';
@@ -48,7 +51,7 @@ export class InvoiceEditorComponent extends LoadableComponent implements OnInit 
   @Input() dataModelId: number = 0; // entity which I can load for this invoice
                                     // (for example accident for the current invoice)
 
-  @Output() sourceChosen: EventEmitter<Form|Upload> = new EventEmitter<Form|Upload>();
+  @Output() sourceChosen: EventEmitter<Form | Upload> = new EventEmitter<Form | Upload>();
   @Output() saved: EventEmitter<Invoice> = new EventEmitter<Invoice>();
 
   file: Upload;
@@ -74,7 +77,7 @@ export class InvoiceEditorComponent extends LoadableComponent implements OnInit 
 
   preview(): void {
     if (this.formViewerComponent) {
-      this.formViewerComponent.preview( true );
+      this.formViewerComponent.preview(true);
     } else {
       this.translateService.get('Choose a form of the invoice')
         .subscribe((translation: string) => {
@@ -121,42 +124,54 @@ export class InvoiceEditorComponent extends LoadableComponent implements OnInit 
     if (update && +invoice.id) {
       const postfix = 'SearchInvoice';
       this.startLoader(postfix);
-      this.invoiceService.search({
+      const obs = this.invoiceService.search({
         filter:
-          { fields: [{
-            elType: 'text',
-            field: 'id',
-            match: 'eq',
-            value: invoice.id,
-          }] },
-      }).then(response => {
-        this.stopLoader(postfix);
-        if (response.data.length) {
-          this.invoice = response.data[0] as Invoice;
-          if (this.isFormInvoice()) {
-            const postfix1 = 'GetInvoiceForm';
-            this.startLoader(postfix1);
-            this.invoiceService.getForm(this.invoice).then((form: Form) => {
-              this.stopLoader(postfix1);
-              this.invoiceFormAutocompleter.selectItems(form);
-              this.form = form;
-            }).catch(() => {
-              this.stopLoader(postfix1);
-            });
-          } else if (this.isFileInvoice()) {
-            const postfix2 = 'GetInvoiceFile';
-            this.startLoader(postfix2);
-            this.invoiceService.getFile(this.invoice).then((file: Upload) => {
-              this.stopLoader(postfix2);
-              this.file = file;
-            }).catch(() => this.stopLoader(postfix2));
+          {
+            fields: [{
+              elType: 'text',
+              field: 'id',
+              match: 'eq',
+              value: invoice.id,
+            }],
+          },
+      });
+      obs.subscribe({
+        next: response => {
+          this.stopLoader(postfix);
+          if (response.data.length) {
+            this.invoice = response.data[0] as Invoice;
+            if (this.isFormInvoice()) {
+              const postfix1 = 'GetInvoiceForm';
+              this.startLoader(postfix1);
+              const obsForm = this.invoiceService.getForm(this.invoice);
+              obsForm.subscribe({
+                next: (form: Form) => {
+                  this.stopLoader(postfix1);
+                  this.invoiceFormAutocompleter.selectItems(form);
+                  this.form = form;
+                }, error: () => {
+                  this.stopLoader(postfix1);
+                },
+              });
+            } else if (this.isFileInvoice()) {
+              const postfix2 = 'GetInvoiceFile';
+              this.startLoader(postfix2);
+              const obsFile = this.invoiceService.getFile(this.invoice);
+              obsFile.subscribe({
+                next: (file: Upload) => {
+                  this.stopLoader(postfix2);
+                  this.file = file;
+                }, error: () => this.stopLoader(postfix2),
+              });
+            } else {
+              throw new Error('Invoice type is not defined');
+            }
           } else {
-            throw new Error('Invoice type is not defined');
+            throw new Error('Invoice not found');
           }
-        } else {
-          throw new Error('Invoice not found');
-        }
-      }).catch(() => this.stopLoader(postfix));
+        },
+        error: () => this.stopLoader(postfix),
+      });
     } else {
       this.invoice = invoice;
     }
@@ -167,27 +182,33 @@ export class InvoiceEditorComponent extends LoadableComponent implements OnInit 
     this.startLoader(postfix);
     this.saving = true;
     if (this.isFileInvoice()) {
-      this.invoiceService.assignFile(this.invoice, this.file).then( (invoice: Invoice) => {
-        this.stopLoader(postfix);
-        this.invoice = invoice;
-        this.saving = false;
-        this.saved.emit(this.invoice);
-      }).catch(() => {
-        this.stopLoader(postfix);
-        this.saving = false;
+      const obs = this.invoiceService.assignFile(this.invoice, this.file);
+      obs.subscribe({
+        next: (invoice: Invoice) => {
+          this.stopLoader(postfix);
+          this.invoice = invoice;
+          this.saving = false;
+          this.saved.emit(this.invoice);
+        }, error: () => {
+          this.stopLoader(postfix);
+          this.saving = false;
+        },
       });
     } else if (this.isFormInvoice()) {
       if (!this.form || !this.form.id) {
         return;
       }
-      this.invoiceService.assignForm(this.invoice, this.form).then((invoice: Invoice) => {
-        this.saving = false;
-        this.stopLoader(postfix);
-        this.invoice = invoice;
-        this.saved.emit(this.invoice);
-      }).catch(() => {
-        this.saving = false;
-        this.stopLoader(postfix);
+      const obs = this.invoiceService.assignForm(this.invoice, this.form);
+      obs.subscribe({
+        next: (invoice: Invoice) => {
+          this.saving = false;
+          this.stopLoader(postfix);
+          this.invoice = invoice;
+          this.saved.emit(this.invoice);
+        }, error: () => {
+          this.saving = false;
+          this.stopLoader(postfix);
+        },
       });
     } else {
       this.saving = false;

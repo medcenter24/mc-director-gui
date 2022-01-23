@@ -40,7 +40,7 @@ export class BaMenuComponent implements OnDestroy, OnInit {
   hoverElemHeight: number;
   hoverElemTop: number;
   protected _onRouteChange: Subscription;
-  outOfArea: number = -200;
+  outOfArea: number = 0;
 
   constructor(private _router: Router, private _service: BaMenuService, private _state: GlobalState) {
   }
@@ -81,8 +81,7 @@ export class BaMenuComponent implements OnDestroy, OnInit {
   hoverItem($event): void {
     this.showHoverElem = true;
     this.hoverElemHeight = $event.currentTarget.clientHeight;
-    // TODO: get rid of magic 66 constant
-    this.hoverElemTop = $event.currentTarget.getBoundingClientRect().top - 66;
+    this.hoverElemTop = $event.currentTarget.getBoundingClientRect().top;
   }
 
   toggleSubMenu($event): boolean {

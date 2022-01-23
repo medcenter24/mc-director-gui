@@ -15,6 +15,8 @@
  * Copyright (c) 2019 (original work) MedCenter24.com;
  */
 
+@use "sass:math";
+
 $hover: 24;
 .btn:focus, .btn:active:focus, .btn.active:focus,
 .btn.focus, .btn:active.focus, .btn.active.focus {
@@ -46,7 +48,7 @@ $hover: 24;
   &.disabled.focus, &[disabled].focus, fieldset[disabled] &.focus, &.disabled:active,
   &[disabled]:active, fieldset[disabled] &:active, &.disabled.active, &[disabled].active,
   fieldset[disabled] &.active {
-    @include styleButton($color, darken($borderColor, $hover/2));
+    @include styleButton($color, darken($borderColor, math.div($hover, 2)));
     &:hover {
       transform: none;
     }
@@ -148,7 +150,7 @@ button.btn.btn-inverse {
 }
 
 @mixin buttonGroupColor($color) {
-  border-color: lighten($color, $hover/2);
+  border-color: lighten($color, math.div($hover, 2));
   &:hover {
     border-color: lighten($color, $hover);
   }
@@ -171,7 +173,7 @@ button.btn.btn-inverse {
     @include buttonGroupColor($warning);
   }
   .dropdown-menu {
-    margin-top: 0px;
+    margin-top: 0;
   }
 }
 

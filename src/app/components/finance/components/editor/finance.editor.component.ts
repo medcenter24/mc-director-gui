@@ -15,7 +15,7 @@
  * Copyright (c) 2019 (original work) MedCenter24.com;
  */
 
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { LoadableComponent } from '../../../core/components/componentLoader';
 import { Doctor, DoctorsService } from '../../../doctors';
@@ -31,7 +31,6 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { GlobalState } from '../../../../global.state';
 import { FinanceCurrencyService } from '../currency/finance.currency.service';
 import { Breadcrumb } from '../../../../theme/components/baContentTop/breadcrumb';
-import { UiToastService } from '../../../ui/toast/ui.toast.service';
 
 @Component({
   selector: 'nga-finance-editor',
@@ -40,6 +39,9 @@ import { UiToastService } from '../../../ui/toast/ui.toast.service';
 })
 export class FinanceEditorComponent extends LoadableComponent implements OnInit {
   protected componentName: string = 'FinanceEditorComponent';
+
+  @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
 
   rule: FinanceRule = new FinanceRule();
 
@@ -89,7 +91,7 @@ export class FinanceEditorComponent extends LoadableComponent implements OnInit 
           });
 
           this.startLoader();
-          this.financeService.getFinanceRule(id).then((financeRule: FinanceRule) => {
+          this.financeService.getFinanceRule(id).subscribe({next: (financeRule: FinanceRule) => {
             this.stopLoader();
 
             this.translateService.get('Finance').subscribe((trans: string) => {
@@ -101,7 +103,7 @@ export class FinanceEditorComponent extends LoadableComponent implements OnInit 
 
             this.rule = financeRule;
             this.isLoaded = true;
-          }).catch(() => this.stopLoader());
+          }, error: () => this.stopLoader()});
         } else {
             this.isLoaded = true;
 
@@ -160,17 +162,16 @@ export class FinanceEditorComponent extends LoadableComponent implements OnInit 
     const postfix = 'SaveRule';
     this.startLoader(postfix);
     this.financeService.save(this.rule)
-      .then(rule => {
+      .subscribe({next: rule => {
         this.stopLoader(postfix);
         if (!this.rule || !this.rule.id) {
           this.router.navigate([`pages/finance/conditions/${rule.id}`]).then();
         } else {
           this.rule = rule;
         }
-      })
-      .catch(() => {
+      }, error: () => {
         this.stopLoader(postfix);
-      });
+      }});
   }
 
   deleteFinanceRule(): void {
@@ -182,13 +183,12 @@ export class FinanceEditorComponent extends LoadableComponent implements OnInit 
           const postfix = 'DeleteRule';
           this.startLoader(postfix);
           this.financeService.destroy(this.rule)
-            .then(() => {
+            .subscribe({next: () => {
               this.stopLoader(postfix);
               this.router.navigate([`pages/finance/conditions`]).then();
-            })
-            .catch(() => {
+            }, error: () => {
               this.stopLoader(postfix);
-            });
+            }});
         },
         icon: 'fa fa-window-close-o red',
       },

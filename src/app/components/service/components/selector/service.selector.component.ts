@@ -30,6 +30,8 @@ export class ServiceSelectorComponent extends LoadableComponent implements OnIni
 
   @Input() caseId: number = 0;
   @Output() changedServices: EventEmitter<Service[]> = new EventEmitter<Service[]>();
+  @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
 
   @ViewChild('selectServices')
     private selectServicesComponent: SelectServicesComponent;
@@ -67,15 +69,15 @@ export class ServiceSelectorComponent extends LoadableComponent implements OnIni
     this.stopLoader(name);
     if (this.caseId) {
       this.startLoader();
-      this.casesService.getCaseServices(this.caseId).then(services => {
+      this.casesService.getCaseServices(this.caseId).subscribe({next: services => {
         this.stopLoader();
         this.caseServices = services;
         this.selectServicesComponent.reloadChosenServices(this.caseServices);
         this.onServicesChanged();
-      }).catch((err) => {
+      }, error: (err) => {
         this.stopLoader();
         this._logger.error(err);
-      });
+      }});
     }
   }
 

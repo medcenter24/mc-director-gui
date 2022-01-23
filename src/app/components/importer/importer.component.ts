@@ -57,13 +57,13 @@ export class ImporterComponent implements OnInit {
 
   private loadImportQueue(): void {
     this._state.notifyDataChanged('runLoadingProcess', true);
-    this.importerService.getQueue(this.url).then(uploads => {
+    this.importerService.getQueue(this.url).subscribe({next: uploads => {
       this.uploadedFiles = uploads.data;
       this._state.notifyDataChanged('runLoadingProcess', false);
-    }).catch((err) => {
+    }, error: (err) => {
       this._state.notifyDataChanged('runLoadingProcess', false);
       this._logger.error(err);
-    });
+    }});
   }
 
   showImporter (): void {
@@ -161,7 +161,7 @@ export class ImporterComponent implements OnInit {
     if (this.importerCounter) {
       this._state.notifyDataChanged('runLoadingProcess', true);
       files.map(id => {
-        this.importerService.importFile(this.url, id).then(resp => {
+        this.importerService.importFile(this.url, id).subscribe({next: resp => {
           this.selectedFiles = this.selectedFiles.filter(val => +val !== +id);
           $(`.row-file-${id}`).addClass('is-success');
           this.importedFiles.push({
@@ -170,7 +170,7 @@ export class ImporterComponent implements OnInit {
             response: resp.accidentId,
           });
           this._state.notifyDataChanged('runLoadingProcess', false);
-        }).catch(response => {
+        }, error: response => {
           this.selectedFiles = this.selectedFiles.filter(val => +val !== +id);
           $(`.row-file-${id}`).addClass('error');
           this.importedFiles.push({
@@ -180,7 +180,7 @@ export class ImporterComponent implements OnInit {
           });
           this._logger.info(response);
           this._state.notifyDataChanged('runLoadingProcess', false);
-        });
+        }});
       });
     }
   }
@@ -191,15 +191,15 @@ export class ImporterComponent implements OnInit {
     if (this.deleterCounter) {
       this._state.notifyDataChanged('runLoadingProcess', true);
       files.map(id => {
-        this.importerService.deleteFile(this.url, id).then(() => {
+        this.importerService.deleteFile(this.url, id).subscribe({next: () => {
           this.deleteFileFromGui(id);
           if (--this.deleterCounter <= 0) {
             this._state.notifyDataChanged('runLoadingProcess', false);
           }
-        }).catch(err => {
+        }, error: err => {
           this._logger.error(err);
           this._state.notifyDataChanged('runLoadingProcess', false);
-        });
+        }});
       });
     }
   }

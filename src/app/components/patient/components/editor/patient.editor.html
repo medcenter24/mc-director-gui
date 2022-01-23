@@ -18,7 +18,7 @@
 <div class="patient-editor" *ngIf="patient">
     <div class="row offset-bottom20">
         <div class="col-6">
-            <span class="ui-float-label">
+            <span class="p-float-label">
                 <input
                         id="patient-editor-name"
                         value="{{ patient.name }}"
@@ -29,7 +29,7 @@
             </span>
         </div>
         <div class="col-6">
-            <span class="ui-float-label">
+            <span class="p-float-label">
                 <input
                         id="patient-editor-phone"
                         value="{{ patient.phones }}"
@@ -42,7 +42,7 @@
     </div>
     <div class="row offset-bottom20">
         <div class="col-6">
-             <span class="ui-float-label">
+             <span class="p-float-label">
              <p-inputMask
                      id="patient-editor-birthday"
                      name="patientBirthday"
@@ -53,28 +53,28 @@
             </span>
         </div>
         <div class="col-6">
-            <span class="ui-float-label">
+            <span class="p-float-label">
                 <input
                         id="patient-editor-address"
                         value="{{ patient.address }}"
                         type="text" size="30"
                         (input)="changedPatientAddress($event)"
                         pInputText>
-                <label for="patient-editor-phone">{{ 'Address' | translate }}</label>
+                <label for="patient-editor-address">{{ 'Address' | translate }}</label>
             </span>
         </div>
     </div>
     <div class="row offset-bottom20">
         <div class="col-12">
-            <span class="ui-float-label">
+            <span class="p-float-label">
                 <textarea
-                        id="patient-editor-comment"
-                        [rows]="3" [cols]="70"
-                        autoResize="autoResize"
-                        pInputTextarea
-                        (input)="changedPatientComment($event)"
-                >{{ patient.comment }}</textarea>
-                <label for="patient-editor-phone">{{ 'Commentary' | translate }}</label>
+                  [(ngModel)]="patient.comment"
+                  id="patient-editor-comment"
+                  [rows]="3"
+                  [cols]="70"
+                  pInputTextarea
+                ></textarea>
+                <label for="patient-editor-comment">{{ 'Commentary' | translate }}</label>
             </span>
         </div>
     </div>

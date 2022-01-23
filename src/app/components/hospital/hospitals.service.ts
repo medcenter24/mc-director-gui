@@ -18,6 +18,8 @@
 import { Injectable } from '@angular/core';
 import { Hospital } from './hospital';
 import { HttpService } from '../core/http/http.service';
+import {Observable} from 'rxjs';
+import {ObservableTransformer} from '../../helpers/observable.transformer';
 
 @Injectable()
 export class HospitalsService extends HttpService {
@@ -26,32 +28,35 @@ export class HospitalsService extends HttpService {
     return 'director/hospitals';
   }
 
-  getHospitals(): Promise<Hospital[]> {
-    return this.get().then(response => response.data as Hospital[]);
+  getHospitals(): Observable<Hospital[]> {
+    const obs = this.get();
+    return new ObservableTransformer().transform(obs, r => r.data as Hospital[]);
   }
 
-  getHospital(id: number): Promise<Hospital> {
-    return this.get(id).then(response => response.data as Hospital);
+  getHospital(id: number): Observable<Hospital> {
+    const obs = this.get(id);
+    return new ObservableTransformer().transform(obs, r => r.data as Hospital);
   }
 
-  delete(id: number): Promise<void> {
+  delete(id: number): Observable<void> {
     return this.remove(id);
   }
 
-  create(hospital: Hospital): Promise<Hospital> {
-    return this.store(hospital).then(res => res.json() as Hospital);
+  create(hospital: Hospital): Observable<Hospital> {
+    const obs = this.store(hospital);
+    return new ObservableTransformer().transform(obs, r => r.data as Hospital);
   }
 
-  update(hospital: Hospital): Promise<Hospital> {
+  update(hospital: Hospital): Observable<Hospital> {
     return this.put(hospital.id, hospital);
   }
 
-  save (hospital: Hospital): Promise<Hospital> {
-    const action = hospital.id ? this.put(hospital.id, hospital) : this.store(hospital);
-    return action.then(response => response.data as Hospital);
+  save (hospital: Hospital): Observable<Hospital> {
+    const obs = hospital.id ? this.put(hospital.id, hospital) : this.store(hospital);
+    return new ObservableTransformer().transform(obs, r => r.data as Hospital);
   }
 
-  destroy (hospital: Hospital): Promise<any> {
+  destroy (hospital: Hospital): Observable<any> {
     return this.remove(hospital.id);
   }
 }

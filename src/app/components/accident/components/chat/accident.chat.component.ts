@@ -15,13 +15,13 @@
  * Copyright (c) 2019 (original work) MedCenter24.com;
  */
 
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { LoadableComponent } from '../../../core/components/componentLoader';
-import { Accident } from '../../accident';
-import { CasesService } from '../../../case/cases.service';
-import { Commentary } from '../../../comment/commentary';
-import { CommentsComponent } from '../../../comment/components/comments.component';
-import { DateHelper } from '../../../../helpers/date.helper';
+import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {LoadableComponent} from '../../../core/components/componentLoader';
+import {Accident} from '../../accident';
+import {CasesService} from '../../../case/cases.service';
+import {Commentary} from '../../../comment/commentary';
+import {CommentsComponent} from '../../../comment/components/comments.component';
+import {DateHelper} from '../../../../helpers/date.helper';
 
 @Component({
   selector: 'nga-accident-chat',
@@ -32,9 +32,11 @@ export class AccidentChatComponent extends LoadableComponent implements OnInit {
   protected componentName: string = 'AccidentChatComponent';
 
   @Input() accident: Accident;
+  @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
 
   @ViewChild('commentariesComponent')
-    private commentariesComponent: CommentsComponent;
+  private commentariesComponent: CommentsComponent;
 
   comments: Commentary[] = [];
 
@@ -44,22 +46,26 @@ export class AccidentChatComponent extends LoadableComponent implements OnInit {
 
   ngOnInit() {
     this.startLoader();
-    this.caseService.getCommentaries(this.accident).then(response => {
-      this.stopLoader();
-      response.map((row) => {
-        row.created_at = DateHelper.toEuropeFormatWithTime(row.created_at);
-        return row;
-      });
-      this.comments = response;
-    }).catch(() => this.stopLoader());
+    this.caseService.getCommentaries(this.accident).subscribe({
+      next: response => {
+        this.stopLoader();
+        response.map((row) => {
+          row.createdAt = DateHelper.toEuropeFormatWithTime(row.createdAt);
+          return row;
+        });
+        this.comments = response;
+      }, error: this.stopLoader,
+    });
   }
 
   createCommentary(text: string) {
     const actName = 'CreateComment';
     this.startLoader(actName);
-    this.caseService.createComment(this.accident, text).then(comment => {
-      this.stopLoader(actName);
-      this.commentariesComponent.applyComment(comment);
-    }).catch(() => this.stopLoader(actName));
+    this.caseService.createComment(this.accident, text).subscribe({
+      next: comment => {
+        this.stopLoader(actName);
+        this.commentariesComponent.applyComment(comment);
+      }, error: () => this.stopLoader(actName),
+    });
   }
 }

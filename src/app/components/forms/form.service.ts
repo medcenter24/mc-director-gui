@@ -16,11 +16,13 @@
  */
 
 import { Injectable } from '@angular/core';
-import { Subscription } from 'rxjs';
+import {Observable} from 'rxjs';
 import { HttpService } from '../core/http/http.service';
 import { LoadableServiceInterface } from '../core/loadable';
 import { Form } from './form';
 import { saveAs } from 'file-saver';
+import { map } from 'rxjs/operators';
+import {ObservableTransformer} from '../../helpers/observable.transformer';
 
 @Injectable()
 export class FormService extends HttpService implements LoadableServiceInterface {
@@ -28,31 +30,38 @@ export class FormService extends HttpService implements LoadableServiceInterface
     return 'director/forms';
   }
 
-  getForm(id: number): Promise<Form> {
-    return this.get(id).then(response => response.data as Form);
+  getForm(id: number): Observable<Form> {
+    const obs = this.get(id);
+    return new ObservableTransformer().transform(obs, r => r.data as Form);
   }
 
-  save (form: Form): Promise<Form> {
-    const action = form.id ? this.put(form.id, form) : this.store(form);
-    return action.then(response => response as Form);
+  save (form: Form): Observable<Form> {
+    const obs = form.id ? this.put(form.id, form) : this.store(form);
+    return new ObservableTransformer().transform(obs, r => r.data as Form);
   }
 
-  destroy (form: Form): Promise<any> {
+  destroy (form: Form): Observable<any> {
     return this.remove(form.id);
   }
 
-  downloadPdf(formId: number, formableId: number): Subscription {
-    // const options = new RequestOptions({ responseType: ResponseContentType.Blob, headers: this.getAuthHeaders() });
-    return this.http
+  downloadPdf(formId: number, formableId: number): Observable<any> {
+    const obs = this.http
       .get(this.getUrl(`${formId}/${formableId}/pdf`),
         { headers: this.getAuthHeaders(), responseType: 'blob' })
-      .map(res => res)
+      .pipe(
+        map(res => res),
+      );
+
       // todo to see if I can sent a title from a server side to make it more readable
-      .subscribe(data => saveAs(data, `report_case_${formableId}_${formableId}.pdf`), err => this.handleError(err));
+      obs.subscribe(
+        data => saveAs(data, `report_case_${formableId}_${formableId}.pdf`),
+          err => this.handleError(err),
+      );
+      return obs;
   }
 
-  getReportHtml(formId: number, formableId: number): Promise<string> {
-    return this.get(`${formId}/${formableId}/html`)
-      .then(response => response.data as string);
+  getReportHtml(formId: number, formableId: number): Observable<string> {
+    const obs = this.get(`${formId}/${formableId}/html`);
+    return new ObservableTransformer().transform(obs, r => r.data as string);
   }
 }

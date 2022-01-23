@@ -38,6 +38,8 @@ export class DiagnosticEditorComponent extends LoadableComponent implements OnIn
   @Input() diagnostic: Diagnostic = new Diagnostic();
   @Output() diagnosticSaved: EventEmitter<Diagnostic> = new EventEmitter<Diagnostic>();
   @Output() close: EventEmitter<null> = new EventEmitter<null>();
+  @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
 
   @ViewChild('diagnosticCategoryAutoCompleter')
     private categorySelectComponent: AutocompleterComponent;
@@ -73,16 +75,16 @@ export class DiagnosticEditorComponent extends LoadableComponent implements OnIn
     const opName = 'UpdateDiagnostic';
     this.startLoader(opName);
     this.diagnostic.status = this.isActive ? 'active' : 'disabled';
-    this.service.save(this.diagnostic).then((diagnostic: Diagnostic) => {
+    this.service.save(this.diagnostic).subscribe({next: (diagnostic: Diagnostic) => {
       this.stopLoader(opName);
       this.diagnostic = diagnostic;
       this.checkStatus();
       this.diagnosticSaved.emit(this.diagnostic);
       this.closeEditor();
-    }).catch((e) => {
+    }, error: (e) => {
       this._logger.error(e);
       this.stopLoader(opName);
-    });
+    }});
   }
 
   private checkStatus(): void {
@@ -99,14 +101,13 @@ export class DiagnosticEditorComponent extends LoadableComponent implements OnIn
           const postfix = 'Delete';
           this.startLoader(postfix);
           this.service.destroy(this.diagnostic)
-            .then(() => {
+            .subscribe({next: () => {
               this.stopLoader(postfix);
               this.diagnosticSaved.emit(null);
               this.closeEditor();
-            })
-            .catch(() => {
+            }, error: () => {
               this.stopLoader(postfix);
-            });
+            }});
         },
         icon: 'fa fa-window-close-o red',
       },

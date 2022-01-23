@@ -34,6 +34,8 @@ export class PatientEditorComponent extends LoadableComponent {
   }
 
   @Output() changed: EventEmitter<Patient> = new EventEmitter<Patient>();
+  @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
 
   patient: Patient = new Patient();
   birthday: string = '';
@@ -67,16 +69,19 @@ export class PatientEditorComponent extends LoadableComponent {
     if (this.patient.name && this.patient.name.length) {
       this.patient.name = this.patient.name.trim();
     }
-    let savePromise;
-    savePromise = this.patient.id ? this.patientService.update(this.patient)
+    const obs = this.patient.id
+      ? this.patientService.update(this.patient)
       : this.patientService.create(this.patient);
-    savePromise.then((patient) => {
-      this.stopLoader(postfix);
-      if (patient && patient.id) {
-        this.patient = patient;
-      }
-      this.changed.emit(this.patient);
-    }).catch(() => this.stopLoader(postfix));
+    obs.subscribe({
+      next: (patient) => {
+        this.stopLoader(postfix);
+        if (patient && patient.id) {
+          this.patient = patient;
+        }
+        this.changed.emit(this.patient);
+      },
+      error: () => this.stopLoader(postfix),
+    });
   }
 
   onDelete(): void {
@@ -88,12 +93,11 @@ export class PatientEditorComponent extends LoadableComponent {
           const postfix = 'Delete';
           this.startLoader(postfix);
           this.patientService.delete(this.patient.id)
-            .then(() => {
+            .subscribe({next: () => {
               this.changed.emit(this.patient);
               this.patient = null;
               this.stopLoader(postfix);
-            })
-            .catch(() => this.stopLoader(postfix));
+            }, error: () => this.stopLoader(postfix)});
         },
         icon: 'fa fa-window-close-o red',
       },
@@ -110,9 +114,5 @@ export class PatientEditorComponent extends LoadableComponent {
 
   changedPatientAddress(event): void {
     this.patient.address = event.target.value;
-  }
-
-  changedPatientComment(event): void {
-    this.patient.comment = event.target.value;
   }
 }

@@ -49,6 +49,8 @@ export class DoctorEditorComponent extends LoadableComponent implements AfterVie
 
   @Output() doctorChanged: EventEmitter<Doctor> = new EventEmitter<Doctor>();
   @Output() close: EventEmitter<boolean> = new EventEmitter();
+  @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
 
   @ViewChild('userSelector')
     private userSelectComponent: AutocompleterComponent;
@@ -92,15 +94,15 @@ export class DoctorEditorComponent extends LoadableComponent implements AfterVie
     const opName = `Save`;
     this.startLoader(opName);
     if (this.doctor.id) {
-      this.service.update(this.doctor).then((doctor: Doctor) => {
+      this.service.update(this.doctor).subscribe({next: (doctor: Doctor) => {
         this.stopLoader(opName);
         this.doctorChanged.emit(doctor);
-      }).catch(() => this.stopLoader(opName));
+      }, error: () => this.stopLoader(opName)});
     } else {
-      this.service.create(this.doctor).then((doctor: Doctor) => {
+      this.service.create(this.doctor).subscribe({next: (doctor: Doctor) => {
         this.stopLoader(opName);
         this.doctorChanged.emit(doctor);
-      }).catch(() => this.stopLoader(opName));
+      }, error: () => this.stopLoader(opName)});
     }
   }
 
@@ -114,12 +116,11 @@ export class DoctorEditorComponent extends LoadableComponent implements AfterVie
           const postfix = 'Delete';
           this.startLoader(postfix);
           this.service.destroy(this.doctor)
-            .then(() => {
+            .subscribe({next: () => {
               this.stopLoader(postfix);
               this.doctorChanged.emit(null);
               this.close.emit();
-            })
-            .catch(() => this.stopLoader(postfix));
+            }, error: () => this.stopLoader(postfix)});
         },
         icon: 'fa fa-window-close-o red',
       },
@@ -134,8 +135,7 @@ export class DoctorEditorComponent extends LoadableComponent implements AfterVie
     const opName = 'CitySelect';
     this.startLoader(opName);
     this.service.setDoctorCities(this.doctor.id, cities)
-      .then(() => this.stopLoader(opName))
-      .catch(() => this.stopLoader(opName));
+      .subscribe({next: () => this.stopLoader(opName), error: () => this.stopLoader(opName)});
   }
 
   toggleEditor(): void {
@@ -166,11 +166,11 @@ export class DoctorEditorComponent extends LoadableComponent implements AfterVie
       const opName = 'LoadCity';
       this.startLoader(opName);
       this.service.getDoctorCities(this.doctor.id)
-        .then((cities: City[]) => {
+        .subscribe({next: (cities: City[]) => {
           this.stopLoader(opName);
           this.cities = cities;
           this.citiesSelector.selectItems(this.cities);
-        }).catch(() => this.stopLoader(opName));
+        }, error: () => this.stopLoader(opName)});
     }
   }
 

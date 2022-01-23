@@ -16,7 +16,7 @@
 
 @import '../../sass/conf/conf';
 
-:host /deep/ {
+:host ::ng-deep {
   .toolbox-container {
     height: 25px;
     .toolbox {
@@ -25,7 +25,7 @@
       position: fixed;
       width: 100%;
 
-      .ui-corner-all {
+      .p-corner-all {
         border-radius: 0;
       }
 

@@ -15,15 +15,9 @@
   ~ Copyright (c) 2019 (original work) MedCenter24.com;
   -->
 
-<div class="row" *ngIf="false">
-  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-    <pie-chart></pie-chart>
-  </div>
-</div>
-
 <div class="row" *ngIf="!hidden">
 
-  <div class="col-xlg-6 col-lg-6 col-md-12 col-sm-12 col-xs-12">
+  <div class="col-xlg-6 col-12 mb-md-2 md-lg-2 mb-sm-2">
     <ba-card baCardClass="feed-comply-panel with-scroll calendar-panel">
       <nga-calendar></nga-calendar>
     </ba-card>
@@ -36,10 +30,10 @@
 
   </div>
 
-  <div class="col-xlg-6 col-lg-6 col-md-12 col-sm-12 col-xs-12">
+  <div class="col-xlg-6 col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
     <div class="row">
-      <div class="col-12 mb-sm-2">
+      <div class="col-xlg-6 col-lg-6 mb-md-2 md-lg-2 mb-sm-2">
         <ba-card elTitle="Doctors Activity"
                  baCardClass="traffic-panel">
           <nga-traffic-chart
@@ -54,7 +48,7 @@
           ></nga-date-year-dropdown>
         </ba-card>
       </div>
-      <div class="col-12 mb-sm-2">
+      <div class="col-12 col-xlg-6 col-lg-6 mb-sm-2">
         <ba-card elTitle="Assistant Companies"
                  baCardClass="traffic-panel">
           <nga-traffic-chart
@@ -71,20 +65,4 @@
       </div>
     </div>
   </div>
-
-  <div
-    *ngIf="false"
-    class="col-xlg-3 col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12">
-
-    <ba-card baCardClass="large-card with-scroll feed-panel">
-      <feed></feed>
-    </ba-card>
-  </div>
-  <ba-card
-    *ngIf="false"
-    class="col-xlg-3 col-lg-6 col-md-12 col-sm-12 col-xs-12" elTitle="To Do List"
-    baCardClass="xmedium-card feed-comply-panel with-scroll todo-panel">
-
-    <todo></todo>
-  </ba-card>
 </div>

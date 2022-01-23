@@ -42,11 +42,6 @@ export class BaSidebarComponent implements OnInit {
     }
   }
 
-  /*
-  ngAfterViewInit(): void {
-    setTimeout(() => this.updateSidebarHeight());
-  }*/
-
   @HostListener('window:resize')
   onWindowResize(): void {
 
@@ -73,8 +68,7 @@ export class BaSidebarComponent implements OnInit {
   }
 
   updateSidebarHeight(): void {
-    // TODO: get rid of magic 84 constant
-    this.menuHeight = this._elementRef.nativeElement.childNodes[0].clientHeight - 84;
+    this.menuHeight = this._elementRef.nativeElement.childNodes[0].clientHeight;
   }
 
   private _shouldMenuCollapse(): boolean {

@@ -19,6 +19,9 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { CalendarService } from './calendar.service';
 import { TranslateService } from '@ngx-translate/core';
 import { StatusColorMapService } from '../../../components/accident/components/status';
+import ruLocale from '@fullcalendar/core/locales/ru';
+import enLocale from '@fullcalendar/core/locales/en-gb';
+import esLocale from '@fullcalendar/core/locales/es';
 
 @Component({
   selector: 'nga-calendar',
@@ -44,18 +47,12 @@ export class CalendarComponent implements OnInit {
 
     this._translateService.get('Today').subscribe(() => {
       this.calendarConfiguration = {
-        buttonText: {
-          today: this._translateService.instant('Today'),
-          month: this._translateService.instant('Month'),
-          week: this._translateService.instant('Week'),
-          day: this._translateService.instant('Day'),
-          list: this._translateService.instant('List'),
-        },
         headerToolbar: {
           left: 'prevYear,prev,next,nextYear today',
           center: 'title',
           right: 'dayGridMonth,dayGridWeek,dayGridDay',
         },
+        locales: [enLocale, ruLocale, esLocale],
         locale: this._translateService.currentLang,
         initialDate: new Date(),
         selectable: true,
@@ -72,12 +69,11 @@ export class CalendarComponent implements OnInit {
           this.eventsTimerId = setTimeout(() => {
             this._calendarService
               .loadEvents(params.startStr, params.endStr)
-              .then(events => {
+              .subscribe(events => {
                 statistics = [];
                 this.eventsTimerId = false;
                 callback(events);
-              })
-              .catch();
+              });
           }, 1000);
         },
         eventDataTransform: (event) => {

@@ -24,6 +24,7 @@ import { Message } from 'primeng/api';
 import { LocalStorageHelper } from '../../helpers/local.storage.helper';
 import { LoggerComponent } from '../core/logger/LoggerComponent';
 import { TokenService } from './token.service';
+import { Observable } from 'rxjs';
 
 /**
  * I met a lot of issues with tokens, so make it as simple as possible
@@ -57,15 +58,15 @@ export class AuthenticationService {
   ) {
   }
 
-  login(username: string, password: string): Promise<Object> {
+  login(username: string, password: string): Observable<Object> {
     this._state.notifyDataChanged('runLoadingProcess', true);
-    return this.http.post(this.authUrl, JSON.stringify({ email: username, password }))
-      .toPromise()
-      .then((response: Response) => {
+    const obs = this.http.post(this.authUrl, JSON.stringify({ email: username, password }));
+    obs.subscribe(response => {
         this._state.notifyDataChanged('runLoadingProcess', false);
         this.update(response);
         return true;
       });
+    return obs;
   }
 
   logout(): void {

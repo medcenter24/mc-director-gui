@@ -16,12 +16,13 @@
  */
 
 import { SearchFilter } from './search.filter';
+import { Observable } from 'rxjs';
 
 export interface SearchableServiceInterface {
   /**
    * Search data with parameters
    * @param {Object} filters
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  search(filters: SearchFilter): Promise<any>;
+  search(filters: SearchFilter): Observable<any>;
 }

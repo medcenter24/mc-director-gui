@@ -15,12 +15,12 @@
  * Copyright (c) 2019 (original work) MedCenter24.com;
  */
 
-import { Component, EventEmitter, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { CompanyService } from '../../company.service';
 import { Company } from '../../company';
 import { LoggedUserService } from '../../../auth/loggedUser.service';
 import { AuthenticationService } from '../../../auth/authentication.service';
-import { UploaderOptions, UploadFile, UploadInput, humanizeBytes, UploadOutput } from 'ngx-uploader';
+import { UploaderOptions, UploadFile, UploadInput, humanizeBytes } from 'ngx-uploader';
 import { GlobalState } from '../../../../global.state';
 import { LoadableComponent } from '../../../core/components/componentLoader';
 
@@ -31,6 +31,9 @@ import { LoadableComponent } from '../../../core/components/componentLoader';
 export class CompanyEditorComponent extends LoadableComponent implements OnInit {
 
   protected componentName: string = 'CompanyEditorComponent';
+
+  @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
 
   defaultCompanyLogo: string = 'assets/img/theme/cardiogram.svg';
   pictureLogo: string = '';
@@ -56,12 +59,12 @@ export class CompanyEditorComponent extends LoadableComponent implements OnInit 
   ngOnInit() {
     this.startLoader();
     this.loggedUserService.getCompany()
-      .then((company: Company) => {
+      .subscribe({next: (company: Company) => {
         this.stopLoader();
 
         this.company = company;
 
-        this.pictureLogo = this.company.logo250.length ? `data:image/jpeg;base64,${this.company.logo250}` : '';
+        this.pictureLogo = this.company.logo250.length ? this.company.logo250 : '';
 
         this.eventLogoToUpload = {
           type: 'uploadAll',
@@ -70,8 +73,7 @@ export class CompanyEditorComponent extends LoadableComponent implements OnInit 
           headers: { 'Authorization': `Bearer ${this.authService.getToken()}` },
         };
 
-      })
-      .catch(() => this.stopLoader());
+      }, error: () => this.stopLoader()});
 
     this._state.subscribe('token', (token) => {
       this.eventLogoToUpload.headers = { 'Authorization': `Bearer ${token}` };
@@ -82,15 +84,14 @@ export class CompanyEditorComponent extends LoadableComponent implements OnInit 
     const postfix = 'SaveCompany';
     this.startLoader(postfix);
     this.companyService.update(this.company)
-      .then(() => this.stopLoader(postfix))
-      .catch(() => this.stopLoader(postfix));
+      .subscribe({next: () => this.stopLoader(postfix), error: () => this.stopLoader(postfix)});
   }
 
-  startCompanyLogoUpload(event): void {
+  startCompanyLogoUpload(): void {
     this.startLoader('CompanyLogoUpload');
   }
 
-  endCompanyLogoUpload(event): void {
+  endCompanyLogoUpload(): void {
     this.stopLoader('CompanyLogoUpload');
   }
 
@@ -98,8 +99,10 @@ export class CompanyEditorComponent extends LoadableComponent implements OnInit 
     const postfix = 'DeleteCompanyLogo';
     this.startLoader(postfix);
     this.companyService.deleteLogo(this.company)
-      .then(() => this.stopLoader(postfix))
-      .catch(() => this.stopLoader(postfix));
+      .subscribe({
+        next: () => this.stopLoader(postfix),
+        error: () => this.stopLoader(postfix),
+      });
   }
 
 }

@@ -17,11 +17,10 @@
 
 import { Routes, RouterModule } from '@angular/router';
 import { ModuleWithProviders } from '@angular/core';
-import { AuthGuard } from './components/auth/auth.guard';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'pages', pathMatch: 'full', canActivate: [AuthGuard] },
-  { path: '**', redirectTo: '/pages/dashboard', canActivate: [AuthGuard] },
+  { path: '', redirectTo: '/pages/dashboard', pathMatch: 'full' },
+  { path: '**', redirectTo: '/pages/dashboard' },
 ];
 
 export const routing: ModuleWithProviders<any> = RouterModule.forRoot(routes, { useHash: false });

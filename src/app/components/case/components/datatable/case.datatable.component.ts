@@ -15,7 +15,7 @@
  * Copyright (c) 2019 (original work) MedCenter24.com;
  */
 
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { CasesService } from '../../cases.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
@@ -44,8 +44,10 @@ import { RequestBuilder } from '../../../core/http/request';
 import { AccidentTemplateHelper } from '../../../accident/accident.template.helper';
 
 @Component({
+  encapsulation: ViewEncapsulation.None,
   selector: 'nga-case-datatable',
   templateUrl: './case.datatable.html',
+  styleUrls: ['case.datatable.scss'],
 })
 export class CaseDatatableComponent extends AbstractDatatableController implements OnInit {
   protected componentName: string = 'CaseDatatableComponent';
@@ -75,10 +77,15 @@ export class CaseDatatableComponent extends AbstractDatatableController implemen
     super();
   }
 
+  protected onDatatableConfigInitialized(): void {
+    super.onDatatableConfigInitialized();
+    this.datatableConfig.tableClass = 'cases-datatable';
+  }
+
   protected onLangLoaded () {
     super.onLangLoaded();
     const breadcrumbs = [];
-    const title = this.translateService.instant('List of Cases');
+    const title = this.translateService.instant('Cases');
     breadcrumbs.push(new Breadcrumb(title, '/pages/cases', true));
     this._state.notifyDataChanged('menu.activeLink', breadcrumbs);
     this._state.notifyDataChanged('changeTitle', title);
@@ -189,13 +196,14 @@ export class CaseDatatableComponent extends AbstractDatatableController implemen
   }
 
   getRequestBuilder (): DatatableRequestBuilder {
-
     const requestBuilder = super.getRequestBuilder();
+
     requestBuilder.setSorter(new RequestBuilder([
       new SortRequestField('id'),
       new SortRequestField('patientName'),
       new SortRequestField('createdAt'),
     ]));
+
     requestBuilder.setFilter(new RequestBuilder([
       new FilterRequestField('patientName', null, FilterRequestField.MATCH_CONTENTS, FilterRequestField.TYPE_TEXT),
       new FilterRequestField('refNum', null, FilterRequestField.MATCH_START_WITH, FilterRequestField.TYPE_TEXT),

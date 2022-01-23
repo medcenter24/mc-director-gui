@@ -18,6 +18,7 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from '../core/http/http.service';
 import { Company } from './company';
+import {Observable} from 'rxjs';
 
 @Injectable()
 export class CompanyService extends HttpService {
@@ -26,15 +27,15 @@ export class CompanyService extends HttpService {
         return 'director/companies';
     }
 
-    update(company: Company): Promise<Company> {
+    update(company: Company): Observable<Company> {
         return this.put(company.id, company);
     }
 
-    deleteLogo(company: Company): Promise<any> {
+    deleteLogo(company: Company): Observable<any> {
         return this.remove(`${company.id}/logo`);
     }
 
-    deleteSignature(company: Company): Promise<any> {
+    deleteSignature(company: Company): Observable<any> {
         return this.remove(`${company.id}/sign`);
     }
 }

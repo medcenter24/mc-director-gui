@@ -117,13 +117,16 @@ export class SurveyDatatableComponent extends AbstractDatatableController {
 
   protected getRequestBuilder (): DatatableRequestBuilder {
     const requestBuilder = super.getRequestBuilder();
+
     requestBuilder.setSorter(new RequestBuilder([
       new SortRequestField('title'),
       new SortRequestField('status'),
     ]));
+
     requestBuilder.setFilter(new RequestBuilder([
       new FilterRequestField('title', null, FilterRequestField.MATCH_CONTENTS, FilterRequestField.TYPE_TEXT),
     ]));
+
     return requestBuilder;
   }
 

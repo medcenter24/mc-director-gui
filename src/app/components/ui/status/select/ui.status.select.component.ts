@@ -34,6 +34,8 @@ export class UiStatusSelectComponent extends LoadableComponent implements OnInit
 
   @Input() status: string = 'new';
   @Output() selected: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
 
   statuses: any[] = [];
 

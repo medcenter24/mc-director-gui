@@ -15,7 +15,7 @@
  * Copyright (c) 2019 (original work) MedCenter24.com;
  */
 
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { AssistantsService } from '../../assistant.service';
 import { AbstractAutoCompleteController } from '../../../ui/autocompleter';
 import { TranslateService } from '@ngx-translate/core';
@@ -26,6 +26,9 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class AssistantSelectComponent extends AbstractAutoCompleteController {
   protected componentName: string = 'AssistantSelectComponent';
+
+  @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
 
   constructor(
     private service: AssistantsService,

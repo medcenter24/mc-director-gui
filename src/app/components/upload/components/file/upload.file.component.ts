@@ -33,21 +33,25 @@ import { FileUpload } from 'primeng/fileupload';
   template: `
       <p-fileUpload
         #uploader
-              mode="basic"
-              name="uploadFile"
-              [url]="url"
-              [maxFileSize]="maxSize"
-              (onUpload)="handleUpload($event)"
-              (onBeforeUpload)="handleBeforeUpload()"
-              (onError)="handleError($event)"
-              (onSelect)="handleSelect($event)"
-              [headers]="httpHeaders"
-              [withCredentials]="true"
-              auto="true"
-              [chooseLabel]="'Browse' | translate"></p-fileUpload>`,
+        mode="basic"
+        name="uploadFile"
+        [url]="url"
+        [maxFileSize]="maxSize"
+        (onUpload)="handleUpload($event)"
+        (onBeforeUpload)="handleBeforeUpload()"
+        (onError)="handleError($event)"
+        (onSelect)="handleSelect($event)"
+        [headers]="httpHeaders"
+        [withCredentials]="true"
+        auto="true"
+        [title]="'No file chosen' | translate"
+        [chooseLabel]="'Browse' | translate"></p-fileUpload>`,
 })
 export class UploadFileComponent extends LoadableComponent implements OnInit {
   protected componentName: string = 'UploadFileComponent';
+
+  @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
 
   msgs: Message[] = [];
   url: string = '';

@@ -29,6 +29,9 @@ export class UserEditorComponent extends LoadableComponent implements OnInit {
 
   protected componentName: string = 'UserEditorComponent';
 
+  @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
+
   user: User;
 
   @Output() saved: EventEmitter<User> = new EventEmitter<User>();
@@ -47,20 +50,17 @@ export class UserEditorComponent extends LoadableComponent implements OnInit {
   }
 
   onSubmit(): void {
-    let service;
     const postfix = 'Submit';
     this.startLoader(postfix);
-    if (this.user.id) {
-      service = this.service.update(this.user);
-    } else {
-      service = this.service.create(this.user);
-    }
-
-    service.then((user: User) => {
-      this.stopLoader(postfix);
-      this.setUser(user);
-      this.saved.emit(user);
-    }).catch(() => this.stopLoader(postfix));
+    const obs = this.user.id ? this.service.update(this.user) : this.service.create(this.user);
+    obs.subscribe({
+      next: user => {
+        this.stopLoader(postfix);
+        this.setUser(user);
+        this.saved.emit(user);
+      },
+      error: () => this.stopLoader(postfix),
+    });
   }
 
   onUserChanged(user: User): void {
@@ -87,10 +87,10 @@ export class UserEditorComponent extends LoadableComponent implements OnInit {
     if (+id) {
       const postfix = 'User';
       this.startLoader(postfix);
-      this.service.getUser(id).then((user: User) => {
+      this.service.getUser(id).subscribe({next: (user: User) => {
         this.stopLoader(postfix);
         this.setUser(user);
-      }).catch(() => this.stopLoader(postfix));
+      }, error: () => this.stopLoader(postfix)});
     } else {
       this.setEmptyUser();
     }

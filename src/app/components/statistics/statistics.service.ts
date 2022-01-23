@@ -19,6 +19,8 @@ import { Injectable } from '@angular/core';
 import { TrafficChartData } from './trafficChart/trafficChart.data';
 import { HttpService } from '../core/http/http.service';
 import { YearsList } from './years/yearsList';
+import {Observable} from 'rxjs';
+import {ObservableTransformer} from '../../helpers/observable.transformer';
 
 @Injectable()
 export class StatisticsService extends HttpService {
@@ -29,26 +31,33 @@ export class StatisticsService extends HttpService {
 
   /**
    * Loading doctors statistics
-   * @returns {Promise<any>}
+   * @returns {Observable<any>}
    */
-  loadDoctorsTraffic(year: string = ''): Promise<TrafficChartData[]> {
-    return this.get('doctorsTraffic', { year })
-      .then(response => response.data as TrafficChartData[]);
+  loadDoctorsTraffic(year: string = ''): Observable<TrafficChartData[]> {
+    return new ObservableTransformer().transform(
+      this.get('doctorsTraffic', { year }),
+      r => r.data as TrafficChartData[],
+    );
   }
 
   /**
    * Loading assistants stats
    * @param year
    */
-  loadAssistantsTraffic(year: string = ''): Promise<TrafficChartData[]> {
-    return this.get('assistantsTraffic', { year })
-      .then(response => response.data as TrafficChartData[]);
+  loadAssistantsTraffic(year: string = ''): Observable<TrafficChartData[]> {
+    return new ObservableTransformer().transform(
+      this.get('assistantsTraffic', { year }),
+      r => r.data as TrafficChartData[],
+    );
   }
 
   /**
    * Loading valid years
    */
-  loadYears(): Promise<YearsList[]> {
-    return this.get('years').then(response => response.data as YearsList[]);
+  loadYears(): Observable<YearsList[]> {
+    return new ObservableTransformer().transform(
+      this.get('years'),
+      r => r.data as YearsList[],
+    );
   }
 }

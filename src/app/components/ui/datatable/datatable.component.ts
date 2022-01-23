@@ -56,6 +56,8 @@ export class DatatableComponent extends LoadableComponent {
   @Output() sorted: EventEmitter<void> = new EventEmitter<void>();
   @Output() filtered: EventEmitter<void> = new EventEmitter<void>();
   @Output() pagination: EventEmitter<void> = new EventEmitter<void>();
+  @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
 
   /**
    * it is used by this component only
@@ -132,15 +134,15 @@ export class DatatableComponent extends LoadableComponent {
       ) {
         this.setLoading(true);
         this.getConfig().get( 'dataProvider' ).search( requestBuilder )
-          .then( ( response: DatatableResponse ) => {
+          .subscribe( { next: ( response: DatatableResponse ) => {
             this.setLoading( false );
             this.data = response.data;
             this.total = response.meta.pagination.total;
             this.rows = this.data.length;
             this.setUri(requestBuilder.toUrl());
-          } ).catch( () => {
+          }, error: () => {
             this.setLoading( false );
-          } );
+          } });
       }
     }, 500);
   }

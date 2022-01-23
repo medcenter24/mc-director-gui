@@ -15,9 +15,8 @@
  * Copyright (c) 2019 (original work) MedCenter24.com;
  */
 
-import { AfterViewInit, Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { Chart } from 'chart.js';
-import 'style-loader!./trafficChart.scss';
 import { TrafficChartData } from './trafficChart.data';
 import { colorHelper } from '../../../theme';
 import { LoadableComponent } from '../../core/components/componentLoader';
@@ -25,19 +24,18 @@ import { LoadableComponent } from '../../core/components/componentLoader';
 @Component({
   selector: 'nga-traffic-chart',
   templateUrl: './trafficChart.html',
+  styleUrls: ['./trafficChart.scss'],
 })
 
 export class TrafficChartComponent extends LoadableComponent implements AfterViewInit {
 
   protected componentName: string = 'TrafficChartComponent';
 
-  infoData: Object[] = [];
-  total: number = 0;
-  private transformedData: any;
-  private chart: any;
-
   @ViewChild('canvasChart')
-    chartElement: ElementRef<HTMLCanvasElement>;
+  chartElement: ElementRef<HTMLCanvasElement>;
+
+  @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
 
   @Input() prefix: string = '';
   @Input() set setData(data: TrafficChartData[] ) {
@@ -46,6 +44,11 @@ export class TrafficChartComponent extends LoadableComponent implements AfterVie
       this.chart.destroy();
     }
   }
+
+  infoData: Object[] = [];
+  total: number = 0;
+  private transformedData: any;
+  private chart: any;
 
   ngAfterViewInit(): void {
     this.chart = this._loadDoughnutCharts(this.transformedData);

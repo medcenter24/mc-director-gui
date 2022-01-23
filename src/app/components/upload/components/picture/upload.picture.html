@@ -17,8 +17,8 @@
 
 <div class="picture-group" [ngClass]="{uploading: uploadInProgress}">
   <div class="picture-wrapper" (click)="bringFileSelector();">
-    <img [src]="picture" *ngIf="picture">
-    <img [src]="defaultPicture" *ngIf="!picture && !!defaultPicture">
+    <img [src]="picture" *ngIf="picture" alt="{{ 'Loaded Picture' | translate }}">
+    <img [src]="defaultPicture" *ngIf="!picture && !!defaultPicture" alt="{{ 'Default Picture Mock' | translate }}">
 
     <div class="loading" *ngIf="uploadInProgress">
       <div class="spinner">

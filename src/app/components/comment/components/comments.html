@@ -17,17 +17,17 @@
 
 <div class="commentaries-component">
   <div class="media mb-1" *ngFor="let event of comments">
-    <img class="mr-3" *ngIf="event.user_id && event.user_thumb" [alt]="event.user_name"
-         src="{{ 'data:image/jpeg;base64,' + event.user_thumb }}">
-    <img class="mr-3" *ngIf="!event.user_id || !event.user_thumb" alt="{{ 'System' | translate }}" width="45"
+    <img class="mr-3" *ngIf="event.userId && event.userThumb" [alt]="event.userName"
+         src="{{ event.userThumb }}">
+    <img class="mr-3" *ngIf="!event.userId || !event.userThumb" alt="{{ 'System' | translate }}" width="45"
          src="{{ noPhoto }}">
     <div class="media-body">
       <h5 class="mt-0">
-        <span *ngIf="event.user_id" class="mt-0">{{ event.user_name }}</span>
-        <span *ngIf="!event.user_id" class="mt-0 text-muted" translate>System</span>
+        <span *ngIf="event.userId" class="mt-0">{{ event.userName }}</span>
+        <span *ngIf="!event.userId" class="mt-0 text-muted" translate>System</span>
         &nbsp;
         <small>
-          <span translate>wrote</span> - <span class="text-muted">{{ event.created_at }}</span>
+          <span translate>wrote</span> - <span class="text-muted">{{ event.createdAt }}</span>
         </small>
       </h5>
       <p class="mt-1">{{ event.body }}</p>
@@ -35,14 +35,14 @@
   </div>
   <div *ngIf="(!comments || !comments.length) && !showEditor" translate>There are no comments yet.</div>
 
-  <button pButton type="button" class="ui-button-secondary mt-3"
+  <button pButton type="button" class="p-button-secondary mt-3"
           label="{{ 'Comment' | translate }}"
           *ngIf="!showEditor" icon="fa fa-comment-o"
           (click)="showEditor = true"></button>
 
   <div *ngIf="showEditor" class="mt-3">
     <label for="comment-input" translate>New Commentary</label><br>
-    <textarea id="comment-input" [rows]="5" [cols]="70" pInputTextarea autoResize="autoResize" [(ngModel)]="text"></textarea>
+    <textarea id="comment-input" [rows]="5" [cols]="70" pInputTextarea [(ngModel)]="text"></textarea>
     <div class="row">
       <div class="col-12">
         <button pButton type="button" label="{{ 'Add' | translate }}" (click)="addComment()"

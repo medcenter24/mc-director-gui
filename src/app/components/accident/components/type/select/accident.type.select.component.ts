@@ -31,10 +31,12 @@ export class AccidentTypeSelectComponent extends LoadableComponent {
     this.selectType(id);
   }
   @Output() selected: EventEmitter<AccidentType> = new EventEmitter<AccidentType>();
+  @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
 
   isLoaded: boolean = false;
-  private selectedType: AccidentType = new AccidentType();
-  private loadedTypes: AccidentType[] = [];
+  selectedType: AccidentType = new AccidentType();
+  loadedTypes: AccidentType[] = [];
   protected componentName: string = 'SelectAccidentTypeComponent';
 
   constructor (
@@ -48,7 +50,7 @@ export class AccidentTypeSelectComponent extends LoadableComponent {
     this.translate.get('Insurance').subscribe(() => {
       const postfix = 'Select';
       this.startLoader(postfix);
-      this.accidentTypesService.getTypes().then((types: AccidentType[]) => {
+      this.accidentTypesService.getTypes().subscribe({next: (types: AccidentType[]) => {
         this.stopLoader(postfix);
         this.loadedTypes = types;
         this.loadedTypes.map((v: AccidentType, i: number) => {
@@ -64,7 +66,7 @@ export class AccidentTypeSelectComponent extends LoadableComponent {
           this.onChanged();
         }
         this.isLoaded = true;
-      }).catch(() => this.stopLoader(postfix));
+      }, error: () => this.stopLoader(postfix)});
     });
   }
 

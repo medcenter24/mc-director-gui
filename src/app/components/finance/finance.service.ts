@@ -18,7 +18,8 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from '../core/http/http.service';
 import { FinanceRule } from './finance.rule';
-import { LoadableServiceInterface } from '../core/loadable';
+import {Observable} from 'rxjs';
+import {ObservableTransformer} from '../../helpers/observable.transformer';
 
 @Injectable()
 export class FinanceService extends HttpService {
@@ -26,20 +27,21 @@ export class FinanceService extends HttpService {
     return 'director/finance';
   }
 
-  getFinanceRule(id: number): Promise<FinanceRule> {
-    return this.get(id).then(response => response.data as FinanceRule);
+  getFinanceRule(id: number): Observable<FinanceRule> {
+    const obs = this.get(id);
+    return new ObservableTransformer().transform(obs, r => r.data as FinanceRule);
   }
 
-  create(financeRule: FinanceRule): Promise<FinanceRule> {
+  create(financeRule: FinanceRule): Observable<FinanceRule> {
     return this.store(financeRule);
   }
 
-  save (finance: FinanceRule): Promise<FinanceRule> {
-    return finance.id ? this.put(finance.id, finance).then(response => response.data as FinanceRule)
-      : this.store(finance).then(response => response as FinanceRule);
+  save (finance: FinanceRule): Observable<FinanceRule> {
+    const obs = finance.id ? this.put(finance.id, finance) : this.store(finance);
+    return new ObservableTransformer().transform(obs, r => r.data as FinanceRule);
   }
 
-  destroy (financeRule: FinanceRule): Promise<any> {
+  destroy (financeRule: FinanceRule): Observable<any> {
     return this.remove(financeRule.id);
   }
 }

@@ -64,6 +64,9 @@ export class AutocompleterComponent extends LoadableComponent implements OnInit 
    */
   @Output() selected: EventEmitter<any> = new EventEmitter<any>();
 
+  @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
+
   /**
    * Direct access to the child element
    */

@@ -15,33 +15,35 @@
  * Copyright (c) 2019 (original work) MedCenter24.com;
  */
 
-import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
-import { LoadableComponent } from '../../../../../core/components/componentLoader';
-import { AccidentScenario } from '../../scenario';
-import 'style-loader!./line.scss';
-import { CasesService } from '../../../../../case/cases.service';
-import { LoggerComponent } from '../../../../../core/logger/LoggerComponent';
+import {Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation} from '@angular/core';
+import {LoadableComponent} from '../../../../../core/components/componentLoader';
+import {AccidentScenario} from '../../scenario';
+import {CasesService} from '../../../../../case/cases.service';
+import {LoggerComponent} from '../../../../../core/logger/LoggerComponent';
 
 @Component({
   selector: 'nga-accident-scenario',
   templateUrl: './line.html',
   encapsulation: ViewEncapsulation.None,
+  styleUrls: ['./line.scss'],
 })
 export class AccidentScenarioLineComponent extends LoadableComponent implements OnInit {
 
   @Input() accidentId: number = 0;
+  @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
 
   isLoaded: boolean = false;
   steps: AccidentScenario[] = [];
 
   protected componentName: string = 'AccidentScenarioComponent';
 
-  constructor (private caseService: CasesService,
-               private _logger: LoggerComponent) {
+  constructor(private caseService: CasesService,
+              private _logger: LoggerComponent) {
     super();
   }
 
-  ngOnInit () {
+  ngOnInit() {
     this.reload();
   }
 
@@ -50,13 +52,16 @@ export class AccidentScenarioLineComponent extends LoadableComponent implements 
    */
   reload(): void {
     this.startLoader();
-    this.caseService.getScenario(this.accidentId).then((scenario: AccidentScenario[]) => {
-      this.stopLoader();
-      this.steps = scenario;
-      this.isLoaded = true;
-    }).catch((err) => {
-      this.stopLoader();
-      this._logger.error(err);
+    const obs = this.caseService.getScenario(this.accidentId);
+    obs.subscribe({
+      next: (scenario: AccidentScenario[]) => {
+        this.stopLoader();
+        this.steps = scenario;
+        this.isLoaded = true;
+      }, error: (err) => {
+        this.stopLoader();
+        this._logger.error(err);
+      },
     });
   }
 }

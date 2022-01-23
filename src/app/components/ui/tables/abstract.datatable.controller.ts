@@ -101,7 +101,11 @@ export abstract class AbstractDatatableController extends LoadingComponent imple
         requestBuilder: this.getRequestBuilder(),
         hasFilterRow: this.hasFilterRow(),
       });
+      this.onDatatableConfigInitialized();
     });
+  }
+
+  protected onDatatableConfigInitialized(): void {
   }
 
   protected hasFilterRow(): boolean {
@@ -124,21 +128,23 @@ export abstract class AbstractDatatableController extends LoadingComponent imple
     const postfix = 'Save';
     this.startLoader(postfix);
     this.getService().save(this.model)
-      .then((model: Object) => {
-        this.displayDialog = false;
-        if (!this.model.id) {
-          // refresh on adding
-          this.refresh();
-        } else {
-          this.updateModel(model);
-        }
-        // to close popup
-        this.setModel();
-        this.stopLoader(postfix);
-      })
-      .catch(e => {
-        console.error(e);
-        this.stopLoader(postfix);
+      .subscribe({
+        next: (model: Object) => {
+          this.displayDialog = false;
+          if (!this.model.id) {
+            // refresh on adding
+            this.refresh();
+          } else {
+            this.updateModel(model);
+          }
+          // to close popup
+          this.setModel();
+          this.stopLoader(postfix);
+        },
+        error: e => {
+          console.error(e);
+          this.stopLoader(postfix);
+        },
       });
   }
 
@@ -169,13 +175,12 @@ export abstract class AbstractDatatableController extends LoadingComponent imple
     const postfix = 'Delete';
     this.startLoader(postfix);
     this.getService().destroy(this.model)
-      .then(() => {
+      .subscribe({next: () => {
         this.stopLoader(postfix);
         this.setModel();
         this.displayDialog = false;
         this.getDatatableComponent().refresh();
-      })
-      .catch(() => this.stopLoader(postfix));
+      }, error: () => this.stopLoader(postfix)});
   }
 
   deselectAll(): void {

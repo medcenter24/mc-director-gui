@@ -19,11 +19,13 @@ import { NgModule } from '@angular/core';
 import { UploadPictureComponent } from './upload.picture.component';
 import { CommonModule } from '@angular/common';
 import { NgxUploaderModule } from 'ngx-uploader';
+import {AppTranslationModule} from '../../../../app.translation.module';
 
 @NgModule({
   imports: [
     CommonModule,
     NgxUploaderModule,
+    AppTranslationModule,
   ],
   declarations: [
     UploadPictureComponent,

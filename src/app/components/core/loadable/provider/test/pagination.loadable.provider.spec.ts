@@ -31,8 +31,9 @@ describe('Loadable: Pagination Provider', () => {
   it('should find first page with data', function () {
     expect(conf.getNumTry()).toBe(0);
     const filter: SearchFilter = SearchFilter.instance();
-    service.search(filter)
-      .then(data => expect(data).toEqual({
+    const obs = service.search(filter);
+    obs.subscribe({
+      next: data => expect(data).toEqual({
         data: [{
           id: 1,
           name: 'Peter',
@@ -46,8 +47,9 @@ describe('Loadable: Pagination Provider', () => {
           name: 'Abigail',
           description: 'user',
         }],
-      }))
-      .catch(error => expect(error).toBeNull());
+      }),
+      error: error => expect(error).toBeNull(),
+    });
     expect(conf.getNumTry()).toBe(1);
   });
 
@@ -57,15 +59,17 @@ describe('Loadable: Pagination Provider', () => {
       rows: 1,
       first: 1,
     });
-    service.search(filter)
-      .then(data => expect(data).toEqual({
+    const obs = service.search(filter);
+    obs.subscribe({
+      next: value => expect(value).toEqual({
         data: [{
           id: 2,
           name: 'Foster',
           description: 'director',
         }],
-      }))
-      .catch(error => expect(error).toBeNull());
+      }),
+      error: err => expect(err).toBeNull(),
+    });
     expect(conf.getNumTry()).toBe(1);
   });
 });

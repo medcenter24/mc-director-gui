@@ -15,6 +15,8 @@
  * Copyright (c) 2019 (original work) MedCenter24.com;
  */
 
+@use "sass:math";
+
 $card-title-height: 44px;
 $card-header-font-size: 16px;
 
@@ -90,7 +92,7 @@ $card-header-font-size: 16px;
     border-bottom: $bootstrap-panel-header-border;
     height: $card-title-height;
     font-size: $card-header-font-size;
-    $vertical-padding: ($card-title-height - $card-header-font-size) / 2;
+    $vertical-padding: math.div(($card-title-height - $card-header-font-size), 2);
     padding: $vertical-padding 22px;
     background-color: $bootstrap-panel-header-bg;
   }

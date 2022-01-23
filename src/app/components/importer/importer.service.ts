@@ -17,6 +17,7 @@
 
 import { Injectable } from '@angular/core';
 import { HttpService } from '../core/http/http.service';
+import {Observable} from 'rxjs';
 
 @Injectable()
 export class ImporterService extends HttpService {
@@ -25,15 +26,15 @@ export class ImporterService extends HttpService {
     return '';
   }
 
-  getQueue(url): Promise<any> {
+  getQueue(url): Observable<any> {
     return this.get(url);
   }
 
-  deleteFile(url: string, id: number): Promise<void> {
+  deleteFile(url: string, id: number): Observable<void> {
     return this.remove(`${url}/${id}`);
   }
 
-  importFile(url: string, id: number): Promise<any> {
+  importFile(url: string, id: number): Observable<any> {
     return this.put(`${url}/${id}`, []);
   }
 }

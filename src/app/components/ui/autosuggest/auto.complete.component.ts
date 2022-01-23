@@ -15,7 +15,7 @@
  * Copyright (c) 2019 (original work) MedCenter24.com;
  */
 
-import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
+import {ChangeDetectorRef, Component, EventEmitter, Input, Output} from '@angular/core';
 import {
   AutoCompleteLoadableProvider,
   AutoCompleteSrcConfig,
@@ -28,6 +28,13 @@ import {
 })
 export class AutoCompleteComponent {
 
+  selected: Object = {};
+
+  /**
+   * Data Provider for the auto completer
+   */
+  provider: AutoCompleteStaticProvider | AutoCompleteLoadableProvider;
+
   /**
    * Configuration
    */
@@ -38,8 +45,16 @@ export class AutoCompleteComponent {
     this.conf = conf;
     // reload data provider
     this.provider = conf.provider === 'static'
-      ? new AutoCompleteStaticProvider(conf, this._changeDetectionRef)
+      ? new AutoCompleteStaticProvider(
+          conf,
+          this._changeDetectionRef,
+        (selected) => this.selected = selected,
+      )
       : new AutoCompleteLoadableProvider(conf);
+
+    if (this.provider.selected) {
+      this.selected = this.provider.selected;
+    }
   }
 
   @Output() changed: EventEmitter<any> = new EventEmitter<any>();
@@ -48,16 +63,17 @@ export class AutoCompleteComponent {
     private _changeDetectionRef: ChangeDetectorRef,
   ) {}
 
-  /**
-   * Data Provider for the auto completer
-   */
-  provider: AutoCompleteStaticProvider | AutoCompleteLoadableProvider;
-
   onSelect (): void {
-    this.changed.emit(this.provider.selected);
+    this.provider.selected = this.selected;
+    this.changed.emit(this.selected);
   }
 
   selectItems(items: any, fieldName: string = null): void {
-    this.provider.selectItems(items, fieldName);
+    if (items) {
+      this.provider.selectItems(items, fieldName)
+        .subscribe(res => {
+          this.selected = res;
+        });
+    }
   }
 }

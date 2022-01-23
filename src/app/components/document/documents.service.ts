@@ -19,6 +19,8 @@ import { Injectable } from '@angular/core';
 import { HttpService } from '../core/http/http.service';
 import { saveAs } from 'file-saver';
 import { Document } from './document';
+import { Observable } from 'rxjs';
+import {ObservableTransformer} from '../../helpers/observable.transformer';
 
 @Injectable()
 export class DocumentsService extends HttpService {
@@ -27,7 +29,7 @@ export class DocumentsService extends HttpService {
     return 'director/documents';
   }
 
-  deleteDocument(id: number): Promise<void> {
+  deleteDocument(id: number): Observable<void> {
     return this.remove(id);
   }
 
@@ -37,7 +39,8 @@ export class DocumentsService extends HttpService {
       .subscribe(data => saveAs(data, file.name), err => this.handleError(err));
   }
 
-  update(document: Document): Promise<Document> {
-    return this.put( document.id, document ).then( response => response as Document );
+  update(document: Document): Observable<Document> {
+    const obs = this.put( document.id, document );
+    return new ObservableTransformer().transform(obs, r => r.data as Document);
   }
 }

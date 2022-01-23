@@ -11,11 +11,12 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "preserveSymlinks": true,
             "outputPath": "dist/",
-            "index": "src//index.html",
-            "main": "src//main.ts",
-            "tsConfig": "src//tsconfig.app.json",
-            "polyfills": "src//polyfills.ts",
+            "index": "src/index.html",
+            "main": "src/main.ts",
+            "tsConfig": "src/tsconfig.app.json",
+            "polyfills": "src/polyfills.ts",
             "assets": [
               "src/assets",
               "src/favicon.ico",
@@ -32,36 +33,54 @@
               "node_modules/roboto-fontface/css/roboto/roboto-fontface.css",
               "node_modules/font-awesome/scss/font-awesome.scss",
               "node_modules/pace-js/templates/pace-theme-flash.tmpl.css",
+              "node_modules/flatpickr/dist/flatpickr.min.css",
+              "src/app/@theme/styles/styles.scss",
               "src/app/theme/theme.scss",
-              "src/styles.scss",
-              "node_modules/flatpickr/dist/flatpickr.min.css"
+              "src/styles.scss"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.js",
               "node_modules/pace-js/pace.min.js",
               "node_modules/chart.js/dist/Chart.min.js",
               "node_modules/quill/dist/quill.js"
-            ]
+            ],
+            "allowedCommonJsDependencies": [
+              "angular2-chartjs",
+              "lodash",
+              "zrender/lib/svg/svg",
+              "zrender/lib/vml/vml"
+            ],
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
           },
           "configurations": {
             "production": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
               "fileReplacements": [
                 {
-                  "replace": "src//environments/environment.ts",
-                  "with": "src//environments/environment.prod.ts"
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
                 }
               ]
             }
-          }
+          },
+          "defaultConfiguration": ""
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
@@ -83,10 +102,10 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "src//test.ts",
+            "main": "src/test.ts",
             "karmaConfig": "./karma.conf.js",
-            "polyfills": "src//polyfills.ts",
-            "tsConfig": "src//tsconfig.spec.json",
+            "polyfills": "src/polyfills.ts",
+            "tsConfig": "src/tsconfig.spec.json",
             "scripts": [
               "node_modules/jquery/dist/jquery.js",
               "node_modules/pace-js/pace.min.js",
@@ -99,7 +118,8 @@
               "node_modules/font-awesome/scss/font-awesome.scss",
               "node_modules/pace-js/templates/pace-theme-flash.tmpl.css",
               "src/app/theme/theme.scss",
-              "src/styles.scss"
+              "src/styles.scss",
+              "src/app/@theme/styles/styles.scss"
             ],
             "assets": [
               "src/assets",
@@ -120,6 +140,7 @@
               "src/tsconfig.app.json",
               "src/tsconfig.spec.json"
             ],
+            "typeCheck": true,
             "exclude": []
           }
         }
@@ -153,7 +174,7 @@
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "app",
-      "styleext": "scss"
+      "style": "scss"
     },
     "@schematics/angular:directive": {
       "prefix": "app"
@@ -161,7 +182,7 @@
   },
   "cli": {
     "warnings": {
-      "typescriptMismatch": false
+      "typescriptMismatch": true
     },
     "analytics": false
   }

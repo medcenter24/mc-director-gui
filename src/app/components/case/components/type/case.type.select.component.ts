@@ -30,6 +30,8 @@ export class CaseTypeSelectComponent extends LoadableComponent implements OnInit
 
   @Input() selectedCaseTypeId: string;
   @Output() selected: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
 
   caseTypes: SelectItem[] = [];
 

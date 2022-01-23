@@ -29,6 +29,9 @@ import { SelectorProviderMultipleComponent } from '../../provider/multiple';
 export class MultiSelectorComponent extends LoadableComponent implements OnInit {
   protected componentName: string = 'MultiSelectorComponent';
 
+  @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
+
   langLoaded: boolean = false;
   config: SelectorConfig;
 

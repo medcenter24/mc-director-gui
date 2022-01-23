@@ -17,6 +17,8 @@
 import { Injectable } from '@angular/core';
 import { Region } from './region';
 import { HttpService } from '../core/http/http.service';
+import {Observable} from 'rxjs';
+import {ObservableTransformer} from '../../helpers/observable.transformer';
 
 @Injectable()
 export class RegionService extends HttpService {
@@ -25,24 +27,25 @@ export class RegionService extends HttpService {
     return 'director/regions';
   }
 
-  delete (id: number): Promise<void> {
+  delete (id: number): Observable<void> {
     return this.remove(id);
   }
 
-  create (region: Region): Promise<Region> {
-    return this.store(region).then(res => res.json() as Region);
+  create (region: Region): Observable<Region> {
+    const obs = this.store(region);
+    return new ObservableTransformer().transform(obs, r => r.data as Region);
   }
 
-  update (region: Region): Promise<Region> {
+  update (region: Region): Observable<Region> {
     return this.put(region.id, region);
   }
 
-  save (region: Region): Promise<Region> {
-    const action = region.id ? this.put(region.id, region) : this.store(region);
-    return action.then(response => response.data as Region);
+  save (region: Region): Observable<Region> {
+    const obs = region.id ? this.put(region.id, region) : this.store(region);
+    return new ObservableTransformer().transform(obs, r => r.data as Region);
   }
 
-  destroy (region: Region): Promise<any> {
+  destroy (region: Region): Observable<any> {
     return this.remove(region.id);
   }
 }

@@ -16,7 +16,7 @@
  */
 
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { LoadableComponent } from '../../../core/components/componentLoader/LoadableComponent';
+import { LoadableComponent } from '../../../core/components/componentLoader';
 import { TimezoneService } from '../../timezone.service';
 
 @Component({
@@ -27,6 +27,8 @@ export class TimezoneSelectComponent extends LoadableComponent implements OnInit
 
   @Input() timezone: string;
   @Output() change: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
 
   timezones: string[] = [];
   filteredTimezones: string[] = [];

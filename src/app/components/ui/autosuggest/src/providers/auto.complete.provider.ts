@@ -15,6 +15,8 @@
  * Copyright (c) 2019 (original work) MedCenter24.com;
  */
 
+import {Observable} from 'rxjs';
+
 export interface AutoCompleteProvider {
   /**
    * Filtered models that need to be shown in the selector
@@ -30,7 +32,7 @@ export interface AutoCompleteProvider {
    * Loading required data with provider from configuration
    * @param event
    */
-  loadData(event): Promise<any>;
+  loadData(event): Observable<any>;
 
   /**
    * Called to filtering data
@@ -43,5 +45,5 @@ export interface AutoCompleteProvider {
    * @param {any} items
    * @param fieldName
    */
-  selectItems(items: any, fieldName: string): void;
+  selectItems(items: any, fieldName: string): Observable<any>;
 }

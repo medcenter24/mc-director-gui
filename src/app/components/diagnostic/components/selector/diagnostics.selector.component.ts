@@ -32,6 +32,8 @@ export class DiagnosticsSelectorComponent extends LoadableComponent implements O
   @Input() caseId: number = 0;
   @Output() changed: EventEmitter<Diagnostic[]> = new EventEmitter<Diagnostic[]>();
   @Output() diagnosticsLoaded: EventEmitter<Diagnostic[]> = new EventEmitter<Diagnostic[]>();
+  @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
   @ViewChild('selectDiagnostics')
     private selectDiagnosticsComponent: DiagnosticSelectComponent;
 
@@ -68,16 +70,17 @@ export class DiagnosticsSelectorComponent extends LoadableComponent implements O
     if (this.caseId) {
       const postfix = 'SelectDiagnosticsLoaded';
       this.startLoader(postfix);
-      this.casesService.getCaseDiagnostics(this.caseId).then(diagnostics => {
+      const obs = this.casesService.getCaseDiagnostics(this.caseId);
+      obs.subscribe({ next: diagnostics => {
         this.stopLoader(postfix);
         this.caseDiagnostics = diagnostics;
         this.selectDiagnosticsComponent.reloadChosenDiagnostics(this.caseDiagnostics);
         // if I loaded diagnostics by the case id
         this.diagnosticsLoaded.emit(this.caseDiagnostics);
-      }).catch((err) => {
+      }, error: (err) => {
         this.stopLoader(postfix);
         this._logger.error(err);
-      });
+      }});
     }
   }
 

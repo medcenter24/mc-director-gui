@@ -21,7 +21,6 @@ import { ModuleWithProviders } from '@angular/core';
 import { CaseEditorComponent } from '../../components/case/components/editor/case.editor.component';
 import { CaseDatatableComponent } from '../../components/case/components/datatable/case.datatable.component';
 
-// noinspection TypeScriptValidateTypes
 export const routes: Routes = [
   {
     path: '',

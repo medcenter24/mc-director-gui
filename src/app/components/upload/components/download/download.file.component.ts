@@ -15,7 +15,7 @@
  * Copyright (c) 2019 (original work) MedCenter24.com;
  */
 
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Message } from 'primeng/api';
 import { LoadableComponent } from '../../../core/components/componentLoader';
 import { Upload } from '../../upload';
@@ -31,6 +31,9 @@ import { UploadService } from '../../upload.service';
 })
 export class DownloadFileComponent extends LoadableComponent {
   protected componentName: string = 'DownloadFileComponent';
+
+  @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
 
   msgs: Message[] = [];
   url: string = '';

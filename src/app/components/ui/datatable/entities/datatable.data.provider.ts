@@ -17,6 +17,7 @@
 import { DatatableConfig } from './datatable.config';
 import { DatatableResponse } from './datatable.response';
 import { DatatableRequestBuilder } from '../request/datatable.request.builder';
+import {Observable} from 'rxjs';
 
 /**
  * Main mission of this class is to make requests and update datatable statuses
@@ -28,14 +29,14 @@ export class DatatableDataProvider {
   ) {
   }
 
-  search(datatableRequestBuilder: DatatableRequestBuilder): Promise<DatatableResponse> {
+  search(datatableRequestBuilder: DatatableRequestBuilder): Observable<DatatableResponse> {
     if (this.searchService && typeof this.searchService['search'] === 'function') {
-      return this.searchService
-        .search(datatableRequestBuilder)
-        .then(( response: DatatableResponse ) => {
-          // this.updatePaginatorState(response);
-          return response;
-        } );
+      const obs = this.searchService.search(datatableRequestBuilder);
+      // obs.subscribe(( response: DatatableResponse ) => {
+      //     // this.updatePaginatorState(response);
+      //     return response;
+      //   } );
+      return obs;
     }
 
     throw new Error('Service searchService should be defined and implement method `search`');

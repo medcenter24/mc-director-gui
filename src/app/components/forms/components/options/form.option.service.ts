@@ -18,6 +18,8 @@
 import { Injectable } from '@angular/core';
 import { FormOption } from './form.option';
 import { HttpService } from '../../../core/http/http.service';
+import { Observable } from 'rxjs';
+import {ObservableTransformer} from '../../../../helpers/observable.transformer';
 
 @Injectable()
 export class FormOptionService extends HttpService {
@@ -26,16 +28,18 @@ export class FormOptionService extends HttpService {
     return 'director/forms/variables';
   }
 
-  getFormOptions(filters): Promise<FormOption[]> {
-    return this.search(filters).then(response => response.data as FormOption[]);
+  private getFormOptions(filters): Observable<FormOption[]> {
+    const obs = this.search(filters);
+    return new ObservableTransformer().transform(obs, r => r.data as FormOption[]);
   }
 
-  getOptions(type: string): Promise<FormOption[]> {
+  getOptions(type: string): Observable<FormOption[]> {
     return this.getFormOptions({ type });
   }
 
-  get(key: string): Promise<FormOption> {
-    return this.getFormOptions({ key })
-      .then((options: FormOption[]) => options.find((formOption: FormOption) => formOption.key === key));
+  get(key: string): Observable<any> {
+    const obs = this.getFormOptions({ key });
+    return new ObservableTransformer()
+      .transform(obs, (options: FormOption[]) => options.find((formOption: FormOption) => formOption.key === key));
   }
 }

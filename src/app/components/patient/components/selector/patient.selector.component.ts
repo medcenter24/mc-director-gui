@@ -31,12 +31,14 @@ export class PatientSelectorComponent extends LoadableComponent {
     @ViewChild('patientSelect')
         patientSelectComponent: AutocompleterComponent;
 
-    @Output() select: EventEmitter<Patient> = new EventEmitter<Patient>();
-    @Input() set initPatient(patient: Patient) {
-        if (patient) {
-            this.setPatient(patient);
-        }
+  @Input() set initPatient(patient: Patient) {
+    if (patient) {
+      this.setPatient(patient);
     }
+  }
+  @Output() select: EventEmitter<Patient> = new EventEmitter<Patient>();
+  @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
+  @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
 
     protected componentName: string = 'PatientSelectorComponent';
 
