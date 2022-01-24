@@ -24,6 +24,7 @@ import { routing } from './login.page.routing';
 import { AuthenticationService } from '../../components/auth/authentication.service';
 import { MessagesModule } from 'primeng/messages';
 import { AppTranslationModule } from '../../app.translation.module';
+import {SharedModule} from 'primeng/api';
 
 @NgModule({
   imports: [
@@ -34,6 +35,7 @@ import { AppTranslationModule } from '../../app.translation.module';
     routing,
     MessagesModule,
     AppTranslationModule,
+    SharedModule,
   ],
   declarations: [
     LoginPageComponent,
