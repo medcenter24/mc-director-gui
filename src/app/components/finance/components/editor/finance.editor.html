@@ -31,14 +31,14 @@
         </div>
       </div>
 
-      <div class="row mb-2">
-        <div class="col-xs-4">
+      <div class="row">
+        <div class="col-xs-4 mb-2">
           <label class="label required separate" for="title" translate>Type</label>
           <p-selectButton [options]="financeTypes"
                           [(ngModel)]="rule.type"
                           (onChange)="rule.type = $event.value"></p-selectButton>
         </div>
-        <div class="col-xs-4">
+        <div class="col-xs-4 mb-2">
           <label class="label required separate" for="title" translate>Model</label>
           <p-selectButton [options]="conditionModels"
                           [(ngModel)]="rule.model"
@@ -47,7 +47,7 @@
       </div>
 
       <div class="row mb-2">
-        <div class="col-xs-4">
+        <div class="col-xs-4 mb-2">
           <label class="label separate" translate>Doctor</label>
           <nga-multi-selector
                   [service]="doctorService"
@@ -59,7 +59,7 @@
                   [preloadedData]="rule.doctors"
           ></nga-multi-selector>
         </div>
-        <div class="col-xs-4">
+        <div class="col-xs-4 mb-2">
           <label class="label separate" translate>Assistant</label>
           <nga-multi-selector
                   [service]="assistantService"
@@ -71,7 +71,7 @@
                   [preloadedData]="rule.assistants"
           ></nga-multi-selector>
         </div>
-        <div class="col-xs-4">
+        <div class="col-xs-4 mb-2">
           <label class="label separate" translate>City</label>
           <nga-multi-selector
                   [service]="cityService"
@@ -83,7 +83,7 @@
                   [preloadedData]="rule.cities"
           ></nga-multi-selector>
         </div>
-        <div class="col-xs-4">
+        <div class="col-xs-4 mb-2">
           <label class="label separate" translate>Date Period</label>
           <nga-multi-selector
                   [service]="periodService"
@@ -95,7 +95,7 @@
                   [preloadedData]="rule.datePeriods"
           ></nga-multi-selector>
         </div>
-        <div class="col-xs-4">
+        <div class="col-xs-4 mb-2">
           <label class="label separate" translate>Services</label>
           <nga-multi-selector
                   [service]="servicesService"
@@ -107,7 +107,7 @@
                   [preloadedData]="rule.services"
           ></nga-multi-selector>
         </div>
-        <div class="col-xs-4" *ngIf="rule.model === 'assistant'">
+        <div class="col-xs-4 mb-2" *ngIf="rule.model === 'assistant'">
           <label class="label separate" translate>Hospitals</label>
           <nga-multi-selector
                   [service]="hospitalService"
@@ -121,8 +121,8 @@
         </div>
       </div>
 
-      <div class="row mb-2">
-        <div class="col-xs-4">
+      <div class="row">
+        <div class="col-xs-4 mb-2">
           <label class="label required separate" for="price"><b translate>Set Amount</b></label>
           <input type="text" pInputText
                  id="price"
@@ -132,7 +132,7 @@
                  (change)="priceAmountToFixed($event)"
                  required/>
         </div>
-        <div class="col-xs-4">
+        <div class="col-xs-4 mb-2">
           <label class="label required separate" for="price">{{ 'Currency' | translate }}</label>
           <div class="row">
             <div class="col-12">

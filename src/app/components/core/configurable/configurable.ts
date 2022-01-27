@@ -64,13 +64,14 @@ export class Configurable {
   /**
    * To generate new Instance for the current class
    *
-   * FYI i can't use Configurable instead of any because warning appears that inherited class not Configurable
+   * FYI I can't use Configurable instead of any because warning appears that inherited class not Configurable
    * something weird with syntax analyzer
    *
    * @param {Object} config
    * @returns {any}
    */
   static instance(config: Object = {}): any {
+
     /**
      * @type {any}
      */

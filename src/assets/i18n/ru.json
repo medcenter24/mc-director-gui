@@ -488,5 +488,6 @@
   "no_diseases_assigned": "Болезни не назначены",
   "Change Picture": "Изменить изображение",
   "Default Picture Mock": "Заглушка без картинки",
-  "Loaded Picture": "Загруженное изображение"
+  "Loaded Picture": "Загруженное изображение",
+  "items selected": "выбрано"
 }

@@ -21,6 +21,7 @@ import {SearchFilter} from '../../../../core/loadable/search.filter';
 import {SelectorProviderMultipleAdapterComponent} from './adapter';
 import {LoadableComponent} from '../../../../core/components/componentLoader';
 import {Observable} from 'rxjs';
+import {ObservableTransformer} from '../../../../../helpers/observable.transformer';
 
 @Component({
   selector: 'nga-selector-multiple',
@@ -65,9 +66,14 @@ export class SelectorProviderMultipleComponent extends LoadableComponent impleme
   options: any[] = [];
 
   ngOnInit(): void {
-    this.loadData(null).subscribe((r) => {
-      this.selectItems(this.conf.preloaded);
+    // increase limit for multiselect
+    const filter = SearchFilter.instance({
+      rows: 3000,
+      first: 0,
     });
+
+    new ObservableTransformer()
+      .transform(this.loadData(filter.getBodyPayload()), r => this.selectItems(this.conf.preloaded));
   }
 
   /**

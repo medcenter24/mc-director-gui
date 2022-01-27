@@ -17,13 +17,14 @@
 
 import { NgModule } from '@angular/core';
 import { MultiSelectModule } from 'primeng/multiselect';
-import { SelectorProviderMultipleAdapterPrimengComponent }
-  from './selector.provider.multiple.adapter.primeng.component';
+import { SelectorProviderMultipleAdapterPrimengComponent } from './selector.provider.multiple.adapter.primeng.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import {AppTranslationModule} from '../../../../../../../../app.translation.module';
 
 @NgModule({
   imports: [
+    AppTranslationModule,
     CommonModule,
     FormsModule,
     MultiSelectModule,

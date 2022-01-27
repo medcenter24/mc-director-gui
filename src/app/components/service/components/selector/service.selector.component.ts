@@ -22,6 +22,7 @@ import { LoggerComponent } from '../../../core/logger/LoggerComponent';
 import { LoadableComponent } from '../../../core/components/componentLoader';
 import { SelectServicesComponent } from '../select';
 
+// todo move that to accident or case folder and for service selector use autocompleter|multiselect
 @Component({
   selector: 'nga-services-selector',
   templateUrl: 'selector.html',

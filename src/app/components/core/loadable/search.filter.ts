@@ -61,4 +61,16 @@ export class SearchFilter extends Configurable {
   ) {
     super();
   }
+
+  // todo add other parameter converted to filters
+  public getBodyPayload(): object {
+    return {
+      paginator: {
+        fields: [
+          {field: 'limit', value: this.rows},
+          {field: 'offset', value: this.first},
+        ],
+      },
+    };
+  }
 }

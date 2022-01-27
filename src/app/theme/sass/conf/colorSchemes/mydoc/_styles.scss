@@ -137,7 +137,9 @@ a.al-sidebar-list-link i {
   }
 }
 
-.label, .form-group .label {
+.label,
+.form-group .label {
+  margin-bottom: 0;
   line-height: 20px;
   font-weight: 400;
   font-size: 13px;

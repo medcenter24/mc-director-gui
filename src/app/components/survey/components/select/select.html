@@ -21,6 +21,8 @@
         [defaultLabel]="'Select Surveys' | translate"
         [options]="dataSurveys"
         (onChange)="onChanged($event)"
-        [displaySelectedLabel]="false"
+        maxSelectedLabels="1"
+        selectedItemsLabel="{0} {{ 'items selected' | translate }}"
         [emptyFilterMessage]="'No results found' | translate"
+        appendTo="body"
 ></p-multiSelect>

@@ -489,5 +489,6 @@
   "amount_of_total": "{{amount}} of {{total}}",
   "Change Picture": "Change Picture",
   "Default Picture Mock": "Default Picture Mock",
-  "Loaded Picture": "Loaded Picture"
+  "Loaded Picture": "Loaded Picture",
+  "items selected": "items selected"
 }

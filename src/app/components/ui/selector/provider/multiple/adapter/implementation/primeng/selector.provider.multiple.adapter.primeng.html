@@ -21,6 +21,8 @@
   [(ngModel)]="selectedOptions"
   [options]="options"
   (onChange)="onChanged($event)"
-  [maxSelectedLabels]="5"
+  maxSelectedLabels="1"
+  selectedItemsLabel="{0} {{ 'items selected' | translate }}"
+  [emptyFilterMessage]="'No results found' | translate"
   appendTo="body"
 ></p-multiSelect>

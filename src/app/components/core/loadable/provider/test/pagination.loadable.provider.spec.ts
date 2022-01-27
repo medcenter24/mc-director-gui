@@ -25,6 +25,7 @@ describe('Loadable: Pagination Provider', () => {
 
   beforeEach(() => {
     conf = new PaginationDataSample();
+    // @ts-ignore
     service = new PaginationLoadableProvider(conf);
   });
 
