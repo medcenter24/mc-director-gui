@@ -195,6 +195,27 @@ export class FinanceEditorComponent extends LoadableComponent implements OnInit 
     );
   }
 
+  copyFinanceRule(): void {
+    this._state.notifyDataChanged('confirmDialog',
+      {
+        header: this.translateService.instant('Copy'),
+        message: this.translateService.instant('Are you sure you want to copy this condition?'),
+        accept: () => {
+          const postfix = 'CopyRule';
+          this.startLoader(postfix);
+          this.financeService.copy(this.rule)
+            .subscribe({next: (financeCopy) => {
+                this.stopLoader(postfix);
+                this.router.navigate([`pages/finance/conditions/${financeCopy.id}`]).then();
+              }, error: () => {
+                this.stopLoader(postfix);
+              }});
+        },
+        icon: 'fa fa-window-close-o red',
+      },
+    );
+  }
+
   canBeSaved () {
     return FinanceRule.canBeSaved(this.rule);
   }

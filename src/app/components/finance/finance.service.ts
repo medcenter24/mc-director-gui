@@ -44,4 +44,9 @@ export class FinanceService extends HttpService {
   destroy (financeRule: FinanceRule): Observable<any> {
     return this.remove(financeRule.id);
   }
+
+  copy (finance: FinanceRule): Observable<FinanceRule> {
+    const obs = this.store(finance);
+    return new ObservableTransformer().transform(obs, r => r.data as FinanceRule);
+  }
 }

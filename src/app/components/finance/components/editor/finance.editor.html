@@ -163,12 +163,6 @@
               (click)="saveFinanceRule()"
               translate
       >{{ rule.id ? 'Update' : 'Add' }}</button>
-
-      <button class="btn btn-danger pull-right"
-              *ngIf="rule.id"
-              (click)="deleteFinanceRule()"
-              translate
-      >{{ 'Delete' }}</button>
     </div>
     <div class="col-12 col-lg-6 col-xlg-8 mt-3">
       <div class="alert alert-warning" role="alert">
@@ -178,6 +172,20 @@
                 (loaded)="stopLoader($event)"
         ></nga-finance-info>
       </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <button class="btn btn-danger pull-right"
+              *ngIf="rule.id"
+              (click)="deleteFinanceRule()"
+              translate
+      >{{ 'Delete' }}</button>
+      <button class="btn btn-warning pull-right mr-2"
+              *ngIf="rule.id"
+              (click)="copyFinanceRule()"
+              translate
+      >{{ 'Copy' }}</button>
     </div>
   </div>
 </div>
