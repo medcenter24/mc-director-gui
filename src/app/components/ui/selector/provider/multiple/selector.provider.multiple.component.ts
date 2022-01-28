@@ -21,7 +21,6 @@ import {SearchFilter} from '../../../../core/loadable/search.filter';
 import {SelectorProviderMultipleAdapterComponent} from './adapter';
 import {LoadableComponent} from '../../../../core/components/componentLoader';
 import {Observable} from 'rxjs';
-import {ObservableTransformer} from '../../../../../helpers/observable.transformer';
 
 @Component({
   selector: 'nga-selector-multiple',
@@ -72,8 +71,10 @@ export class SelectorProviderMultipleComponent extends LoadableComponent impleme
       first: 0,
     });
 
-    new ObservableTransformer()
-      .transform(this.loadData(filter.getBodyPayload()), r => this.selectItems(this.conf.preloaded));
+    this.loadData(filter.getBodyPayload());
+
+    // multiple loads data only once, so we don't need to call it more
+    // .subscribe(r => this.selectItems(this.conf.preloaded));
   }
 
   /**
@@ -116,11 +117,9 @@ export class SelectorProviderMultipleComponent extends LoadableComponent impleme
       next: response => {
         this.stopLoader(postfix);
         this.options = response.data;
-        return this.options;
+        this.selectItems(this.conf.preloaded);
       },
-      error: (e) => {
-        this.stopLoader(postfix);
-      },
+      error: err => this.stopLoader(postfix),
     });
     return obs;
   }
