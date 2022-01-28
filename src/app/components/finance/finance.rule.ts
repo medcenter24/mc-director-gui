@@ -44,6 +44,7 @@ export class FinanceRule {
     public currencyMode: string = 'currency', // currency, percent mode
     public type: string = 'add', // add, subtract (+ -)
     public model: string = 'assistant',
+    public order: number = 0,
   ) { }
 
   static canBeSaved(rule: FinanceRule): boolean {

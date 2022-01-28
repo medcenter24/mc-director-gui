@@ -27,6 +27,10 @@ import { ConfirmationService } from 'primeng/api';
 import { Router } from '@angular/router';
 import { LoggerComponent } from '../../../core/logger/LoggerComponent';
 import { Breadcrumb } from '../../../../theme/components/baContentTop/breadcrumb';
+import {DatatableRequestBuilder} from '../../../ui/datatable/request/datatable.request.builder';
+import {RequestBuilder} from '../../../core/http/request';
+import {SortRequestField} from '../../../core/http/request/fields';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'nga-finance-datatable',
@@ -45,6 +49,7 @@ export class FinanceDatatableComponent extends AbstractDatatableController {
     private financeService: FinanceService,
     private confirmationService: ConfirmationService,
     private router: Router,
+    private location: Location,
   ) {
     super();
   }
@@ -80,6 +85,7 @@ export class FinanceDatatableComponent extends AbstractDatatableController {
       new DatatableCol('model', this.translateService.instant('Model'), { width: '5em' }),
       new DatatableCol('value', this.translateService.instant('Price'), { width: '7em' }),
       new DatatableCol('condition', this.translateService.instant('Condition')),
+      new DatatableCol('order', this.translateService.instant('Order')),
     ];
   }
 
@@ -126,10 +132,6 @@ export class FinanceDatatableComponent extends AbstractDatatableController {
     this.router.navigate([`pages/finance/conditions/${event.data.id}`]).then();
   }
 
-  getSortBy(): string {
-    return 'title';
-  }
-
   confirmDelete(): void {
     this.confirmationService.confirm({
       message: this.translateService.instant('Are you sure that you want to perform this action?'),
@@ -137,5 +139,19 @@ export class FinanceDatatableComponent extends AbstractDatatableController {
         this.delete();
       },
     });
+  }
+
+  getRequestBuilder (): DatatableRequestBuilder {
+    const requestBuilder = super.getRequestBuilder();
+
+    requestBuilder.setSorter(new RequestBuilder([
+      new SortRequestField('order', 'desc'),
+      new SortRequestField('title', 'asc'),
+    ]));
+    const urlRequestBuilder = DatatableRequestBuilder.fromUrl(this.location.path(true));
+
+    urlRequestBuilder.propagate(requestBuilder);
+
+    return urlRequestBuilder;
   }
 }

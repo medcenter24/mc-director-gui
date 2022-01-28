@@ -38,24 +38,26 @@ import { AssistantsService } from '../../../assistant';
 import { PeriodService } from '../../../period';
 import { ServicesService } from '../../../service';
 import { FinanceInfoModule } from '../info';
+import {InputNumberModule} from 'primeng/inputnumber';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    AppTranslationModule,
-    DoctorSelectModule,
-    AssistantSelectModule,
-    CitySelectModule,
-    ServiceSelectModule,
-    NgaModule,
-    PeriodSelectModule,
-    MultiSelectorModule,
-    FinanceInfoModule,
-    SelectButtonModule,
-    InputSwitchModule,
-    AutocompleterModule,
-  ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        AppTranslationModule,
+        DoctorSelectModule,
+        AssistantSelectModule,
+        CitySelectModule,
+        ServiceSelectModule,
+        NgaModule,
+        PeriodSelectModule,
+        MultiSelectorModule,
+        FinanceInfoModule,
+        SelectButtonModule,
+        InputSwitchModule,
+        AutocompleterModule,
+        InputNumberModule,
+    ],
   providers: [
     FinanceService,
     DoctorsService,

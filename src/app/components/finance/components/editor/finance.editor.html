@@ -155,6 +155,12 @@
             </div>
             </div>
           </div>
+          <div class="row">
+            <div class="col-12">
+              <label class="label pr-3" translate>Display Order</label>
+              <p-inputNumber [(ngModel)]="rule.order" [showButtons]="true" [min]="0" [max]="9999"></p-inputNumber>
+            </div>
+          </div>
         </div>
       </div>
 
