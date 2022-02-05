@@ -8,9 +8,7 @@ import {FvtColInterface} from "../../../cols/fvt.col.interface";
 
 @Component({
   selector: 'nga-fvt-default-row',
-  template: `
-    <div class="flex-table row" role="rowgroup"><ng-template fvtCols></ng-template></div>
-  `,
+  template: `<tr><ng-template fvtCols></ng-template></tr>`,
 })
 export class FvtDefaultRowComponent extends LoadingComponent implements FvtRowInterface, AfterViewInit {
   protected componentName: string = 'FvtDefaultRowComponent';
@@ -53,7 +51,8 @@ export class FvtDefaultRowComponent extends LoadingComponent implements FvtRowIn
     for (const colId in this.cols) {
       let col = this.cols[colId];
       if (!col.hasOwnProperty('ref')) {
-        col['ref'] = this.fvtCols.viewContainerRef.createComponent<any>(col.component);
+        col['ref'] = this.fvtCols.viewContainerRef.createComponent<any>(col.component, null, this.fvtCols.viewContainerRef.injector);
+        col.ref.changeDetectorRef.detectChanges();
       }
       col.resolve(col.ref);
     }

@@ -10,15 +10,14 @@ import {FvtColAddComponent} from "../components/cols/components/add/fvt.col.add.
 
 @Component({
   selector: 'nga-finance-view-table-assistant',
-  template: `<div class="fvt-table-container" role="table" aria-label="Finance View Table">
-    <ng-template fvtBody></ng-template>
-  </div>`,
+  templateUrl: `./finance.view.table.assistant.html`,
   styleUrls: [`./finance.view.table.assistant.scss`],
 })
 export class FinanceViewTableAssistantComponent extends LoadingComponent implements AfterViewInit {
   protected componentName: string = 'FinanceViewTableAssistantComponent';
 
   @ViewChild(FvtBodyDirective, {static: true}) fvtBody!: FvtBodyDirective;
+  private tBodyRef: ComponentRef<any>;
 
   constructor (
     protected _logger: LoggerComponent,
@@ -39,7 +38,8 @@ export class FinanceViewTableAssistantComponent extends LoadingComponent impleme
 
     rowFoundation.then((rowRef: ComponentRef<any>) => {
       this.createAddCol(rowRef).then((colRef: ComponentRef<any>) => {
-        colRef.instance.setColspan(99);
+        // colRef.instance.setColspan(99);
+        // colRef.instance.ngOnChanges({});
         colRef.instance.click.subscribe(() => {
           console.log(1)
 
@@ -49,7 +49,6 @@ export class FinanceViewTableAssistantComponent extends LoadingComponent impleme
               newColRef.instance.click.subscribe(() => console.log(2))
             });
           });
-
         });
       });
     });
@@ -57,7 +56,8 @@ export class FinanceViewTableAssistantComponent extends LoadingComponent impleme
 
   private createBody(): ComponentRef<any> {
     const factoryBody = this.resolver.resolveComponentFactory(FvtTbodyComponent);
-    return this.fvtBody.viewContainerRef.createComponent<any>(factoryBody);
+    this.tBodyRef = this.fvtBody.viewContainerRef.createComponent<any>(factoryBody, null, this.fvtBody.viewContainerRef.injector);
+    return this.tBodyRef;
   }
 
   private createRow(bodyRef: ComponentRef<any>): Promise<any> {

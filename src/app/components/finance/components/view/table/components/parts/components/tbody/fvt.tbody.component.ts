@@ -7,10 +7,8 @@ import {FvtRowInterface} from "../../../rows/components/fvt.row.interface";
 import {FvtRowsDirective} from "./fvt.rows.directive";
 
 @Component({
-  selector: 'nga-fvt-column-add',
-  template: `<div class="flex-table row" role="rowgroup" aria-label="fvtBody">
-    <ng-container fvtRows></ng-container>
-  </div>`,
+  selector: 'nga-fvt-body',
+  template: `<tbody><ng-container fvtRows></ng-container></tbody>`,
 })
 export class FvtTbodyComponent extends LoadingComponent implements PartInterface, AfterViewInit {
   protected componentName: string = 'FvtTbodyComponent';

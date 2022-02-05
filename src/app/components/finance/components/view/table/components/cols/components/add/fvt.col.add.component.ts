@@ -6,8 +6,8 @@ import {GlobalState} from "../../../../../../../../../global.state";
 
 @Component({
   selector: 'nga-fvt-col-add',
-  template: `
-  <div class="flex-row" role="cell">
+  template: `<td [colSpan]="colspan">
+<!--  <td>-->
     <button
       pButton
       pRipple
@@ -16,7 +16,7 @@ import {GlobalState} from "../../../../../../../../../global.state";
       class="p-button-rounded p-button-text"
       (click)="addLocations()"
     ></button>
-  </div>`,
+  </td>`,
 })
 export class FvtColAddComponent extends LoadingComponent implements FvtColInterface {
   protected componentName: string = 'FvtColAddComponent';
