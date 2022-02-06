@@ -95,9 +95,6 @@ export class CaseEditorComponent extends LoadingComponent implements OnInit {
   @ViewChild('hospitalInvoiceEditor')
   private hospitalInvoiceEditor: InvoiceEditorComponent;
 
-  @ViewChild('accidentReportFormAutocompleter')
-  private accidentReportFormAutocompleter: AutocompleterComponent;
-
   @ViewChild('invoiceEditorComponent')
   private invoiceEditorComponent: InvoiceEditorComponent;
 
@@ -234,9 +231,6 @@ export class CaseEditorComponent extends LoadingComponent implements OnInit {
               }
               if (this.accident.cityId) {
                 this.cityAutocompleter.selectItems(this.accident.cityId);
-              }
-              if (this.accident.formReportId && this.accidentReportFormAutocompleter) {
-                this.accidentReportFormAutocompleter.selectItems(this.accident.formReportId);
               }
               if (this.accident.parentId && this.parentSelector) {
                 this.parentSelector.selectItems(this.accident.parentId);
