@@ -54,6 +54,7 @@ import {LoggerComponent} from '../../../core/logger/LoggerComponent';
 import {Breadcrumb} from '../../../../theme/components/baContentTop/breadcrumb';
 import {UiToastService} from '../../../ui/toast/ui.toast.service';
 import {PaymentViewer} from "../../../finance/components/payment/components/block/payment.viewer";
+import {AccidentsRefNumService} from "../../../accident/accidents.refNum.service";
 
 @Component({
   selector: 'nga-case-editor',
@@ -135,6 +136,7 @@ export class CaseEditorComponent extends LoadingComponent implements OnInit {
               protected _logger: LoggerComponent,
               protected _state: GlobalState,
               public accidentsService: AccidentsService,
+              public accidentRefNumService: AccidentsRefNumService,
               public caseService: CasesService,
               public doctorService: DoctorsService,
               private router: Router,

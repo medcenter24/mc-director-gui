@@ -44,4 +44,36 @@ export class Accident {
         public closedAt: string = '',
         public handlingTime: string = '',
     ) {}
+
+  static fromData(data: object): Accident
+  {
+    return new Accident(
+      data['id'],
+      data['createdBy'],
+      data['parentId'],
+      data['patientId'],
+      data['accidentTypeId'],
+      data['accidentStatusId'],
+      data['cityId'],
+      data['formReportId'],
+      data['caseableId'],
+      data['caseableType'],
+      data['caseableCost'],
+      data['fixedIncome'],
+      data['refNum'],
+      data['assistantId'],
+      data['assistantRefNum'],
+      data['assistantInvoiceId'],
+      data['assistantGuaranteeId'],
+      data['title'],
+      data['address'],
+      data['contacts'],
+      data['symptoms'],
+      data['createdAt'],
+      data['updatedAt'],
+      data['deletedAt'],
+      data['closedAt'],
+      data['handlingTime'],
+    );
+  }
 }
