@@ -521,6 +521,7 @@
                       [accident]="accident"
                       (init)="startLoader($event)"
                       (loaded)="stopLoader($event)"
+                      (changed)="financeChanged($event)"
                     ></nga-case-finance>
                   </div>
                 </div>

@@ -53,6 +53,7 @@ import {BaToolboxAction} from '../../../../theme/components';
 import {LoggerComponent} from '../../../core/logger/LoggerComponent';
 import {Breadcrumb} from '../../../../theme/components/baContentTop/breadcrumb';
 import {UiToastService} from '../../../ui/toast/ui.toast.service';
+import {PaymentViewer} from "../../../finance/components/payment/components/block/payment.viewer";
 
 @Component({
   selector: 'nga-case-editor',
@@ -717,5 +718,19 @@ export class CaseEditorComponent extends LoadingComponent implements OnInit {
   onDocumentsChanged(): void {
     this.dataChanged();
     this.loadDocuments();
+  }
+
+  financeChanged($event: PaymentViewer[]) {
+    const assistantPayment = $event.find(val => val.type === 'assistant');
+    this.assistantInvoice.price = assistantPayment.getPrice();
+    this.accident['assistantPaymentId'] = assistantPayment.getPaymentId();
+
+    const caseablePayment = $event.find(val => val.type === 'caseable');
+    this.accident['caseablePaymentId'] = caseablePayment.getPaymentId();
+
+    const incomePayment = $event.find(val => val.type === 'income');
+    this.accident['incomePaymentId'] = incomePayment.getPaymentId();
+
+    this.dataChanged();
   }
 }

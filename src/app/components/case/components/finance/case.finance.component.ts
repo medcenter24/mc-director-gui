@@ -33,6 +33,7 @@ export class CaseFinanceComponent extends LoadableComponent implements OnInit {
   @Input() accident: Accident;
   @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
   @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
+  @Output() changed: EventEmitter<PaymentViewer[]> = new EventEmitter<PaymentViewer[]>();
 
   types: string[] = ['income', 'assistant', 'caseable'];
   paymentViewers: PaymentViewer[] = [];
@@ -64,9 +65,11 @@ export class CaseFinanceComponent extends LoadableComponent implements OnInit {
   }
 
   private save(type: string, data: Object): void {
-    this.caseService.saveFinance(this.accident, type, data).subscribe((paymentViewers: PaymentViewer[]) => {
-      this.updatePaymentViewers(paymentViewers);
-    });
+    this.caseService.saveFinance(this.accident, type, data)
+      .subscribe((paymentViewers: PaymentViewer[]) => {
+        this.updatePaymentViewers(paymentViewers);
+        this.changed.emit(this.paymentViewers);
+      });
   }
 
   private updatePaymentViewers(paymentViewers: PaymentViewer[]): void {
