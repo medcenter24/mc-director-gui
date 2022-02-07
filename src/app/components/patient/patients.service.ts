@@ -58,7 +58,7 @@ export class PatientsService extends HttpService {
   }
 
   filterNameCharacters(name: string): string {
-    name = name.replace(/[^A-Z\s]/g, '');
+    name = name.replace(/[^A-Z\s\-]/g, '');
     name = name.replace(/\s+/g, ' ');
     return name;
   }
