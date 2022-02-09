@@ -23,4 +23,14 @@ export class Assistant {
         public comment: string = '',
         public refKey: string = '',
     ) {}
+
+  static fromData(data: any) {
+    return new Assistant(
+      data['id'],
+      data['title'],
+      data['email'],
+      data['comment'],
+      data['refKey'],
+    );
+  }
 }

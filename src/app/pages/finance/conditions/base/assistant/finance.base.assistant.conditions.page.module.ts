@@ -16,27 +16,23 @@
  */
 
 import { NgModule } from '@angular/core';
-import { FinanceCurrencyDatatableModule } from '../../components/finance/components/currency/components/datatable';
-import { FinanceDatatableModule } from '../../components/finance/components/datatable';
-import { ConditionsEditorPageModule } from './conditions/editor';
-import { FinancePageComponent } from './finance.page.component';
-import { routing } from './finance.page.routing';
-import {
-  FinanceBaseAssistantModule
-} from "../../components/finance/components/base/assistant";
+import {FinanceBaseAssistantConditionsPageComponent} from './finance.base.assistant.conditions.page.component';
+import { ButtonModule } from 'primeng/button';
+import { RouterModule } from '@angular/router';
+import {AppTranslationModule} from "../../../../../app.translation.module";
+import {NgaModule} from "../../../../../theme/nga.module";
+import {FinanceBaseAssistantModule} from "../../../../../components/finance/components/base/assistant";
 
 @NgModule({
   imports: [
-    routing,
-    FinanceDatatableModule,
-    FinanceCurrencyDatatableModule,
-    ConditionsEditorPageModule,
+    AppTranslationModule,
+    ButtonModule,
+    NgaModule,
+    RouterModule,
     FinanceBaseAssistantModule,
   ],
-  declarations: [
-    FinancePageComponent,
-  ],
+  exports: [FinanceBaseAssistantConditionsPageComponent],
+  declarations: [FinanceBaseAssistantConditionsPageComponent],
 })
-
-export class FinancePageModule {
+export class FinanceBaseAssistantConditionsPageModule {
 }

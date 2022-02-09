@@ -15,22 +15,5 @@
  * Copyright (c) 2019 (original work) MedCenter24.com;
  */
 
-export class City {
-    constructor(
-        public id: number = 0,
-        public title: string = '',
-        public regionId: number = 0,
-        public regionTitle: string = '',
-        public countryTitle: string = '',
-    ) {}
-
-  static fromData(data: Array<any>) {
-    return new City(
-      data['id'],
-      data['title'],
-      data['regionId'],
-      data['regionTitle'],
-      data['countryTitle'],
-    )
-  }
-}
+export * from './finance.base.assistant.conditions.page.component';
+export * from './finance.base.assistant.conditions.page.module';

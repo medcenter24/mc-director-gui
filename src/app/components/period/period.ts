@@ -29,4 +29,13 @@ export class Period {
     public to: string = '',
     public title: string = '',
   ) { }
+
+  static fromData(data: Array<any>) {
+    return new Period(
+      data['id'],
+      data['from'],
+      data['to'],
+      data['title'],
+    );
+  }
 }

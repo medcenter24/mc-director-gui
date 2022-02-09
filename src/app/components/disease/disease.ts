@@ -22,4 +22,13 @@ export class Disease {
     public description: string = '',
   ) {
   }
+
+  static fromData(data: Array<any>) {
+    return new Disease(
+      data['id'],
+      data['title'],
+      data['code'],
+      data['description'],
+    );
+  }
 }

@@ -24,4 +24,15 @@ export class Doctor {
         public refKey: string = '',
         public medicalBoardNumber: string = '',
     ) { }
+
+  static fromData(data: Array<any>) {
+    return new Doctor(
+      data['id'],
+      data['userId'],
+      data['name'],
+      data['description'],
+      data['refKey'],
+      data['medicalBoardNumber'],
+    );
+  }
 }
