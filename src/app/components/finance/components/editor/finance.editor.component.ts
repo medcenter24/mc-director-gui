@@ -119,6 +119,7 @@ export class FinanceEditorComponent extends LoadableComponent implements OnInit 
     this.startLoader(postfix);
     this.translateService.get('Yes').subscribe(() => {
       this.financeTypes = [];
+      this.financeTypes.push({ label: this.translateService.instant('Base Payment'), value: 'base' });
       this.financeTypes.push({ label: this.translateService.instant('Add'), value: 'add' });
       this.financeTypes.push({ label: this.translateService.instant('Subtract'), value: 'sub' });
 
