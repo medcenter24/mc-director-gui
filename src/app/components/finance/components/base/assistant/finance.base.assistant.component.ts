@@ -23,7 +23,7 @@ import {GlobalState} from "../../../../../global.state";
 import {TranslateService} from "@ngx-translate/core";
 import {DatatableRequestBuilder} from "../../../../ui/datatable/request/datatable.request.builder";
 import {RequestBuilder} from "../../../../core/http/request";
-import {FilterRequestField} from "../../../../core/http/request/fields";
+import {FilterRequestField, SortRequestField} from "../../../../core/http/request/fields";
 import {FinanceRule} from "../../../finance.rule";
 import {Assistant} from "../../../../assistant";
 import {City} from "../../../../city";
@@ -71,6 +71,9 @@ export class FinanceBaseAssistantComponent extends LoadableComponent implements 
 
   private showInTable() {
     const requestBuilder = new DatatableRequestBuilder();
+    requestBuilder.setSorter(new RequestBuilder([
+      new SortRequestField('order', 'desc'),
+    ]));
     requestBuilder.setFilter(new RequestBuilder([
         new FilterRequestField(
           'model',
@@ -78,12 +81,12 @@ export class FinanceBaseAssistantComponent extends LoadableComponent implements 
           FilterRequestField.MATCH_CONTENTS,
           FilterRequestField.TYPE_TEXT
         ),
-      new FilterRequestField(
-        'type',
-        'base',
-        FilterRequestField.MATCH_CONTENTS,
-        FilterRequestField.TYPE_TEXT
-      ),
+        new FilterRequestField(
+          'type',
+          'base',
+          FilterRequestField.MATCH_CONTENTS,
+          FilterRequestField.TYPE_TEXT
+        ),
       ]));
     this.financeService.search(requestBuilder).subscribe(res => {
       const financeRules = [];
