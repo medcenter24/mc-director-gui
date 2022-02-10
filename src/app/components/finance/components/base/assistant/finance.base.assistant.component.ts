@@ -23,7 +23,12 @@ import {GlobalState} from "../../../../../global.state";
 import {TranslateService} from "@ngx-translate/core";
 import {DatatableRequestBuilder} from "../../../../ui/datatable/request/datatable.request.builder";
 import {RequestBuilder} from "../../../../core/http/request";
-import {FilterRequestField, SortRequestField} from "../../../../core/http/request/fields";
+import {
+  FilterRequestField,
+  PaginationLimitRequestField,
+  PaginationOffsetRequestField,
+  SortRequestField
+} from "../../../../core/http/request/fields";
 import {FinanceRule} from "../../../finance.rule";
 import {Assistant} from "../../../../assistant";
 import {City} from "../../../../city";
@@ -88,6 +93,10 @@ export class FinanceBaseAssistantComponent extends LoadableComponent implements 
           FilterRequestField.TYPE_TEXT
         ),
       ]));
+    requestBuilder.setPaginator(new RequestBuilder([
+      new PaginationOffsetRequestField(),
+      new PaginationLimitRequestField('5000'),
+    ]));
     this.financeService.search(requestBuilder).subscribe(res => {
       const financeRules = [];
       res.data.forEach(rawData => {
