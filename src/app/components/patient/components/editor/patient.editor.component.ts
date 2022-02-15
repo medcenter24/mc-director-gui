@@ -29,7 +29,7 @@ import {LoadableComponent} from '../../../core/components/componentLoader';
   templateUrl: './patient.editor.html',
 })
 export class PatientEditorComponent extends LoadableComponent {
-  @Input() initPatient(patient) {
+  @Input() initPatient(patient: Patient) {
     this.setPatient(patient);
   }
 
