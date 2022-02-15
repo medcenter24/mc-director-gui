@@ -23,4 +23,14 @@ export class CalendarEvent {
     public end: string = '',
     public status: string = '',
   ) { }
+
+  static fromData(data: object): CalendarEvent {
+    return new CalendarEvent(
+      data['id'],
+      data['title'],
+      data['start'],
+      data['end'],
+      data['status'],
+    );
+  }
 }
