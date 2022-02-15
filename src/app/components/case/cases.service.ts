@@ -140,4 +140,10 @@ export class CasesService extends HttpService implements LoadableServiceInterfac
     return new ObservableTransformer()
       .transform(obs, r => r.data.map(row => PaymentViewer.fromData(row)));
   }
+
+  reopen(accident: Accident): Observable<any> {
+    const obs = this.put(`${accident.id}/reopen`, {});
+    return new ObservableTransformer()
+      .transform(obs, r => r);
+  }
 }

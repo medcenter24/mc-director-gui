@@ -21,4 +21,12 @@ export class AccidentStatus {
     public type: string = '',
   ) {
   }
+
+  static fromData(data: object): AccidentStatus {
+    return new AccidentStatus(
+      data['id'],
+      data['title'],
+      data['type'],
+    )
+  }
 }

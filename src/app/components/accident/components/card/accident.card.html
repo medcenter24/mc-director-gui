@@ -18,7 +18,7 @@
 <p-panel *ngIf="accident">
     <p-header>
         {{ 'Parent Accident' | translate }}
-        <a (click)="closePanel()" class="pull-right fa fa-window-close"></a>
+        <a (click)="closePanel()" *ngIf="showDelete" class="pull-right fa fa-window-close"></a>
     </p-header>
     <h5>{{ accident.title }} <small><a target="_blank" [routerLink]="['/pages/cases', accident.id]">{{ 'pp' | translate }} {{ accident.refNum }} &rarr;</a></small></h5>
     <hr>

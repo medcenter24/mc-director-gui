@@ -38,7 +38,7 @@ export class CommentsComponent extends LoadableComponent {
   showEditor: boolean = false;
   text: string = '';
 
-  constructor(private dateHelper: DateHelper) {
+  constructor() {
     super();
     this.noPhoto = `${layoutPaths.images.profile}no-photo.png`;
   }

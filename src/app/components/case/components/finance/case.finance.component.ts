@@ -34,6 +34,7 @@ export class CaseFinanceComponent extends LoadableComponent implements OnInit {
   @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
   @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
   @Output() changed: EventEmitter<PaymentViewer[]> = new EventEmitter<PaymentViewer[]>();
+  @Output() state: EventEmitter<PaymentViewer[]> = new EventEmitter<PaymentViewer[]>();
 
   types: string[] = ['income', 'assistant', 'caseable'];
   paymentViewers: PaymentViewer[] = [];
@@ -59,9 +60,10 @@ export class CaseFinanceComponent extends LoadableComponent implements OnInit {
    * @param types [income, assistant, caseable]
    */
   private reload(types: string[] = []): void {
-    this.caseService.getFinance(this.accident, types).subscribe((paymentViewers: PaymentViewer[]) => {
-      this.updatePaymentViewers(paymentViewers);
-    });
+    this.caseService.getFinance(this.accident, types)
+      .subscribe((paymentViewers: PaymentViewer[]) => {
+        this.updatePaymentViewers(paymentViewers);
+      });
   }
 
   private save(type: string, data: Object): void {
@@ -74,9 +76,11 @@ export class CaseFinanceComponent extends LoadableComponent implements OnInit {
 
   private updatePaymentViewers(paymentViewers: PaymentViewer[]): void {
     paymentViewers.forEach((pView: PaymentViewer) => {
-      const viewerKey = this.paymentViewers.findIndex((view: PaymentViewer) => view.type === pView.type);
+      const viewerKey = this.paymentViewers
+        .findIndex((view: PaymentViewer) => view.type === pView.type);
       this.paymentViewers[viewerKey] = pView;
     });
+    this.state.emit(this.paymentViewers);
   }
 
   getTitle(type: string): string {

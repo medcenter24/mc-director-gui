@@ -21,5 +21,7 @@ export class Document {
         public title: string = '',
         public owner: string = '',
         public fileName: string = '',
+        public b64thumb: string = '',
+        public type: string = '',
     ) { }
 }

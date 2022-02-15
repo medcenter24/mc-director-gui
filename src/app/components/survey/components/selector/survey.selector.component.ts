@@ -24,11 +24,12 @@ import { SurveySelectComponent } from '../select/survey.select.component';
 
 @Component({
   selector: 'nga-surveys-selector',
-  templateUrl: 'selector.html',
+  templateUrl: 'survey.selector.html',
 })
 export class SurveysSelectorComponent extends LoadableComponent implements OnInit {
 
   @Input() caseId: number = 0;
+  @Input() isStaticForm: boolean = false;
   @Output() priceChanged: EventEmitter<number> = new EventEmitter<number>();
   @Output() changed: EventEmitter<Survey[]> = new EventEmitter<Survey[]>();
   @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
@@ -49,7 +50,15 @@ export class SurveysSelectorComponent extends LoadableComponent implements OnIni
   }
 
   ngOnInit () {
-    this.isLoaded = true;
+    if (this.isStaticForm) {
+      this.casesService.getCaseSurveys(this.caseId)
+        .subscribe(surveys => {
+          this.caseSurveys = surveys;
+          this.isLoaded = true;
+        })
+    } else {
+      this.isLoaded = true;
+    }
   }
 
   onDelete (survey: Survey): void {

@@ -20,16 +20,18 @@
     <div class="row">
       <div [ngClass]="form && invoice ? 'col-md-8' : 'col-md-12'">
         <label class="label separate">{{ label }}</label>
-        <nga-autocompleter
-          #invoiceFormAutocompleter
-          [service]="formService"
-          placeholder="Choose a Form"
-          labelField="title"
-          (selected)="formSelected($event)"
-          (init)="startLoader($event)"
-          (loaded)="stopLoader($event)"
-          providerType="loadable"
-        ></nga-autocompleter>
+        <ng-container *ngIf="!isStatic">
+          <nga-autocompleter
+            #invoiceFormAutocompleter
+            [service]="formService"
+            placeholder="Choose a Form"
+            labelField="title"
+            (selected)="formSelected($event)"
+            (init)="startLoader($event)"
+            (loaded)="stopLoader($event)"
+            providerType="loadable"
+          ></nga-autocompleter>
+        </ng-container>
       </div>
       <div class="col-md-4" *ngIf="form && dataModelId">
         <label class="label separate" translate>Preview</label>
@@ -43,52 +45,70 @@
   </div>
   <div class="col-sm-3" *ngIf="isFileInvoice()">
     <label class="label separate">{{ label }}</label>
-    <nga-file-upload
-      *ngIf="!file"
-      (changed)="onUploaded($event)"
-      (loaded)="stopLoader($event)"
-      (init)="startLoader($event)"
-    ></nga-file-upload>
+    <ng-container *ngIf="!isStatic">
+      <nga-file-upload
+        *ngIf="!file"
+        (changed)="onUploaded($event)"
+        (loaded)="stopLoader($event)"
+        (init)="startLoader($event)"
+      ></nga-file-upload>
+    </ng-container>
     <nga-file-download
       *ngIf="file"
       [file]="file"
       (loaded)="stopLoader($event)"
       (init)="startLoader($event)"
     ></nga-file-download>
-    <i class="fa fa-trash text-danger pl-3"
-       *ngIf="file"
-       (click)="file = null"
-       title="{{ 'Load new file' | translate }}"></i>
+    <ng-container *ngIf="!isStatic">
+      <i class="fa fa-trash text-danger pl-3"
+         *ngIf="file"
+         (click)="file = null"
+         title="{{ 'Load new file' | translate }}"></i>
+    </ng-container>
   </div>
   <div class="col-sm-3">
     <label class="label separate">{{ 'Price' | translate }}</label>
-    <input
-      *ngIf="invoice"
-      type="text"
-      pInputText
-      pKeyFilter="money"
-      [placeholder]="'Price' | translate"
-      [(ngModel)]="invoice.price"
-      (change)="priceChanged($event)"
-    >
+    <ng-container *ngIf="isStatic">
+      {{ invoice.price }}
+    </ng-container>
+    <ng-container *ngIf="!isStatic">
+      <input
+        *ngIf="invoice"
+        type="text"
+        pInputText
+        pKeyFilter="money"
+        [placeholder]="'Price' | translate"
+        [(ngModel)]="invoice.price"
+        (change)="priceChanged($event)"
+      >
+    </ng-container>
   </div>
   <div class="col-sm-2">
     <label class="label separate">{{ 'Status' | translate }}</label>
-    <nga-ui-status-select
-      *ngIf="invoice"
-      [status]="invoice.status"
-      (selected)="onStatusChanged($event)"
-      (loaded)="stopLoader($event)"
-      (init)="startLoader($event)"
-    ></nga-ui-status-select>
+    <ng-container *ngIf="isStatic">
+      <p *ngIf="invoice.status === 'new'" translate>New</p>
+      <p *ngIf="invoice.status === 'sent'" translate>Sent</p>
+      <p *ngIf="invoice.status === 'paid'" translate>Paid</p>
+    </ng-container>
+    <ng-container *ngIf="!isStatic">
+      <nga-ui-status-select
+        *ngIf="invoice"
+        [status]="invoice.status"
+        (selected)="onStatusChanged($event)"
+        (loaded)="stopLoader($event)"
+        (init)="startLoader($event)"
+      ></nga-ui-status-select>
+    </ng-container>
   </div>
-  <div class="col-sm-1" *ngIf="!autosave">
-    <label class="label separate">{{ 'Action' | translate }}</label>
-    <button pButton [label]="'Save' | translate" (click)="save()" class="p-button-success"></button>
-  </div>
-  <div class="col-sm-1 ml-4 mt-2" *ngIf="autosave">
-    <label class="label separate">&nbsp;</label>
-    <span class="fa fa-check text-success" *ngIf="!saving"></span>
-    <span class="fa fa-spinner fa-spin" *ngIf="saving"></span>
-  </div>
+  <ng-container *ngIf="!isStatic">
+    <div class="col-sm-1" *ngIf="!autosave">
+      <label class="label separate">{{ 'Action' | translate }}</label>
+      <button pButton [label]="'Save' | translate" (click)="save()" class="p-button-success"></button>
+    </div>
+    <div class="col-sm-1 ml-4 mt-2" *ngIf="autosave">
+      <label class="label separate">&nbsp;</label>
+      <span class="fa fa-check text-success" *ngIf="!saving"></span>
+      <span class="fa fa-spinner fa-spin" *ngIf="saving"></span>
+    </div>
+  </ng-container>
 </div>

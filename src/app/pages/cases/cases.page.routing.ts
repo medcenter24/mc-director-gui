@@ -20,6 +20,7 @@ import { CasesPageComponent } from './cases.page.component';
 import { ModuleWithProviders } from '@angular/core';
 import { CaseEditorComponent } from '../../components/case/components/editor/case.editor.component';
 import { CaseDatatableComponent } from '../../components/case/components/datatable/case.datatable.component';
+import {CaseArchiveComponent} from "../../components/case/components/archive/case.archive.component";
 
 export const routes: Routes = [
   {
@@ -28,6 +29,7 @@ export const routes: Routes = [
     children: [
       { path: '', component: CaseDatatableComponent },
       { path: 'new', component: CaseEditorComponent },
+      { path: 'archive/:id', component: CaseArchiveComponent },
       { path: ':id', component: CaseEditorComponent },
     ],
   },

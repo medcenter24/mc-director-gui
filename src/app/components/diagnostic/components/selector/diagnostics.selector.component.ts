@@ -24,12 +24,13 @@ import { LoggerComponent } from '../../../core/logger/LoggerComponent';
 
 @Component({
   selector: 'nga-diagnostics-selector',
-  templateUrl: 'selector.html',
+  templateUrl: 'diagnostics.selector.html',
 })
 export class DiagnosticsSelectorComponent extends LoadableComponent implements OnInit {
   protected componentName: string = 'DiagnosticsSelectorComponent';
 
   @Input() caseId: number = 0;
+  @Input() isStaticForm: boolean = false;
   @Output() changed: EventEmitter<Diagnostic[]> = new EventEmitter<Diagnostic[]>();
   @Output() diagnosticsLoaded: EventEmitter<Diagnostic[]> = new EventEmitter<Diagnostic[]>();
   @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
@@ -48,7 +49,15 @@ export class DiagnosticsSelectorComponent extends LoadableComponent implements O
   }
 
   ngOnInit () {
-    this.isLoaded = true;
+    if (this.isStaticForm) {
+      this.casesService.getCaseDiagnostics(this.caseId)
+        .subscribe(diagnostics => {
+          this.caseDiagnostics = diagnostics;
+          this.isLoaded = true;
+        })
+    } else {
+      this.isLoaded = true;
+    }
   }
 
   onDelete (diagnostic: Diagnostic): void {

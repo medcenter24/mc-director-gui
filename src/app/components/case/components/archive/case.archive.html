@@ -1,0 +1,428 @@
+<!--
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; under version 2
+  ~ of the License (non-upgradable).
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  ~
+  ~ Copyright (c) 2019 (original work) MedCenter24.com;
+  -->
+<div *ngIf="accident" class="case-editor edit-form-container">
+  <div class="form-block row">
+    <ba-card class="col-lg-9" baCardClass="with-scroll">
+
+      <div class="main-part">
+        <div class="form-group">
+          <div class="row">
+            <!-- Title -->
+            <div class="col-sm-10">
+              <h2 class="text-danger">
+                {{ 'Closed' | translate }} •
+                <span *ngIf="isLoading()">{{ 'Case loading' | translate }} ... <span
+                  class="fa fa-spin fa-spinner"></span></span>
+                <span
+                  *ngIf="!isLoading() && accident.id">{{ 'Case preview' | translate}} {{ 'pp' | translate }}{{ accident.id }}</span>
+              </h2>
+            </div>
+            <!-- /Title -->
+          </div>
+
+          <!-- Type of Case -->
+          <div class="row">
+            <div class="col-sm-4">
+              <h4 *ngIf="accident.id && isDoctorAccident()"
+                  class="text-danger" translate>Doctor Case</h4>
+              <h4 *ngIf="accident.id && isHospitalAccident()"
+                  class="text-danger" translate>Hospital Case</h4>
+            </div>
+            <!-- /Type of Case -->
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="row">
+            <!-- Referral Number -->
+            <div class="col-sm-4">
+              {{ accident.refNum }}
+            </div>
+            <!-- Referral Number -->
+
+            <!-- Assistant -->
+            <div class="col-sm-4">
+              <ng-container *ngIf="assistant">
+                <label class="label required separate" translate>Assistant</label>
+                {{ assistant.title }}
+              </ng-container>
+            </div>
+            <!-- /Assistant -->
+
+            <!-- Assistant Ref Num -->
+            <div class="col-sm-4">
+              <label class="label required separate" translate>Assistant Ref Num</label>
+              {{ accident.assistantRefNum }}
+            </div>
+            <!-- /Assistant Ref Num -->
+          </div>
+        </div>
+
+        <div class="form-group offset-bottom20">
+          <div class="row">
+            <!-- City -->
+            <div class="col-sm-4" *ngIf="city">
+              <label class="label required separate" translate>City</label>
+              {{ city.regionTitle }} • {{ city.title }}
+            </div>
+            <!-- /City -->
+
+            <!-- Assistants guarantee file -->
+            <div class="col-sm-4">
+              <label class="label separate" translate>Application from the insurance company</label>
+              <span
+                *ngIf="!assistantGuaranteeFile"
+                translate
+              >Not loaded</span>
+
+              <!-- Assistant Guarantee File loaded -->
+              <nga-file-download
+                *ngIf="assistantGuaranteeFile"
+                [file]="assistantGuaranteeFile"
+                (loaded)="stopLoader($event)"
+                (init)="startLoader($event)"
+              ></nga-file-download>
+              <!-- /Assistant guarantee file loaded -->
+            </div>
+            <!-- /Assistants guarantee -->
+
+            <!-- Doctor Accident => Doctor, Handling Time -->
+            <div class="col-sm-4" *ngIf="isDoctorAccident()">
+              <label class="label required separate" translate>Doctor</label>
+              <span *ngIf="!doctor" translate>Not selected</span>
+              <span *ngIf="doctor">{{ doctor.name }}</span>
+            </div>
+
+            <div class="col-sm-4" *ngIf="isDoctorAccident()">
+              <label class="label required separate" translate>Handling time</label>
+              <span>{{ handlingTime }}</span>
+            </div>
+            <!-- DA /Doctor, Handling Time -->
+
+            <!-- Hospital Accident => Hospital -->
+            <div class="col-sm-4" *ngIf="isHospitalAccident()">
+              <label class="label required separate" translate>Hospital</label>
+              <span *ngIf="!hospital" translate>Not selected</span>
+              <span *ngIf="hospital">{{ hospital.title }}</span>
+            </div>
+            <!-- HA /Hospital -->
+
+          </div>
+        </div>
+
+        <div class="form-group offset-bottom20">
+          <div class="row">
+            <!-- Symptoms -->
+            <div class="col-sm-6">
+              <div class="row">
+                <div class="col-sm-12">
+                  <label class="label separate" translate>Symptoms</label>
+                  <p>{{ accident.symptoms }}</p>
+                </div>
+              </div>
+            </div>
+            <!-- /Symptoms -->
+            <!-- Repeated Appointment -->
+            <div class="col-sm-6" *ngIf="+accident.parentId">
+              <label class="label separate" translate>Repeated Appointment</label>
+              <nga-accident-card
+                [selectedAccidentId]="accident.parentId"
+                (init)="startLoader($event)"
+                (loaded)="stopLoader($event)"
+                [showDelete]="false"
+              ></nga-accident-card>
+            </div>
+            <!-- /Repeated Appointment -->
+          </div>
+        </div>
+
+        <!-- Patient -->
+        <div class="form-group">
+          <div class="row offset-bottom20 patient-container">
+            <div class="col-12">
+              <label class="label separate required">{{ 'patient' | translate }}</label>
+              <span *ngIf="patient">{{ patient.name }}</span>
+              <span *ngIf="!patient" translate>Patient not provided</span>
+            </div>
+          </div>
+          <div class="row offset-bottom20" *ngIf="accident.contacts">
+            <div class="col-sm-9">
+              <label class="label separate" translate>Patient Data</label>
+              <p>{{ accident.contacts }}</p>
+            </div>
+          </div>
+        </div>
+        <!-- /Patient -->
+      </div>
+
+      <div class="additional-part" *ngIf="accident.id">
+
+        <!-- Accident Scenario -->
+        <div class="form-group">
+          <div class="row">
+            <div class="col-10">
+              <nga-accident-scenario
+                #scenario
+                [accidentId]="accident.id"
+                (init)="startLoader($event)"
+                (loaded)="stopLoader($event)"
+              ></nga-accident-scenario>
+            </div>
+          </div>
+        </div>
+        <!-- /Accident Scenario -->
+
+        <!-- Checkpoints -->
+        <div class="form-group offset-bottom20">
+          <div class="row">
+            <div class="col-sm-12">
+              <label class="label separate" translate>Checkpoints</label>
+              <p *ngIf="checkpoints.length">{{ checkpoints.join(', ') }}</p>
+              <p *ngIf="!checkpoints.length" translate>Checkpoints not selected</p>
+            </div>
+          </div>
+        </div>
+        <!-- /Checkpoints -->
+
+        <div class="form-group">
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="form-group offset-bottom20">
+                <div class="row">
+                  <!-- Doctor Accident => Applied Time -->
+                  <div class="col-sm-6" *ngIf="isDoctorAccident()">
+                    <label class="label separated required offset-right10" translate>Applied Time</label>
+                    <span *ngIf="appliedTime">{{ appliedTime }}</span>
+                    <span *ngIf="!appliedTime" translate>Not selected</span>
+                  </div>
+                  <!-- DA /Applied Time -->
+
+                  <!-- Accident Type -->
+                  <div class="col-sm-6" *ngIf="accidentType">
+                    <label class="label separated offset-right10" translate>Accident Type</label>
+                    <span translate>{{ accidentType.title }}</span>
+                  </div>
+                  <!-- /Accident Type -->
+                </div>
+              </div>
+
+              <!-- Doctor Accident => Services -->
+              <div class="form-group offset-bottom20" *ngIf="isDoctorAccident()">
+                <nga-services-selector
+                  [caseId]="accident.id"
+                  [isStaticForm]="true"
+                  (init)="startLoader($event)"
+                  (loaded)="stopLoader($event)"
+                ></nga-services-selector>
+              </div>
+              <!-- DA /Services -->
+
+              <!-- Doctor Accident => Surveys -->
+              <div class="form-group offset-bottom20" *ngIf="isDoctorAccident()">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <nga-surveys-selector
+                      [caseId]="accident.id"
+                      [isStaticForm]="true"
+                      (init)="startLoader($event)"
+                      (loaded)="stopLoader($event)"
+                    ></nga-surveys-selector>
+                  </div>
+                </div>
+              </div>
+              <!-- DA /Surveys -->
+
+              <!-- Doctor Accident => Diagnostics -->
+              <div class="form-group offset-bottom20" *ngIf="isDoctorAccident()">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <nga-diagnostics-selector
+                      [caseId]="accident.id"
+                      [isStaticForm]="true"
+                      (init)="startLoader($event)"
+                      (loaded)="stopLoader($event)"
+                    ></nga-diagnostics-selector>
+                  </div>
+                </div>
+              </div>
+              <!-- DA /Diagnostics -->
+
+              <!-- Doctor Accident => Diagnosis & Additional Investigation -->
+              <div class="row offset-bottom20" *ngIf="isDoctorAccident()">
+                <div class="col-sm-6">
+                  <label class="label separate" translate>Diagnosis</label>
+                  <p>{{ doctorAccident.recommendation }}</p>
+                </div>
+                <div class="col-sm-6">
+                  <label class="label separate" translate>Additional Investigation</label>
+                  <p>{{ doctorAccident.investigation }}</p>
+                </div>
+              </div>
+              <!-- DA /Diagnosis & Additional Investigation -->
+
+              <!-- Hospital Accident => Invoices -->
+              <div class="row mt-2" *ngIf="isHospitalAccident()">
+                <div class="col-12">
+                  <!-- Guarantee to the hospital -->
+                  <div class="row">
+                    <div class="col-sm-6 col-md-4">
+                      <label class="label separate" translate>Guarantee To the Hospital</label>
+                      <ng-container *ngIf="!hospitalAccident.hospitalGuaranteeId">
+                        <span translate>Guarantee to the hospital is not chosen</span>
+                      </ng-container>
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                      <label class="label separate" translate>Get Form</label>
+                      <nga-form-viewer
+                        [formId]="hospitalAccident.hospitalGuaranteeId"
+                        [formableId]="accident.id"
+                      ></nga-form-viewer>
+                    </div>
+                  </div>
+                  <div class="row mt-3">
+                    <div class="col-12">
+                      <nga-invoice-editor
+                        #hospitalInvoiceEditor
+                        [isStatic]="true"
+                        [reload]="true"
+                        [label]="'Invoice from the hospital' | translate"
+                        (init)="startLoader($event)"
+                        (loaded)="stopLoader($event)"
+                      ></nga-invoice-editor>
+                    </div>
+                  </div>
+                  <!-- /Invoice from the hospital -->
+                </div>
+              </div>
+              <!-- HA /Invoices -->
+
+              <!-- Assistant Invoice -->
+              <div class="row mt-3">
+                <div class="col-12">
+                  <nga-invoice-editor
+                    #invoiceEditorComponent
+                    [isStatic]="true"
+                    [reload]="true"
+                    [label]="'Invoice to the assistant' | translate"
+                    [invoice]="assistantInvoice"
+                    (init)="startLoader($event)"
+                    (loaded)="stopLoader($event)"
+                    [dataModelId]="accident.id"
+                  ></nga-invoice-editor>
+                </div>
+              </div>
+              <!-- /Assistant Invoice -->
+
+              <!-- Documents -->
+              <div class="row mt-2">
+                <div class="col-12">
+                  <label class="label separated" translate>Documents</label>
+                  <ng-container *ngIf="!documents.length">
+                    <p translate>Documents not loaded</p>
+                  </ng-container>
+                  <ul class="list-unstyled" *ngIf="documents.length">
+                    <ng-container *ngFor="let document of documents">
+                      <li class="media my-4">
+                        <img
+                          [srcset]="document.b64thumb"
+                          class="mr-3"
+                          alt="document.type"
+                          style="max-width: 100px"
+                        >
+                        <div class="media-body">
+                          <h5 class="mt-0 mb-1" translate>{{ document.type }}</h5>
+                          <button class="btn btn-secondary" (click)="downloadDocument(document)" translate>Download
+                          </button>
+                        </div>
+                      </li>
+                    </ng-container>
+                  </ul>
+                </div>
+              </div>
+              <!-- /Documents -->
+
+              <!-- Finances -->
+              <div class="row">
+                <div class="col-12 mt-2">
+                  <label class="label separate" translate>Finance</label>
+                  <ng-container *ngIf="financeStateData.length">
+                    <table class="table table-bordered text-center">
+                      <thead>
+                      <tr>
+                        <th translate>Income</th>
+                        <th translate>Payment from the assistant</th>
+                        <th>
+                          <span *ngIf="accident.caseableType === 'hospital'" translate>Payment to the hospital</span>
+                          <span *ngIf="accident.caseableType === 'doctor'" translate>Payment to the doctor</span>
+                        </th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr>
+                        <td>{{ financeStateData[0].payment.value }} <i
+                          [className]="financeStateData[0].currency.ico"></i></td>
+                        <td>{{ financeStateData[1].payment.value }} <i
+                          [className]="financeStateData[1].currency.ico"></i></td>
+                        <td>{{ financeStateData[2].payment.value }} <i
+                          [className]="financeStateData[2].currency.ico"></i></td>
+                      </tr>
+                      </tbody>
+                    </table>
+                  </ng-container>
+                </div>
+              </div>
+              <!-- /Finances -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button pButton type="button" class="p-button-danger pull-right offset-right10"
+              label="{{ 'Open' | translate }}" *ngIf="accident.id"
+              (click)="onOpen()"></button>
+    </ba-card>
+    <div class="col-lg-3 hidden-md-down case-details" *ngIf="accident.id">
+      <div class="row item">
+        <div class="col-4 label"><span translate>Created</span>:</div>
+        <div class="col-8">{{ createdTime }}</div>
+      </div>
+      <div class="row item" *ngIf="accident.updatedAt">
+        <div class="col-4 label"><span translate>Updated</span>:</div>
+        <div class="col-8">{{ updatedTime }}</div>
+      </div>
+      <div class="row item" *ngIf="accident.deletedAt">
+        <div class="col-4 label"><span translate>Deleted</span>:</div>
+        <div class="col-8">{{ deletedTime }}</div>
+      </div>
+      <div class="row item" *ngIf="accident.closedAt">
+        <div class="col-4 label"><span translate>Closed</span>:</div>
+        <div class="col-8">{{ closedTime }}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-9">
+      <nga-accident-activity
+        *ngIf="accident && accident.id"
+        [accident]="accident"
+        (init)="startLoader($event)"
+        (loaded)="stopLoader($event)"
+      ></nga-accident-activity>
+    </div>
+  </div>
+</div>

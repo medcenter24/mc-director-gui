@@ -25,11 +25,12 @@ import { SelectServicesComponent } from '../select';
 // todo move that to accident or case folder and for service selector use autocompleter|multiselect
 @Component({
   selector: 'nga-services-selector',
-  templateUrl: 'selector.html',
+  templateUrl: 'service.selector.html',
 })
 export class ServiceSelectorComponent extends LoadableComponent implements OnInit {
 
   @Input() caseId: number = 0;
+  @Input() isStaticForm: boolean = false;
   @Output() changedServices: EventEmitter<Service[]> = new EventEmitter<Service[]>();
   @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
   @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
@@ -49,7 +50,15 @@ export class ServiceSelectorComponent extends LoadableComponent implements OnIni
   }
 
   ngOnInit () {
-    this.isLoaded = true;
+    if (this.isStaticForm) {
+      this.casesService.getCaseServices(this.caseId)
+        .subscribe(services => {
+          this.caseServices = services;
+          this.isLoaded = true;
+        });
+    } else {
+      this.isLoaded = true;
+    }
   }
 
   onDelete (service: Service): void {

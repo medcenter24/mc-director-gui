@@ -46,7 +46,7 @@ export abstract class HttpService implements LoadableServiceInterface {
   getUrl(path: string|number = null): string {
     let url = `${environment.apiHost}/${this.getPrefix()}`;
       if (path) {
-        url += (url.substr(-1) === '/' ? '' : '/') + path;
+        url += (url.substring(-1) === '/' ? '' : '/') + path;
       }
     return url;
   }

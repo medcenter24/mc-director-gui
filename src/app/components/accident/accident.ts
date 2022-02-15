@@ -43,6 +43,7 @@ export class Accident {
         public deletedAt: string = '',
         public closedAt: string = '',
         public handlingTime: string = '',
+        public isClosed: boolean = false,
     ) {}
 
   static fromData(data: object): Accident
