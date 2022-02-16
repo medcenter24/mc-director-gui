@@ -34,7 +34,11 @@ export class AuthGuard implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     if ( this.authService.getToken()
       && !this.jwtHelper.isTokenExpired() ) {
-      this._state.notifyDataChanged('changeUri', state.url);
+      let url = '/dashboard'
+      if (state.url.indexOf('login') === -1) {
+        url = state.url;
+      }
+      this._state.notifyDataChanged('changeUri', url);
       return true;
     }
 
