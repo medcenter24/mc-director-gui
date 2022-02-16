@@ -64,6 +64,7 @@ import {AccidentsRefNumService} from "../../../accident/accidents.refNum.service
   styleUrls: ['./case.editor.scss'],
 })
 export class CaseEditorComponent extends LoadingComponent implements OnInit {
+  protected componentName: string = 'CaseEditorComponent';
 
   @ViewChild('parentSelector')
   private parentSelector: AutocompleterComponent;
@@ -131,7 +132,6 @@ export class CaseEditorComponent extends LoadingComponent implements OnInit {
    */
   hasChangedData: boolean = false;
 
-  protected componentName: string = 'CaseEditorComponent';
   private financeStateData: PaymentViewer[] = [];
 
   constructor(private route: ActivatedRoute,
@@ -208,7 +208,9 @@ export class CaseEditorComponent extends LoadingComponent implements OnInit {
 
               this.accident = accident ? accident : new Accident();
 
-              this.redirectIfClosed(mainPostfix);
+              if(this.redirectIfClosed(mainPostfix)) {
+                return;
+              }
 
               this._state.notifyDataChanged('changeTitle', accident.refNum);
 
@@ -373,7 +375,6 @@ export class CaseEditorComponent extends LoadingComponent implements OnInit {
             .subscribe({
               next: () => {
                 this.accident.isClosed = true;
-                this.stopLoader(postfix);
                 this.redirectIfClosed(postfix);
               }, error: err => {
                 this.stopLoader(postfix);
@@ -786,10 +787,12 @@ export class CaseEditorComponent extends LoadingComponent implements OnInit {
     return isSaved;
   }
 
-  private redirectIfClosed(loaderPostfix: string) {
+  private redirectIfClosed(loaderPostfix: string): boolean {
     if (this.accident.isClosed) {
       this.stopLoader(loaderPostfix);
-      this.router.navigate([`pages/cases/archive/${this.accident.id}`]).then()
+      this.router.navigate([`pages/cases/archive/${this.accident.id}`]).then();
+      return true;
     }
+    return false;
   }
 }

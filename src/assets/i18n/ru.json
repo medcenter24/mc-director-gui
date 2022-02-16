@@ -1,4 +1,5 @@
 {
+  "Symptoms not recorded": "Симптомы не указаны",
   "reopened": "Повторно открыто",
   "Documents not loaded": "Документы не загружены",
   "Guarantee to the hospital is not chosen": "Guarantee to the hospital is not chosen",
@@ -8,6 +9,7 @@
   "Open": "Открыть",
   "Checkpoints not selected": "Метки не выбраны",
   "Patient not provided": "Пациент не указан",
+  "Not specified": "Не указано",
   "Not selected": "Не выбрано",
   "Not loaded": "Не загружено",
   "Case preview": "Просмотр дела",

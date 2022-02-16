@@ -54,13 +54,6 @@ import {AccidentsRefNumService} from "../../../accident/accidents.refNum.service
 import {AccidentTypesService} from "../../../accident/components/type/types.service";
 import {BaToolboxAction} from "../../../../theme/components";
 import {DocumentsService} from "../../../document/documents.service";
-import {SearchFilter} from "../../../core/loadable/search.filter";
-import {
-  FilterRequestField,
-  PaginationLimitRequestField,
-  PaginationOffsetRequestField,
-  SortRequestField
-} from "../../../core/http/request/fields";
 import {AccidentStatusService} from "../../../accident/components/status";
 
 @Component({
@@ -121,7 +114,6 @@ export class CaseArchiveComponent extends LoadingComponent implements OnInit {
               private uiToastService: UiToastService,
               private accidentTypeService: AccidentTypesService,
               private documentsService: DocumentsService,
-              private accidentStatusService: AccidentStatusService,
   ) {
     super();
     this.translate.get('Case Loading').subscribe((text: string) => {
@@ -161,29 +153,33 @@ export class CaseArchiveComponent extends LoadingComponent implements OnInit {
 
               this.showToolbox();
 
-              const assistantPostfix = 'Assistant';
-              this.startLoader(assistantPostfix)
-              this.assistantService
-                .getAssistant(this.accident.assistantId)
-                .subscribe({
-                  next: assistant => {
-                    this.assistant = assistant;
-                    this.stopLoader(assistantPostfix);
-                  },
-                  error: () => this.stopLoader(assistantPostfix),
-                });
+              if (this.accident.assistantId) {
+                const assistantPostfix = 'Assistant';
+                this.startLoader(assistantPostfix)
+                this.assistantService
+                  .getAssistant(this.accident.assistantId)
+                  .subscribe({
+                    next: assistant => {
+                      this.assistant = assistant;
+                      this.stopLoader(assistantPostfix);
+                    },
+                    error: () => this.stopLoader(assistantPostfix),
+                  });
+              }
 
-              const cityPostfix = 'City';
-              this.startLoader(cityPostfix)
-              this.cityService
-                .getCity(this.accident.cityId)
-                .subscribe({
-                  next: city => {
-                    this.city = city;
-                    this.stopLoader(cityPostfix);
-                  },
-                  error: () => this.stopLoader(cityPostfix),
-                });
+              if (this.accident.cityId) {
+                const cityPostfix = 'City';
+                this.startLoader(cityPostfix)
+                this.cityService
+                  .getCity(this.accident.cityId)
+                  .subscribe({
+                    next: city => {
+                      this.city = city;
+                      this.stopLoader(cityPostfix);
+                    },
+                    error: () => this.stopLoader(cityPostfix),
+                  });
+              }
 
               const accidentTypePostfix = 'AccidentType';
               this.startLoader(accidentTypePostfix)

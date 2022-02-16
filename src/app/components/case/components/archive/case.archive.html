@@ -66,7 +66,12 @@
             <!-- Assistant Ref Num -->
             <div class="col-sm-4">
               <label class="label required separate" translate>Assistant Ref Num</label>
-              {{ accident.assistantRefNum }}
+              <ng-container *ngIf="accident.assistantRefNum.length">
+                <p>{{ accident.assistantRefNum }}</p>
+              </ng-container>
+              <ng-container *ngIf="!accident.assistantRefNum.length">
+                <p translate>Not specified</p>
+              </ng-container>
             </div>
             <!-- /Assistant Ref Num -->
           </div>
@@ -109,7 +114,7 @@
 
             <div class="col-sm-4" *ngIf="isDoctorAccident()">
               <label class="label required separate" translate>Handling time</label>
-              <span>{{ handlingTime }}</span>
+              <p>{{ handlingTime }}</p>
             </div>
             <!-- DA /Doctor, Handling Time -->
 
@@ -131,7 +136,12 @@
               <div class="row">
                 <div class="col-sm-12">
                   <label class="label separate" translate>Symptoms</label>
-                  <p>{{ accident.symptoms }}</p>
+                  <ng-container *ngIf="accident.symptoms.length">
+                    <p>{{ accident.symptoms }}</p>
+                  </ng-container>
+                  <ng-container *ngIf="!accident.symptoms.length">
+                    <p translate>Symptoms not recorded</p>
+                  </ng-container>
                 </div>
               </div>
             </div>
@@ -206,15 +216,20 @@
                   <!-- Doctor Accident => Applied Time -->
                   <div class="col-sm-6" *ngIf="isDoctorAccident()">
                     <label class="label separated required offset-right10" translate>Applied Time</label>
-                    <span *ngIf="appliedTime">{{ appliedTime }}</span>
-                    <span *ngIf="!appliedTime" translate>Not selected</span>
+                    <p *ngIf="appliedTime">{{ appliedTime }}</p>
+                    <p *ngIf="!appliedTime" translate>Not specified</p>
                   </div>
                   <!-- DA /Applied Time -->
 
                   <!-- Accident Type -->
                   <div class="col-sm-6" *ngIf="accidentType">
                     <label class="label separated offset-right10" translate>Accident Type</label>
-                    <span translate>{{ accidentType.title }}</span>
+                    <ng-container *ngIf="accidentType && accidentType.id">
+                      <p translate>{{ accidentType.title }}</p>
+                    </ng-container>
+                    <ng-container *ngIf="!accidentType || !accidentType.id">
+                      <p translate>Not specified</p>
+                    </ng-container>
                   </div>
                   <!-- /Accident Type -->
                 </div>
@@ -265,11 +280,21 @@
               <div class="row offset-bottom20" *ngIf="isDoctorAccident()">
                 <div class="col-sm-6">
                   <label class="label separate" translate>Diagnosis</label>
-                  <p>{{ doctorAccident.recommendation }}</p>
+                  <ng-container *ngIf="doctorAccident.recommendation.length">
+                    <p>{{ doctorAccident.recommendation }}</p>
+                  </ng-container>
+                  <ng-container *ngIf="!doctorAccident.recommendation.length">
+                    <p translate>Not specified</p>
+                  </ng-container>
                 </div>
                 <div class="col-sm-6">
                   <label class="label separate" translate>Additional Investigation</label>
-                  <p>{{ doctorAccident.investigation }}</p>
+                  <ng-container *ngIf="doctorAccident.investigation.length">
+                    <p>{{ doctorAccident.investigation }}</p>
+                  </ng-container>
+                  <ng-container *ngIf="!doctorAccident.investigation.length">
+                    <p translate>Not specified</p>
+                  </ng-container>
                 </div>
               </div>
               <!-- DA /Diagnosis & Additional Investigation -->
@@ -313,16 +338,21 @@
               <!-- Assistant Invoice -->
               <div class="row mt-3">
                 <div class="col-12">
-                  <nga-invoice-editor
-                    #invoiceEditorComponent
-                    [isStatic]="true"
-                    [reload]="true"
-                    [label]="'Invoice to the assistant' | translate"
-                    [invoice]="assistantInvoice"
-                    (init)="startLoader($event)"
-                    (loaded)="stopLoader($event)"
-                    [dataModelId]="accident.id"
-                  ></nga-invoice-editor>
+                  <ng-container *ngIf="!assistantInvoice">
+                    <label class="label separate" translate>Invoice to the assistant</label>
+                    <p translate>Not specified</p>
+                  </ng-container>
+                  <ng-container *ngIf="assistantInvoice">
+                    <nga-invoice-editor
+                      #invoiceEditorComponent
+                      [isStatic]="true"
+                      [label]="'Invoice to the assistant' | translate"
+                      [invoice]="assistantInvoice"
+                      (init)="startLoader($event)"
+                      (loaded)="stopLoader($event)"
+                      [dataModelId]="accident.id"
+                    ></nga-invoice-editor>
+                  </ng-container>
                 </div>
               </div>
               <!-- /Assistant Invoice -->

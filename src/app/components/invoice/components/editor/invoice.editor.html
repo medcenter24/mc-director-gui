@@ -32,6 +32,10 @@
             providerType="loadable"
           ></nga-autocompleter>
         </ng-container>
+        <ng-container *ngIf="isStatic">
+          <p *ngIf="form">{{ form }}</p>
+          <p *ngIf="!form" translate>Form not selected</p>
+        </ng-container>
       </div>
       <div class="col-md-4" *ngIf="form && dataModelId">
         <label class="label separate" translate>Preview</label>
