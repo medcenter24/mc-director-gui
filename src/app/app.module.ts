@@ -48,6 +48,7 @@ import { AuthenticationService } from './components/auth/authentication.service'
 import { BaThemeConfig, BaThemeConfigProvider } from './theme';
 import { EmailValidator, EqualPasswordsValidator } from './theme/validators';
 import { ProgressBarModule } from 'primeng/progressbar';
+import {UiBlockerContainerModule} from "./components/ui/blocker/components/container";
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -108,6 +109,7 @@ export function tokenGetter() {
         NgaModule,
         ProgressBarModule,
         ProgressBarModule,
+        UiBlockerContainerModule,
     ],
   exports: [],
   providers: [ // expose our Services and Providers into Angular 's dependency injection
