@@ -54,7 +54,6 @@ import {AccidentsRefNumService} from "../../../accident/accidents.refNum.service
 import {AccidentTypesService} from "../../../accident/components/type/types.service";
 import {BaToolboxAction} from "../../../../theme/components";
 import {DocumentsService} from "../../../document/documents.service";
-import {AccidentStatusService} from "../../../accident/components/status";
 
 @Component({
   selector: 'nga-case-archive',
@@ -131,126 +130,121 @@ export class CaseArchiveComponent extends LoadingComponent implements OnInit {
       .subscribe((params: Params) => {
         this._state.notifyDataChanged('menu.activeLink', {title: 'Cases'});
 
-        if (+params['id']) {
-          // start of loading data and the page
-          const mainPostfix = 'Main';
-          this.startLoader(mainPostfix);
+        // start of loading data and the page
+        const mainPostfix = 'Main';
+        this.startLoader(mainPostfix);
 
-          this.accidentsService.getAccident(+params['id']).subscribe({
-            next: (accident: Accident) => {
+        if (!+params['id']) {
+          this.redirectIfNotClosed(mainPostfix);
+        }
 
-              this.accident = accident ? accident : new Accident();
-              this.redirectIfNotClosed(mainPostfix);
+        this.accidentsService.getAccident(+params['id']).subscribe({
+          next: (accident: Accident) => {
 
-              this._state.notifyDataChanged('changeTitle', this.accident.refNum);
+            this.accident = accident ? accident : new Accident();
+            this.redirectIfNotClosed(mainPostfix);
 
-              this.translate.get('Cases').subscribe((trans: string) => {
-                const breadcrumbs = [];
-                breadcrumbs.push(new Breadcrumb(trans, '/pages/cases'));
-                breadcrumbs.push(new Breadcrumb(accident.refNum, `/pages/cases/archive/${accident.id}`, true, false));
-                this._state.notifyDataChanged('menu.activeLink', breadcrumbs);
+            this._state.notifyDataChanged('changeTitle', this.accident.refNum);
+
+            this.translate.get('Cases').subscribe((trans: string) => {
+              const breadcrumbs = [];
+              breadcrumbs.push(new Breadcrumb(trans, '/pages/cases'));
+              breadcrumbs.push(new Breadcrumb(accident.refNum, `/pages/cases/archive/${accident.id}`, true, false));
+              this._state.notifyDataChanged('menu.activeLink', breadcrumbs);
+            });
+
+            this.showToolbox();
+
+            if (this.accident.assistantId) {
+              const assistantPostfix = 'Assistant';
+              this.startLoader(assistantPostfix)
+              this.assistantService
+                .getAssistant(this.accident.assistantId)
+                .subscribe({
+                  next: assistant => {
+                    this.assistant = assistant;
+                    this.stopLoader(assistantPostfix);
+                  },
+                  error: () => this.stopLoader(assistantPostfix),
+                });
+            }
+
+            if (this.accident.cityId) {
+              const cityPostfix = 'City';
+              this.startLoader(cityPostfix)
+              this.cityService
+                .getCity(this.accident.cityId)
+                .subscribe({
+                  next: city => {
+                    this.city = city;
+                    this.stopLoader(cityPostfix);
+                  },
+                  error: () => this.stopLoader(cityPostfix),
+                });
+            }
+
+            const accidentTypePostfix = 'AccidentType';
+            this.startLoader(accidentTypePostfix)
+            this.accidentTypeService
+              .getType(this.accident.accidentTypeId)
+              .subscribe({
+                next: accidentType => {
+                  this.accidentType = accidentType;
+                  this.stopLoader(accidentTypePostfix);
+                },
+                error: () => this.stopLoader(accidentTypePostfix),
               });
 
-              this.showToolbox();
+            this.caseService.getFinance(this.accident, ['income', 'assistant', 'caseable'])
+              .subscribe(finance => {
+                this.financeStateData = finance;
+              });
 
-              if (this.accident.assistantId) {
-                const assistantPostfix = 'Assistant';
-                this.startLoader(assistantPostfix)
-                this.assistantService
-                  .getAssistant(this.accident.assistantId)
-                  .subscribe({
-                    next: assistant => {
-                      this.assistant = assistant;
-                      this.stopLoader(assistantPostfix);
-                    },
-                    error: () => this.stopLoader(assistantPostfix),
-                  });
-              }
+            if (this.accident.handlingTime && this.accident.handlingTime.length) {
+              this.handlingTime = DateHelper.toEuropeFormatWithTime(this.accident.handlingTime);
+            }
+            if (this.accident.createdAt.length) {
+              this.createdTime = DateHelper.toEuropeFormatWithTime(this.accident.createdAt);
+            }
+            if (this.accident.updatedAt && this.accident.updatedAt.length) {
+              this.updatedTime = DateHelper.toEuropeFormatWithTime(this.accident.updatedAt);
+            }
+            if (this.accident.deletedAt && this.accident.deletedAt.length) {
+              this.deletedTime = DateHelper.toEuropeFormatWithTime(this.accident.deletedAt);
+            }
+            if (this.accident.closedAt && this.accident.closedAt.length) {
+              this.closedTime = DateHelper.toEuropeFormatWithTime(this.accident.closedAt);
+            }
+            // cheating to not make extra request
+            if (+this.accident.assistantGuaranteeId) {
+              this.assistantGuaranteeFile = new Upload(this.accident.assistantGuaranteeId);
+            }
+            this.assistantInvoice = new Invoice(accident.assistantInvoiceId, 0, 'form');
+            this.loadCaseable();
+            this.loadDocuments();
+            this.loadCheckpoints();
+            this.loadPatient();
+            // it has to be at the end, because on any error it will be stopped second time (in the catch section)
+            this.stopLoader(mainPostfix);
+          }, error: (err) => {
+            this.stopLoader(mainPostfix);
+            if (err.status === 404) {
+              this._logger.error('Resource not found');
+              this.uiToastService.notFound();
+              this.router.navigate(['pages/cases']).then();
+            } else {
+              this._logger.error(err);
+            }
+          },
+        });
 
-              if (this.accident.cityId) {
-                const cityPostfix = 'City';
-                this.startLoader(cityPostfix)
-                this.cityService
-                  .getCity(this.accident.cityId)
-                  .subscribe({
-                    next: city => {
-                      this.city = city;
-                      this.stopLoader(cityPostfix);
-                    },
-                    error: () => this.stopLoader(cityPostfix),
-                  });
-              }
-
-              const accidentTypePostfix = 'AccidentType';
-              this.startLoader(accidentTypePostfix)
-              this.accidentTypeService
-                .getType(this.accident.accidentTypeId)
-                .subscribe({
-                  next: accidentType => {
-                    this.accidentType = accidentType;
-                    this.stopLoader(accidentTypePostfix);
-                  },
-                  error: () => this.stopLoader(accidentTypePostfix),
-                });
-
-              this.caseService.getFinance(this.accident, ['income', 'assistant', 'caseable'])
-                .subscribe(finance => {
-                  this.financeStateData = finance;
-                });
-
-              if (this.accident.handlingTime && this.accident.handlingTime.length) {
-                this.handlingTime = DateHelper.toEuropeFormatWithTime(this.accident.handlingTime);
-              }
-              if (this.accident.createdAt.length) {
-                this.createdTime = DateHelper.toEuropeFormatWithTime(this.accident.createdAt);
-              }
-              if (this.accident.updatedAt && this.accident.updatedAt.length) {
-                this.updatedTime = DateHelper.toEuropeFormatWithTime(this.accident.updatedAt);
-              }
-              if (this.accident.deletedAt && this.accident.deletedAt.length) {
-                this.deletedTime = DateHelper.toEuropeFormatWithTime(this.accident.deletedAt);
-              }
-              if (this.accident.closedAt && this.accident.closedAt.length) {
-                this.closedTime = DateHelper.toEuropeFormatWithTime(this.accident.closedAt);
-              }
-              // cheating to not make extra request
-              if (+this.accident.assistantGuaranteeId) {
-                this.assistantGuaranteeFile = new Upload(this.accident.assistantGuaranteeId);
-              }
-              this.assistantInvoice = new Invoice(accident.assistantInvoiceId, 0, 'form');
-              this.loadCaseable();
-              this.loadDocuments();
-              this.loadCheckpoints();
-              this.loadPatient();
-              // it has to be at the end, because on any error it will be stopped second time (in the catch section)
-              this.stopLoader(mainPostfix);
-            }, error: (err) => {
-              this.stopLoader(mainPostfix);
-              if (err.status === 404) {
-                this._logger.error('Resource not found');
-                this.uiToastService.notFound();
-                this.router.navigate(['pages/cases']).then();
-              } else {
-                this._logger.error(err);
-              }
-            },
-          });
-        } else {
-          this.handlingTime = DateHelper.toEuropeFormatWithTime(Date().toString());
-          setTimeout(() => {
-            this._state.notifyDataChanged('menu.activeLink', {title: 'Cases'});
-          }, 100);
-          this.translate.get('New Case').subscribe((text: string) => {
-            this._state.notifyDataChanged('changeTitle', text);
-          });
-        }
       });
   }
 
   private showToolbox(): void {
-    this.translate.get('Save').subscribe((saveText: string) => {
+    this.translate.get('Back').subscribe((backText: string) => {
       const actions: BaToolboxAction[] = [];
-      actions.push(new BaToolboxAction(this.translate.instant('Back'), 'fa fa-angle-left', () => {
+      actions.push(new BaToolboxAction(backText, 'fa fa-angle-left', () => {
         this.goToList().then();
       }, 'navigation'));
       actions.push(new BaToolboxAction(this.translate.instant('Preview'), 'fa fa-eye', () => {

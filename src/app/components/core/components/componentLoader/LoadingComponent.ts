@@ -71,6 +71,16 @@ export abstract class LoadingComponent extends LoadableComponent {
         }
     }
 
+    hardStopAllLoaders(): void {
+      this.componentsList.forEach((name: string) => {
+        this.stopLoader(name);
+      });
+      this.componentsList = [];
+      this.loading = false;
+      this._state.notifyDataChanged('blocker', false);
+      this._state.notifyDataChanged('runLoadingProcess', false);
+    }
+
     isLoading(): boolean {
         return this.loading;
     }

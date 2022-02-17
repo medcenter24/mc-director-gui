@@ -199,8 +199,8 @@ export class CaseEditorComponent extends LoadingComponent implements OnInit {
         this._state.notifyDataChanged('menu.activeLink', {title: 'Cases'});
 
         if (+params['id']) {
-          // start of loading data and the page
-          const mainPostfix = 'main';
+          // start of loading data
+          const mainPostfix = 'Main';
           this.startLoader(mainPostfix);
 
           this.accidentsService.getAccident(+params['id']).subscribe({
