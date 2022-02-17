@@ -27,6 +27,10 @@ import { DatatableAction, DatatableCol, DatatableComponent, DatatableTransformer
 import { ConfirmationService } from 'primeng/api';
 import { Breadcrumb } from '../../../../theme/components/baContentTop/breadcrumb';
 import { Disease, DiseaseService } from '../../../disease';
+import {DatatableRequestBuilder} from "../../../ui/datatable/request/datatable.request.builder";
+import {RequestBuilder} from "../../../core/http/request";
+import {FilterRequestField, SortRequestField} from "../../../core/http/request/fields";
+import {Location} from "@angular/common";
 
 @Component({
   selector: 'nga-service-datatable',
@@ -48,6 +52,7 @@ export class ServiceDatatableComponent extends AbstractDatatableController {
     private servicesService: ServicesService,
     private confirmationService: ConfirmationService,
     public diseaseService: DiseaseService,
+    private location: Location,
   ) {
     super();
   }
@@ -84,6 +89,7 @@ export class ServiceDatatableComponent extends AbstractDatatableController {
 
   getColumns(): DatatableCol[] {
     return [
+      new DatatableCol('id', this.translateService.instant('ID')),
       new DatatableCol('title', this.translateService.instant('Title')),
       new DatatableCol('description', this.translateService.instant('Description')),
       new DatatableCol('diseases', this.translateService.instant('Diseases')),
@@ -102,6 +108,27 @@ export class ServiceDatatableComponent extends AbstractDatatableController {
         this.displayDialog = true;
       }),
     ];
+  }
+
+  protected hasFilterRow (): boolean {
+    return true;
+  }
+
+  getRequestBuilder (): DatatableRequestBuilder {
+    const requestBuilder = super.getRequestBuilder();
+
+    requestBuilder.setSorter(new RequestBuilder([
+      new SortRequestField('id', 'asc'),
+    ]));
+
+    requestBuilder.setFilter(new RequestBuilder([
+      new FilterRequestField('title', null, FilterRequestField.MATCH_CONTENTS, FilterRequestField.TYPE_TEXT),
+      new FilterRequestField('description', null, FilterRequestField.MATCH_CONTENTS, FilterRequestField.TYPE_TEXT),
+    ]));
+
+    const urlRequestBuilder = DatatableRequestBuilder.fromUrl(this.location.path(true));
+    urlRequestBuilder.propagate(requestBuilder);
+    return urlRequestBuilder;
   }
 
   confirmDelete(): void {
