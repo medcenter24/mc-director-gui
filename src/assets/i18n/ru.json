@@ -1,4 +1,9 @@
 {
+  "Format": "Формат",
+  "Result": "Результат",
+  "Filters": "Фильтры",
+  "Columns": "Колоноки",
+  "Search": "Поиск",
   "Symptoms not recorded": "Симптомы не указаны",
   "reopened": "Повторно открыто",
   "Documents not loaded": "Документы не загружены",

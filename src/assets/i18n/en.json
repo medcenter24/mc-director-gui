@@ -1,4 +1,9 @@
 {
+  "Format": "Format",
+  "Result": "Result",
+  "Filters": "Filters",
+  "Columns": "Columns",
+  "Search": "Search",
   "Symptoms not recorded": "Symptoms not recorded",
   "reopened": "Reopened",
   "Documents not loaded": "Documents not loaded",

@@ -41,7 +41,7 @@ import {Patient} from '../../../patient/patient';
 import {PatientsService} from '../../../patient/patients.service';
 import {Assistant, AssistantsService} from '../../../assistant';
 import {
-  AccidentScenarioLineComponent
+  AccidentScenarioLineComponent,
 } from '../../../accident/components/scenario/components/line/accident.scenario.line.component';
 import {Service} from '../../../service';
 import {CitiesService, City} from '../../../city';
@@ -49,11 +49,11 @@ import {Hospital, HospitalsService} from '../../../hospital';
 import {LoggerComponent} from '../../../core/logger/LoggerComponent';
 import {Breadcrumb} from '../../../../theme/components/baContentTop/breadcrumb';
 import {UiToastService} from '../../../ui/toast/ui.toast.service';
-import {PaymentViewer} from "../../../finance/components/payment/components/block/payment.viewer";
-import {AccidentsRefNumService} from "../../../accident/accidents.refNum.service";
-import {AccidentTypesService} from "../../../accident/components/type/types.service";
-import {BaToolboxAction} from "../../../../theme/components";
-import {DocumentsService} from "../../../document/documents.service";
+import {PaymentViewer} from '../../../finance/components/payment/components/block/payment.viewer';
+import {AccidentsRefNumService} from '../../../accident/accidents.refNum.service';
+import {AccidentTypesService} from '../../../accident/components/type/types.service';
+import {BaToolboxAction} from '../../../../theme/components';
+import {DocumentsService} from '../../../document/documents.service';
 
 @Component({
   selector: 'nga-case-archive',
@@ -157,7 +157,7 @@ export class CaseArchiveComponent extends LoadingComponent implements OnInit {
 
             if (this.accident.assistantId) {
               const assistantPostfix = 'Assistant';
-              this.startLoader(assistantPostfix)
+              this.startLoader(assistantPostfix);
               this.assistantService
                 .getAssistant(this.accident.assistantId)
                 .subscribe({
@@ -171,7 +171,7 @@ export class CaseArchiveComponent extends LoadingComponent implements OnInit {
 
             if (this.accident.cityId) {
               const cityPostfix = 'City';
-              this.startLoader(cityPostfix)
+              this.startLoader(cityPostfix);
               this.cityService
                 .getCity(this.accident.cityId)
                 .subscribe({
@@ -184,7 +184,7 @@ export class CaseArchiveComponent extends LoadingComponent implements OnInit {
             }
 
             const accidentTypePostfix = 'AccidentType';
-            this.startLoader(accidentTypePostfix)
+            this.startLoader(accidentTypePostfix);
             this.accidentTypeService
               .getType(this.accident.accidentTypeId)
               .subscribe({
@@ -277,7 +277,7 @@ export class CaseArchiveComponent extends LoadingComponent implements OnInit {
         }, error: err => {
           this._logger.error(err);
           this.stopLoader(postfix);
-        }
+        },
       });
   }
 
@@ -290,7 +290,7 @@ export class CaseArchiveComponent extends LoadingComponent implements OnInit {
           this.stopLoader('getCheckpoints');
         }, error: () => {
           this.stopLoader('getCheckpoints');
-        }
+        },
       });
   }
 
@@ -302,7 +302,7 @@ export class CaseArchiveComponent extends LoadingComponent implements OnInit {
           next: (patient: Patient) => {
             this.stopLoader('getPatient');
             this.patient = patient;
-          }, error: () => this.stopLoader('getPatient')
+          }, error: () => this.stopLoader('getPatient'),
         });
     }
   }
@@ -326,7 +326,7 @@ export class CaseArchiveComponent extends LoadingComponent implements OnInit {
         }, error: err => {
           this._logger.error(err);
           this.stopLoader(postfix);
-        }
+        },
       });
   }
 
@@ -373,7 +373,7 @@ export class CaseArchiveComponent extends LoadingComponent implements OnInit {
   private redirectIfNotClosed(loaderPostfix: string) {
     if (!this.accident.isClosed) {
       this.stopLoader(loaderPostfix);
-      this.router.navigate([`pages/cases/${this.accident.id}`]).then()
+      this.router.navigate([`pages/cases/${this.accident.id}`]).then();
     }
   }
 

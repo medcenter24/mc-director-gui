@@ -45,7 +45,7 @@ import {CaseFinanceComponent} from '../finance';
 import {Assistant, AssistantsService} from '../../../assistant';
 import {CaseEditorTabsService} from './case.editor.tabs.service';
 import {
-  AccidentScenarioLineComponent
+  AccidentScenarioLineComponent,
 } from '../../../accident/components/scenario/components/line/accident.scenario.line.component';
 import {Service} from '../../../service';
 import {AutocompleterComponent} from '../../../ui/selector/components/autocompleter';
@@ -55,8 +55,8 @@ import {BaToolboxAction} from '../../../../theme/components';
 import {LoggerComponent} from '../../../core/logger/LoggerComponent';
 import {Breadcrumb} from '../../../../theme/components/baContentTop/breadcrumb';
 import {UiToastService} from '../../../ui/toast/ui.toast.service';
-import {PaymentViewer} from "../../../finance/components/payment/components/block/payment.viewer";
-import {AccidentsRefNumService} from "../../../accident/accidents.refNum.service";
+import {PaymentViewer} from '../../../finance/components/payment/components/block/payment.viewer';
+import {AccidentsRefNumService} from '../../../accident/accidents.refNum.service';
 
 @Component({
   selector: 'nga-case-editor',
@@ -208,7 +208,7 @@ export class CaseEditorComponent extends LoadingComponent implements OnInit {
 
               this.accident = accident ? accident : new Accident();
 
-              if(this.redirectIfClosed(mainPostfix)) {
+              if (this.redirectIfClosed(mainPostfix)) {
                 return;
               }
 
@@ -263,7 +263,6 @@ export class CaseEditorComponent extends LoadingComponent implements OnInit {
               if (err.status === 404) {
                 this._logger.error('Resource not found');
                 this.uiToastService.notFound();
-                // todo stop all loaders on the page?
                 this.router.navigate(['pages/cases']).then();
               } else {
                 this._logger.error(err);
@@ -384,7 +383,7 @@ export class CaseEditorComponent extends LoadingComponent implements OnInit {
                   this._logger.error(err);
                   this.uiToastService.error();
                 }
-              }
+              },
             });
         },
         icon: 'fa fa-warning',
@@ -416,7 +415,7 @@ export class CaseEditorComponent extends LoadingComponent implements OnInit {
                 this._logger.error(err);
                 this.stopLoader(postfix);
               }
-            }
+            },
           });
         },
         icon: 'fa fa-window-close-o red',
@@ -450,7 +449,7 @@ export class CaseEditorComponent extends LoadingComponent implements OnInit {
           this._logger.error(err);
           this.stopLoader(postfix);
         }
-      }
+      },
     });
   }
 
@@ -551,7 +550,7 @@ export class CaseEditorComponent extends LoadingComponent implements OnInit {
           this.doctorAccident.doctorId = doctors[0].id;
         }
         this.stopLoader(postfix);
-      }, error: () => this.stopLoader(postfix)
+      }, error: () => this.stopLoader(postfix),
     });
   }
 
@@ -566,7 +565,7 @@ export class CaseEditorComponent extends LoadingComponent implements OnInit {
         }, error: err => {
           this._logger.error(err);
           this.stopLoader(postfix);
-        }
+        },
       });
   }
 
@@ -579,7 +578,7 @@ export class CaseEditorComponent extends LoadingComponent implements OnInit {
           this.stopLoader('getCheckpoints');
         }, error: () => {
           this.stopLoader('getCheckpoints');
-        }
+        },
       });
   }
 
@@ -591,7 +590,7 @@ export class CaseEditorComponent extends LoadingComponent implements OnInit {
           next: (patient: Patient) => {
             this.stopLoader('getPatient');
             this.patient = patient;
-          }, error: () => this.stopLoader('getPatient')
+          }, error: () => this.stopLoader('getPatient'),
         });
     }
   }
@@ -614,7 +613,7 @@ export class CaseEditorComponent extends LoadingComponent implements OnInit {
         }, error: err => {
           this._logger.error(err);
           this.stopLoader(postfix);
-        }
+        },
       });
   }
 
