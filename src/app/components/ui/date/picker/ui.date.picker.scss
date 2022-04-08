@@ -3,7 +3,6 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; under version 2
  * of the License (non-upgradable).
- *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -12,15 +11,10 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2019 (original work) MedCenter24.com;
+ * Copyright (c) 2022 (original work) MedCenter24.com;
  */
 
-/* You can add global styles to this file, and also import other style files */
-@import "~bootstrap/scss/bootstrap";
-
-/* UL list styles which makes it more readable */
-ul.info-list {
-  font-size: 1rem;
-  line-height: 1.3rem;
-  list-style: none;
+.flatpickr-input {
+  border: 1px solid lightgrey;
+  display: block;
 }

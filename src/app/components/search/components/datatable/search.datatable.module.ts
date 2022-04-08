@@ -1,4 +1,4 @@
-/*!
+/*
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; under version 2
@@ -12,15 +12,29 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2019 (original work) MedCenter24.com;
+ * Copyright (c) 2022 (original work) MedCenter24.com;
  */
 
-/* You can add global styles to this file, and also import other style files */
-@import "~bootstrap/scss/bootstrap";
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {AppTranslationModule} from '../../../../app.translation.module';
+import {DatatableModule} from '../../../ui/datatable';
+import {SearchDatatableComponent} from './search.datatable.component';
 
-/* UL list styles which makes it more readable */
-ul.info-list {
-  font-size: 1rem;
-  line-height: 1.3rem;
-  list-style: none;
-}
+@NgModule({
+  imports: [
+    CommonModule,
+    FormsModule,
+    AppTranslationModule,
+    DatatableModule,
+  ],
+  providers: [],
+  declarations: [
+    SearchDatatableComponent,
+  ],
+  exports: [
+    SearchDatatableComponent,
+  ],
+})
+export class SearchDatatableModule {}

@@ -1,0 +1,238 @@
+<!--
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; under version 2
+  ~ of the License (non-upgradable).
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  ~
+  ~ Copyright (c) 2022 (original work) MedCenter24.com;
+  -->
+
+<div class="row">
+  <div class="col-12">
+    <div class="row">
+      <div class="col-sm-12">
+
+        <input
+          type="text"
+          class="p-inputtext p-component p-element mr-2"
+          pInputText
+          [placeholder]="'Search' | translate"
+          [(ngModel)]="query"
+          name="q"/>
+
+        <p-dropdown
+          [options]="quickFilters"
+          [(ngModel)]="selectedQuickFilter"
+          [placeholder]="'Quick Search' | translate"
+          optionLabel="name"
+          [emptyMessage]="'Not found' | translate"
+          [emptyFilterMessage]="'No saved' | translate"
+          [showClear]="true"></p-dropdown>
+      </div>
+    </div>
+
+    <div class="row mt-2">
+      <div class="col-12">
+        <div class="alert alert-warning" role="alert">
+          <h6 class="text-muted" translate>Current Search Parameters</h6>
+          <span class="text-muted" translate>All cases without filters</span>
+        </div>
+      </div>
+    </div>
+
+    <h4 translate>Filters</h4>
+
+    <div class="row mt-2">
+      <div class="col-sm-3">
+        <p-dropdown
+          [options]="quickFilters"
+          [(ngModel)]="selectedQuickFilter"
+          [placeholder]="'Quick Filters' | translate"
+          optionLabel="name"
+          [emptyMessage]="'Not found' | translate"
+          [emptyFilterMessage]="'No saved' | translate"
+          [showClear]="true"></p-dropdown>
+      </div>
+    </div>
+    <div class="row mt-2">
+      <div class="col-sm-4 mb-2">
+        <nga-case-type-select
+          [selectedCaseTypeId]="searcher.caseableType"
+          (selected)="onCaseTypeSelected($event)"
+          (init)="startLoader($event)"
+          (loaded)="stopLoader($event)"
+        ></nga-case-type-select>
+      </div>
+      <div class="col-sm-3 mb-2" *ngIf="isDoctorCase">
+        <nga-autocompleter
+          [service]="doctorService"
+          placeholder="Doctor"
+          labelField="name"
+          (selected)="onDoctorSelected($event)"
+          (init)="startLoader($event)"
+          (loaded)="stopLoader($event)"
+          providerType="loadable"
+        ></nga-autocompleter>
+      </div>
+      <div class="col-sm-3 mb-2">
+        <nga-autocompleter
+          [service]="assistantService"
+          placeholder="Assistant"
+          labelField="title"
+          providerType="loadable"
+          (selected)="onAssistantSelected($event)"
+          (init)="startLoader($event)"
+          (loaded)="stopLoader($event)"
+        ></nga-autocompleter>
+      </div>
+      <div class="col-sm-3 mb-2">
+        <nga-autocompleter
+          [service]="cityService"
+          placeholder="City"
+          labelField="title"
+          (selected)="onCitySelected($event)"
+          (init)="startLoader($event)"
+          (loaded)="stopLoader($event)"
+          providerType="loadable"
+        ></nga-autocompleter>
+      </div>
+      <div class="col-sm-3 mb-2">
+        <nga-autocompleter
+          [service]="patientService"
+          placeholder="Patient"
+          labelField="title"
+          providerType="loadable"
+          (selected)="onPatientSelected($event)"
+          (init)="startLoader($event)"
+          (loaded)="stopLoader($event)"
+        ></nga-autocompleter>
+      </div>
+      <div class="col-sm-3 mb-2">
+        <nga-ui-date-picker
+          *ngIf="handlingDatePickerConfig.ready"
+          [value]="handlingTimeRange"
+          [config]="handlingDatePickerConfig"
+          (changed)="onHandlingTimeRangeChanged($event)"
+        ></nga-ui-date-picker>
+      </div>
+      <div class="col-sm-3 mb-2">
+        <nga-autocompleter
+          [service]="statusService"
+          placeholder="Status"
+          labelField="title"
+          providerType="loadable"
+          (selected)="onStatusSelected($event)"
+          (init)="startLoader($event)"
+          (loaded)="stopLoader($event)"
+        ></nga-autocompleter>
+      </div>
+      <div class="col-sm-3 mb-2">
+        <nga-select-accident-type
+          [typeId]="accidentType"
+          (selected)="onAccidentTypeSelected($event)"
+          (init)="startLoader($event)"
+          (loaded)="stopLoader($event)"
+        ></nga-select-accident-type>
+      </div>
+      <div class="col-sm-3 mb-2" *ngIf="isDoctorCase">
+        <nga-ui-date-picker
+          *ngIf="visitDatePickerConfig.ready"
+          [value]="visitTimeRange"
+          [config]="visitDatePickerConfig"
+          (changed)="onVisitTimeRangeChanged($event)"
+        ></nga-ui-date-picker>
+      </div>
+      <div class="col-sm-3 mb-2" *ngIf="isDoctorCase">
+        <nga-autocompleter
+          [service]="doctorsServicesService"
+          placeholder="Doctors Services"
+          labelField="title"
+          providerType="loadable"
+          (selected)="onDoctorsServiceSelected($event)"
+          (init)="startLoader($event)"
+          (loaded)="stopLoader($event)"
+        ></nga-autocompleter>
+      </div>
+      <div class="col-sm-3 mb-2" *ngIf="isDoctorCase">
+        <nga-autocompleter
+          [service]="doctorsSurveyService"
+          placeholder="Doctors Survey"
+          labelField="title"
+          providerType="loadable"
+          (selected)="onDoctorsSurveySelected($event)"
+          (init)="startLoader($event)"
+          (loaded)="stopLoader($event)"
+        ></nga-autocompleter>
+      </div>
+      <div class="col-sm-3 mb-2" *ngIf="isDoctorCase">
+        <nga-autocompleter
+          [service]="doctorsDiagnosticService"
+          placeholder="Doctors Diagnostic"
+          labelField="title"
+          providerType="loadable"
+          (selected)="onDoctorsDiagnosticSelected($event)"
+          (init)="startLoader($event)"
+          (loaded)="stopLoader($event)"
+        ></nga-autocompleter>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row mt-2">
+  <div class="col-12">
+    <h5 translate>Result Builder</h5>
+    <p-dropdown
+      [options]="quickResultBuilders"
+      [(ngModel)]="selectedResultBuilder"
+      [placeholder]="'Quick Result Builder' | translate"
+      optionLabel="name"
+      [emptyMessage]="'Not found' | translate"
+      [emptyFilterMessage]="'No saved' | translate"
+      [showClear]="true"></p-dropdown>
+  </div>
+</div>
+
+
+<div class="row columns mt-2">
+  <div class="col-12">
+    <b translate>Columns</b>
+    <div class="field-checkbox">
+      <span *ngFor="let column of listFields" class="field-checkbox pl-2">
+        <p-checkbox
+          name="group2"
+          value="category"
+          [value]="column"
+          [(ngModel)]="selectedFields"
+          [inputId]="column.id"
+        ></p-checkbox>
+        <label class="label pl-1" [for]="column.id">{{column.title}}</label>
+      </span>
+    </div>
+  </div>
+</div>
+
+<div class="row mt-2">
+  <div class="col-12">
+    <b translate>Format</b>
+    <p-selectButton
+      [options]="resultTypeOptions"
+      [(ngModel)]="resultType"
+      optionLabel="title"
+      optionValue="id"></p-selectButton>
+  </div>
+</div>
+
+<div class="row mt-3">
+  <div class="col-12">
+    <button pButton type="button" class="p-button-success pull-left offset-right20 mr-1" (click)="onSearch()"
+            label="{{ 'Search' | translate }}"></button>
+  </div>
+</div>

@@ -13,13 +13,9 @@
   ~
   ~ Copyright (c) 2022 (original work) MedCenter24.com;
   -->
-<ba-card class="col-lg-9">
-  <nga-search-form></nga-search-form>
-
-  <div class="row mt-3">
-    <div class="col-12">
-      <h4 translate>Result</h4>
-    </div>
-  </div>
-<!--  <nga-search-result-datatable></nga-search-result-datatable>-->
-</ba-card>
+dtable --->>
+<nga-datatable
+  #searchResultDatatable
+  *ngIf="hasResult"
+  [config]="datatableConfig"
+></nga-datatable>

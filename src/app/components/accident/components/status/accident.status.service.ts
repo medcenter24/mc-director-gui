@@ -16,9 +16,6 @@
 
 import { Injectable } from '@angular/core';
 import { HttpService } from '../../../core/http/http.service';
-import {Observable} from "rxjs";
-import {ObservableTransformer} from "../../../../helpers/observable.transformer";
-import {AccidentStatus} from "./accident.status";
 
 @Injectable()
 export class AccidentStatusService extends HttpService {
@@ -27,11 +24,11 @@ export class AccidentStatusService extends HttpService {
     return 'director/statuses';
   }
 
-  search(filters: Object): Observable<any> {
-    const obs = super.search(filters);
-    return new ObservableTransformer()
-      .transform(obs,
-        r => r.data.map(row => AccidentStatus.fromData(row))
-      );
-  }
+  // search(filters: Object): Observable<any> {
+  //   const obs = super.search(filters);
+  //   return new ObservableTransformer()
+  //     .transform(obs,
+  //       r => r.data.map(row => AccidentStatus.fromData(row)),
+  //     );
+  // }
 }

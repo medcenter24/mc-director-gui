@@ -14,36 +14,27 @@
  * Copyright (c) 2022 (original work) MedCenter24.com;
  */
 
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {LoadingComponent} from '../../components/core/components/componentLoader';
 import {StatisticsService} from '../../components/statistics/statistics.service';
 import {LoggerComponent} from '../../components/core/logger/LoggerComponent';
 import {GlobalState} from '../../global.state';
 import {TranslateService} from '@ngx-translate/core';
 import {Breadcrumb} from '../../theme/components/baContentTop/breadcrumb';
-import {ActivatedRoute, Params} from '@angular/router';
-import {Location} from '@angular/common';
-import {UrlHelper} from '../../helpers/url.helper';
-import {ObjectHelper} from '../../helpers/object.helper';
 
 @Component({
   selector: 'nga-search',
   templateUrl: './search.html',
   styleUrls: ['./search.scss'],
 })
-export class SearchPageComponent extends LoadingComponent implements OnInit {
+export class SearchPageComponent extends LoadingComponent {
   protected componentName: string = 'SearchPageComponent';
-
-  query: string = '';
-  selectedColumns: Array<string> = [];
 
   constructor(
     private _statService: StatisticsService,
     protected _logger: LoggerComponent,
     protected _state: GlobalState,
     private translateService: TranslateService,
-    private route: ActivatedRoute,
-    private location: Location,
   ) {
     super();
     this.translateService.get('Search').subscribe((text: string) => {
@@ -52,20 +43,5 @@ export class SearchPageComponent extends LoadingComponent implements OnInit {
       breadcrumbs.push(new Breadcrumb(text, '/pages/search', true));
       this._state.notifyDataChanged('menu.activeLink', breadcrumbs);
     });
-  }
-
-  ngOnInit(): void {
-    const url = this.location.path(true);
-    UrlHelper.getQueryVariables(url).forEach(obj => {
-      ObjectHelper.eachProp(obj, key => {
-        if (key === 'q' && obj[key].length) {
-          this.query = obj[key];
-        }
-      });
-    });
-  }
-
-  onSearch() {
-    console.log('search', this.query);
   }
 }

@@ -34,12 +34,12 @@ export abstract class HttpService implements LoadableServiceInterface {
 
   constructor (
     protected http: HttpClient,
-    private authenticationService: AuthenticationService,
-    private _logger: LoggerComponent,
-    private _state: GlobalState,
-    private router: Router,
-    private uiToastService: UiToastService,
-    private tokenService: TokenService,
+    protected authenticationService: AuthenticationService,
+    protected _logger: LoggerComponent,
+    protected _state: GlobalState,
+    protected router: Router,
+    protected uiToastService: UiToastService,
+    protected tokenService: TokenService,
   ) {
   }
 
