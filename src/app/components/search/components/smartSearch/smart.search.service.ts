@@ -15,12 +15,24 @@
  */
 
 import {Injectable} from '@angular/core';
-import {HttpService} from '../core/http/http.service';
+import {HttpService} from '../../../core/http/http.service';
+import {Observable} from 'rxjs';
+import {ObservableTransformer} from '../../../../helpers/observable.transformer';
+import {SmartSearch} from './smart.search';
 
 @Injectable()
-export class SearchService extends HttpService {
+export class SmartSearchService extends HttpService {
 
   protected getPrefix(): string {
-    return 'director/search';
+    return 'director/smart-search';
+  }
+
+  save(smartSearch: SmartSearch): Observable<SmartSearch> {
+    const obs = smartSearch.id ? this.put(smartSearch.id, smartSearch) : this.store(smartSearch);
+    return new ObservableTransformer().transform(obs, r => r.data as SmartSearch);
+  }
+
+  destroy(id: number): Observable<any> {
+    return this.remove(id);
   }
 }

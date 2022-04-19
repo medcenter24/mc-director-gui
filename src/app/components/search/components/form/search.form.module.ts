@@ -20,6 +20,11 @@ import {SurveyService} from '../../../survey';
 import {DiagnosticService} from '../../../diagnostic/diagnostic.service';
 import {UiDatePickerModule} from '../../../ui/date/picker';
 import {Ng2FlatpickrModule} from 'ng2-flatpickr';
+import {AccidentTypesService} from '../../../accident/components/type/types.service';
+import {SearchService} from '../../search.service';
+import {SmartSearchService} from '../smartSearch';
+import {SearcherFiltersModule} from '../searcher/filters';
+import {OrderListModule} from 'primeng/orderlist';
 
 @NgModule({
   imports: [
@@ -35,6 +40,8 @@ import {Ng2FlatpickrModule} from 'ng2-flatpickr';
     AccidentTypeSelectModule,
     UiDatePickerModule,
     Ng2FlatpickrModule,
+    SearcherFiltersModule,
+    OrderListModule,
   ],
   declarations: [
     SearchFormComponent,
@@ -51,6 +58,9 @@ import {Ng2FlatpickrModule} from 'ng2-flatpickr';
     ServicesService,
     SurveyService,
     DiagnosticService,
+    AccidentTypesService,
+    SearchService,
+    SmartSearchService,
   ],
 })
 export class SearchFormModule {}

@@ -27,50 +27,77 @@
           [(ngModel)]="query"
           name="q"/>
 
-        <p-dropdown
-          [options]="quickFilters"
-          [(ngModel)]="selectedQuickFilter"
-          [placeholder]="'Quick Search' | translate"
-          optionLabel="name"
-          [emptyMessage]="'Not found' | translate"
-          [emptyFilterMessage]="'No saved' | translate"
-          [showClear]="true"></p-dropdown>
+        <nga-autocompleter
+          [service]="smartSearchService"
+          placeholder="Quick Search"
+          labelField="title"
+          providerType="loadable"
+          (selected)="onSmartSearchSelected($event)"
+          (init)="startLoader($event)"
+          (loaded)="stopLoader($event)"
+        ></nga-autocompleter>
       </div>
     </div>
 
     <div class="row mt-2">
       <div class="col-12">
-        <div class="alert alert-warning" role="alert">
-          <h6 class="text-muted" translate>Current Search Parameters</h6>
-          <span class="text-muted" translate>All cases without filters</span>
+        <div class="alert alert-warning searcher-info-block" role="alert">
+          <div class="row">
+            <div class="col-12">
+              <h6 class="text-muted" translate="">Current Search Parameters
+                <button pButton *ngIf="searcher.hasData()" class="pull-right" (click)="saveSearcher()" translate="">Save</button>
+                <button pButton *ngIf="searcher.id" class="pull-right mr-2" (click)="deleteSearcher()" translate="">Delete</button>
+                <button pButton *ngIf="searcher.id" class="pull-right mr-2" (click)="clearSearcher()" translate="">Clear</button>
+              </h6>
+            </div>
+          </div>
+          <div class="row mt-2" *ngIf="searcher.id">
+            <div class="col-12">
+              <input pInputText type="text" [(ngModel)]="searcher.title" class="pull-right p-inputtext p-component p-element">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <div class="row">
+                <div class="col-12">
+                  <h5 translate="">Filters</h5>
+                  <span class="text-muted" *ngIf="!searcher.hasFilters()" translate="">All cases without filters</span>
+                  <nga-searcher-filters [searcher]="searcher"></nga-searcher-filters>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-12">
+                  <h5 class="mt-2" translate="">Data</h5>
+                  <span class="text-muted" *ngIf="!searcher.fields.length" translate="">Result count</span>
+                  <div class="row">
+                    <div class="col-12">
+                      <div *ngFor="let field of searcher.fields">
+                        <b>{{ field.sort }}. </b> {{ field.title }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
-    <h4 translate>Filters</h4>
+    <h4 translate="">Filters</h4>
 
-    <div class="row mt-2">
-      <div class="col-sm-3">
-        <p-dropdown
-          [options]="quickFilters"
-          [(ngModel)]="selectedQuickFilter"
-          [placeholder]="'Quick Filters' | translate"
-          optionLabel="name"
-          [emptyMessage]="'Not found' | translate"
-          [emptyFilterMessage]="'No saved' | translate"
-          [showClear]="true"></p-dropdown>
-      </div>
-    </div>
     <div class="row mt-2">
       <div class="col-sm-4 mb-2">
         <nga-case-type-select
-          [selectedCaseTypeId]="searcher.caseableType"
+          selectedCaseTypeId="0"
           (selected)="onCaseTypeSelected($event)"
           (init)="startLoader($event)"
           (loaded)="stopLoader($event)"
         ></nga-case-type-select>
       </div>
-      <div class="col-sm-3 mb-2" *ngIf="isDoctorCase">
+      <div class="col-sm-3 mb-2" *ngIf="searcher.hasDoctorCase()">
         <nga-autocompleter
           [service]="doctorService"
           placeholder="Doctor"
@@ -107,7 +134,7 @@
         <nga-autocompleter
           [service]="patientService"
           placeholder="Patient"
-          labelField="title"
+          labelField="name"
           providerType="loadable"
           (selected)="onPatientSelected($event)"
           (init)="startLoader($event)"
@@ -134,14 +161,17 @@
         ></nga-autocompleter>
       </div>
       <div class="col-sm-3 mb-2">
-        <nga-select-accident-type
-          [typeId]="accidentType"
+        <nga-autocompleter
+          [service]="accidentTypesService"
+          placeholder="Accident Type"
+          labelField="title"
+          providerType="loadable"
           (selected)="onAccidentTypeSelected($event)"
           (init)="startLoader($event)"
           (loaded)="stopLoader($event)"
-        ></nga-select-accident-type>
+        ></nga-autocompleter>
       </div>
-      <div class="col-sm-3 mb-2" *ngIf="isDoctorCase">
+      <div class="col-sm-3 mb-2" *ngIf="searcher.hasDoctorCase()">
         <nga-ui-date-picker
           *ngIf="visitDatePickerConfig.ready"
           [value]="visitTimeRange"
@@ -149,7 +179,7 @@
           (changed)="onVisitTimeRangeChanged($event)"
         ></nga-ui-date-picker>
       </div>
-      <div class="col-sm-3 mb-2" *ngIf="isDoctorCase">
+      <div class="col-sm-3 mb-2" *ngIf="searcher.hasDoctorCase()">
         <nga-autocompleter
           [service]="doctorsServicesService"
           placeholder="Doctors Services"
@@ -160,7 +190,7 @@
           (loaded)="stopLoader($event)"
         ></nga-autocompleter>
       </div>
-      <div class="col-sm-3 mb-2" *ngIf="isDoctorCase">
+      <div class="col-sm-3 mb-2" *ngIf="searcher.hasDoctorCase()">
         <nga-autocompleter
           [service]="doctorsSurveyService"
           placeholder="Doctors Survey"
@@ -171,7 +201,7 @@
           (loaded)="stopLoader($event)"
         ></nga-autocompleter>
       </div>
-      <div class="col-sm-3 mb-2" *ngIf="isDoctorCase">
+      <div class="col-sm-3 mb-2" *ngIf="searcher.hasDoctorCase()">
         <nga-autocompleter
           [service]="doctorsDiagnosticService"
           placeholder="Doctors Diagnostic"
@@ -186,42 +216,33 @@
   </div>
 </div>
 
-<div class="row mt-2">
-  <div class="col-12">
-    <h5 translate>Result Builder</h5>
-    <p-dropdown
-      [options]="quickResultBuilders"
-      [(ngModel)]="selectedResultBuilder"
-      [placeholder]="'Quick Result Builder' | translate"
-      optionLabel="name"
-      [emptyMessage]="'Not found' | translate"
-      [emptyFilterMessage]="'No saved' | translate"
-      [showClear]="true"></p-dropdown>
-  </div>
-</div>
-
-
 <div class="row columns mt-2">
   <div class="col-12">
-    <b translate>Columns</b>
-    <div class="field-checkbox">
-      <span *ngFor="let column of listFields" class="field-checkbox pl-2">
-        <p-checkbox
-          name="group2"
-          value="category"
-          [value]="column"
-          [(ngModel)]="selectedFields"
-          [inputId]="column.id"
-        ></p-checkbox>
-        <label class="label pl-1" [for]="column.id">{{column.title}}</label>
-      </span>
-    </div>
+    <h4 translate="">Data</h4>
+
+    <p-orderList
+      [value]="listFields"
+      (onReorder)="fieldsReordered()"
+      (onSelectionChange)="fieldsSelected()"
+    >
+      <ng-template let-column pTemplate="item">
+        <div>
+          <p-checkbox
+            [value]="column"
+            [(ngModel)]="selectedFields"
+            [inputId]="column.id"
+          ></p-checkbox>
+          <label class="label pl-1" [for]="column.id">{{column.title}}</label>
+          <span class="fa fa-sort{{colOrderClassPrefix(column.order)}} ml-1" title="Order" (click)="toggleColumnSort(column)"></span>
+        </div>
+      </ng-template>
+    </p-orderList>
   </div>
 </div>
 
 <div class="row mt-2">
   <div class="col-12">
-    <b translate>Format</b>
+    <h4 translate="">Format</h4>
     <p-selectButton
       [options]="resultTypeOptions"
       [(ngModel)]="resultType"
@@ -232,7 +253,7 @@
 
 <div class="row mt-3">
   <div class="col-12">
-    <button pButton type="button" class="p-button-success pull-left offset-right20 mr-1" (click)="onSearch()"
+    <button pButton type="button" class="p-button-info pull-left offset-right20 mr-1" (click)="onSearch()"
             label="{{ 'Search' | translate }}"></button>
   </div>
 </div>

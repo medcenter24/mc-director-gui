@@ -14,13 +14,5 @@
  * Copyright (c) 2022 (original work) MedCenter24.com;
  */
 
-import {Injectable} from '@angular/core';
-import {HttpService} from '../core/http/http.service';
-
-@Injectable()
-export class SearchService extends HttpService {
-
-  protected getPrefix(): string {
-    return 'director/search';
-  }
-}
+export * from './searcher.filters.component';
+export * from './searcher.filters.module';
