@@ -74,6 +74,7 @@
                     <div class="col-12">
                       <div *ngFor="let field of searcher.fields">
                         <b>{{ field.sort }}. </b> {{ field.title }}
+                        <span class="fa fa-sort{{colOrderClassPrefix(field.order)}} ml-1" title="Order"></span>
                       </div>
                     </div>
                   </div>

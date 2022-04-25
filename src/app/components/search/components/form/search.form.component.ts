@@ -243,11 +243,15 @@ export class SearchFormComponent extends LoadingComponent implements OnInit {
     this.searcher = Searcher.fromSmartSearch(smartSearch);
 
     this.selectedFields = [];
-    this.listFields.forEach((field) => {
-      const found = this.searcher.fields.find((row) => row.id === field.id);
-      if (found) {
-        this.selectedFields.push(field);
-      }
+    let list = this.listFields;
+    this.listFields = [];
+    this.searcher.fields.forEach((row) => {
+      this.listFields.push(row);
+      this.selectedFields.push(row);
+      list = list.filter((sf) => sf.id !== row.id );
+    });
+    list.forEach((row) => {
+      this.listFields.push(row);
     });
   }
 
