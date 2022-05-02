@@ -236,6 +236,7 @@ export class SearchFormComponent extends LoadingComponent implements OnInit {
           this.found.emit(res);
         });
     } else {
+      this.searcher['lang'] = this.translateService.currentLang;
       this.searchService.search(this.searcher);
     }
   }
