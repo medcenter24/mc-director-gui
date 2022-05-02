@@ -27,6 +27,6 @@ export class AccidentStatus {
       data['id'],
       data['title'],
       data['type'],
-    )
+    );
   }
 }

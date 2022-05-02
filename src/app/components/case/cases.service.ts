@@ -132,7 +132,7 @@ export class CasesService extends HttpService implements LoadableServiceInterfac
     }
     const obs = this.get(`${accident.id}/finance${typesUri}`);
     return new ObservableTransformer()
-      .transform(obs, r => r.data.map(row => PaymentViewer.fromData(row)))
+      .transform(obs, r => r.data.map(row => PaymentViewer.fromData(row)));
   }
 
   saveFinance(accident: Accident, type: string, data: Object): Observable<PaymentViewer[]> {

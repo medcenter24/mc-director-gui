@@ -45,9 +45,9 @@ export class CaseTypeSelectComponent extends LoadableComponent implements OnInit
     this.translate.get('Yes').subscribe(() => {
       this.caseTypes = [];
       this.caseTypes.push({ label: this.translate.instant('Doctor Case'),
-        value: 'doctor' });
+        value: CaseTypeSelectComponent.getDoctorType() });
       this.caseTypes.push({ label: this.translate.instant('Hospital Case'),
-        value: 'hospital' });
+        value: CaseTypeSelectComponent.getHospitalType() });
 
       if (!this.selectedCaseTypeId) {
         this.selectedCaseTypeId = 'doctor';
@@ -58,5 +58,13 @@ export class CaseTypeSelectComponent extends LoadableComponent implements OnInit
 
   onChanged(event): void {
     this.selected.emit(event.value);
+  }
+
+  static getDoctorType(): string {
+    return 'doctor';
+  }
+
+  static getHospitalType(): string {
+    return 'hospital';
   }
 }

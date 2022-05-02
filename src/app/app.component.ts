@@ -114,7 +114,9 @@ export class AppComponent implements AfterViewInit {
     });
 
     this._state.subscribe('seeker', (text: string) => {
-      // someone click on the search button or provided the text to search and press enter
+      // click on the search button
+      // or provided the text to search and pressed enter
+      this.router.navigateByUrl(`pages/search?q=${text}`).then();
     });
 
     this._state.subscribe('changeTitle', (text: string) => {

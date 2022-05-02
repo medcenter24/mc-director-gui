@@ -14,8 +14,8 @@
  * Copyright (c) 2020 (original work) MedCenter24.com;
  */
 
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FlatpickrOptions } from 'ng2-flatpickr';
+import {Component, EventEmitter, Input, Output, ViewChild, ViewEncapsulation} from '@angular/core';
+import {FlatpickrOptions, Ng2FlatpickrComponent} from 'ng2-flatpickr';
 import { Russian } from 'flatpickr/dist/l10n/ru';
 import { TranslateService } from '@ngx-translate/core';
 import { Spanish } from 'flatpickr/dist/l10n/es';
@@ -27,21 +27,41 @@ import { DateHelper } from '../../../../helpers/date.helper';
   template: `
     <div class="p-inputgroup">
       <ng2-flatpickr
+        #flatpickr
         *ngIf="initialized"
         [config]="datePickerOptions"
         [(ngModel)]="pickedDate"
+        [placeholder]="datePickerOptions.placeholder || ''"
         pInputText></ng2-flatpickr>
-      <button pButton type="button" icon="pi pi-search" class="p-button-warn" (click)="onSearch()"></button>
+      <button
+        pButton
+        *ngIf="datePickerOptions.hasSearchButton"
+        type="button"
+        icon="pi pi-search"
+        class="p-button-warn"
+        (click)="onSearch()"></button>
+      <button pButton
+              *ngIf="!datePickerOptions.hasSearchButton"
+              type="button"
+              icon="fa fa-calendar"
+              (click)="onSearch()"
+      ></button>
     </div>
   `,
+  styleUrls: ['./ui.date.picker.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class UiDatePickerComponent {
   visible: boolean = false;
   datePickerOptions: FlatpickrOptions = {
     dateFormat: DateHelper.defaultFormat,
+    hasSearchButton: true,
   };
   pickedDate: any;
   initialized: boolean = false;
+
+  @ViewChild('flatpickr')
+  flatpickrComponent: Ng2FlatpickrComponent;
 
   @Input() set value(val: string) {
     if (val && val.length) {

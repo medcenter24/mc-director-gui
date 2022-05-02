@@ -21,6 +21,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   selector: 'ba-card',
   templateUrl: './baCard.html',
 })
+// tslint:disable-next-line:component-class-suffix
 export class BaCard {
   @Input() closeable: boolean = false;
   @Input() elTitle: String;
