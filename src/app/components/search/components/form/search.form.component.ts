@@ -58,7 +58,6 @@ export class SearchFormComponent extends LoadingComponent implements OnInit {
   query: string = '';
 
   resultTypeOptions: SearchResultType[] = [];
-  resultType: string = 'dt';
 
   listFields: SearchField[] = [];
   selectedFields: SearchField[] = [];
@@ -229,12 +228,16 @@ export class SearchFormComponent extends LoadingComponent implements OnInit {
   }
 
   onSearch() {
-    this.searchService
-      .search(this.searcher)
-      .subscribe( data => {
-        const res = new SearchResult(data);
-        this.found.emit(res);
-      });
+    if (this.searcher.result === 'datatable') {
+      this.searchService
+        .search(this.searcher)
+        .subscribe(data => {
+          const res = new SearchResult(data);
+          this.found.emit(res);
+        });
+    } else {
+      this.searchService.search(this.searcher);
+    }
   }
 
   private static generateSearchTitle(): string {

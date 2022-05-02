@@ -16,11 +16,36 @@
 
 import {Injectable} from '@angular/core';
 import {HttpService} from '../core/http/http.service';
+import {Observable} from 'rxjs';
+import {ObjectHelper} from '../../helpers/object.helper';
+import { saveAs } from 'file-saver';
 
 @Injectable()
 export class SearchService extends HttpService {
 
   protected getPrefix(): string {
     return 'director/search';
+  }
+
+  search (filters: Object): Observable<any> {
+    if (filters['result'] === 'datatable') {
+      filters = ObjectHelper.extend({}, filters);
+      return this.httpDataObserver(this.http.post(
+        this.getUrl('search'),
+        JSON.stringify(filters),
+        {headers: this.getAuthHeaders()},
+      ));
+    } else {
+      const dt = new Date();
+      this.http
+        .post(this.getUrl('search'), JSON.stringify(filters), {
+          headers: this.getAuthHeaders(),
+          responseType: 'blob',
+        })
+        .subscribe(
+          data => saveAs( data, `SearchResult_${dt.valueOf()}.xlsx` ),
+          err => this.handleError(err),
+        );
+    }
   }
 }
