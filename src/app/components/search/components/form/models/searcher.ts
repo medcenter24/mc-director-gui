@@ -24,7 +24,7 @@ export class Searcher {
     public id: number = 0,
     public title: string = '',
     public type: string = '',
-    public result: string = 'json',
+    public result: string = 'datatable',
     public filters: SearchFilters = new SearchFilters(),
     public fields: SearchField[] = [],
   ) {

@@ -131,7 +131,7 @@ export class SearchFormComponent extends LoadingComponent implements OnInit {
     }, {
       id: 'excel', title: this.translateService.instant('Excel'),
     }];
-    this.resultType = 'datatable';
+    this.searcher.result = 'datatable';
   }
 
   private parseUrl(): void {

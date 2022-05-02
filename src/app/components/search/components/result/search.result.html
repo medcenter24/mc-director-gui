@@ -27,7 +27,7 @@
   </div>
   <div class="row" *ngIf="!result.isCountOnly()">
     <div class="col-12">
-      <table class="table table-striped table-bordered table-hover">
+      <table class="table table-striped table-bordered table-hover table-sm">
         <thead>
         <tr>
           <th *ngFor="let col of result.getHeader()" translate="">{{ searchFields.getTitle(col) }}</th>
