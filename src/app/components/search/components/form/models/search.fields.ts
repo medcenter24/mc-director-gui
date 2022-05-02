@@ -14,7 +14,24 @@
  * Copyright (c) 2022 (original work) MedCenter24.com;
  */
 
-export interface ResultBuilder {
-  id: string;
-  name: string;
+import {Injectable} from '@angular/core';
+import {SearchField} from '../contracts/searhc.field';
+
+@Injectable()
+export class SearchFields {
+  private fields: SearchField[] = [
+    {id: 'npp', title: 'Npp', order: '', sort: 1},
+    {id: 'patient', title: 'Patient', order: '', sort: 2},
+    {id: 'assist-ref-num', title: 'Assistant Ref. Number', order: '', sort: 3},
+    {id: 'city', title: 'City', order: '', sort: 4},
+    {id: 'doctor-income', title: 'Doctor\'s fees', order: '', sort: 5},
+  ];
+
+  public getFields(): SearchField[] {
+    return this.fields;
+  }
+
+  public getTitle(key: string): string {
+    return this.fields.find(row => row.id === key)['title'];
+  }
 }

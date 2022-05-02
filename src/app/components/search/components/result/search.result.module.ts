@@ -3,7 +3,6 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; under version 2
  * of the License (non-upgradable).
- *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -16,25 +15,24 @@
  */
 
 import {NgModule} from '@angular/core';
+import {SearchResultComponent} from './search.result.component';
 import {CommonModule} from '@angular/common';
-import {FormsModule} from '@angular/forms';
 import {AppTranslationModule} from '../../../../app.translation.module';
-import {DatatableModule} from '../../../ui/datatable';
-import {SearchDatatableComponent} from './search.datatable.component';
+import {SearchFields} from '../form/models/search.fields';
 
 @NgModule({
   imports: [
     CommonModule,
-    FormsModule,
     AppTranslationModule,
-    DatatableModule,
   ],
-  providers: [],
   declarations: [
-    SearchDatatableComponent,
+    SearchResultComponent,
   ],
   exports: [
-    SearchDatatableComponent,
+    SearchResultComponent,
+  ],
+  providers: [
+    SearchFields,
   ],
 })
-export class SearchDatatableModule {}
+export class SearchResultModule {}

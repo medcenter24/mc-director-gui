@@ -21,6 +21,7 @@ import {LoggerComponent} from '../../components/core/logger/LoggerComponent';
 import {GlobalState} from '../../global.state';
 import {TranslateService} from '@ngx-translate/core';
 import {Breadcrumb} from '../../theme/components/baContentTop/breadcrumb';
+import {SearchResult} from '../../components/search/components/form/models/search.result';
 
 @Component({
   selector: 'nga-search',
@@ -29,6 +30,8 @@ import {Breadcrumb} from '../../theme/components/baContentTop/breadcrumb';
 })
 export class SearchPageComponent extends LoadingComponent {
   protected componentName: string = 'SearchPageComponent';
+
+  public result: SearchResult = null;
 
   constructor(
     private _statService: StatisticsService,
@@ -43,5 +46,9 @@ export class SearchPageComponent extends LoadingComponent {
       breadcrumbs.push(new Breadcrumb(text, '/pages/search', true));
       this._state.notifyDataChanged('menu.activeLink', breadcrumbs);
     });
+  }
+
+  onFound(searchResult: SearchResult): void {
+    this.result = searchResult;
   }
 }

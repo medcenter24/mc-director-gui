@@ -14,7 +14,7 @@
  * Copyright (c) 2022 (original work) MedCenter24.com;
  */
 
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {LoggerComponent} from '../../../core/logger/LoggerComponent';
 import {GlobalState} from '../../../../global.state';
 import {TranslateService} from '@ngx-translate/core';
@@ -42,6 +42,8 @@ import {SearchField} from './contracts/searhc.field';
 import {DatePickerConfig} from '../../../ui/date/picker/date.picker.config';
 import {SmartSearch, SmartSearchService} from '../smartSearch';
 import {Searcher} from './models/searcher';
+import {SearchResult} from './models/search.result';
+import {SearchFields} from './models/search.fields';
 
 @Component({
   selector: 'nga-search-form',
@@ -50,6 +52,8 @@ import {Searcher} from './models/searcher';
 })
 export class SearchFormComponent extends LoadingComponent implements OnInit {
   protected componentName: string = 'SearchFormComponent';
+
+  @Output() found: EventEmitter<SearchResult> = new EventEmitter<SearchResult>();
 
   query: string = '';
 
@@ -96,6 +100,7 @@ export class SearchFormComponent extends LoadingComponent implements OnInit {
     public accidentTypesService: AccidentTypesService,
     public searchService: SearchService,
     public smartSearchService: SmartSearchService,
+    public searchFields: SearchFields,
   ) {
     super();
     this.searcher = SearchFormComponent.createSearcher();
@@ -141,13 +146,7 @@ export class SearchFormComponent extends LoadingComponent implements OnInit {
   }
 
   private loadFields() {
-    this.listFields = [
-      {id: 'npp', title: 'Npp', order: '', sort: 1},
-      {id: 'patient', title: 'Patient', order: '', sort: 2},
-      {id: 'assist-ref-num', title: 'Assistant Ref. Number', order: '', sort: 3},
-      {id: 'city', title: 'City', order: '', sort: 4},
-      {id: 'doctor-income', title: 'Doctor\'s fees', order: '', sort: 5},
-    ];
+    this.listFields = this.searchFields.getFields();
   }
 
   onCaseTypeSelected($event: string) {
@@ -230,7 +229,12 @@ export class SearchFormComponent extends LoadingComponent implements OnInit {
   }
 
   onSearch() {
-    this.searchService.search(this.searcher).subscribe(console.log);
+    this.searchService
+      .search(this.searcher)
+      .subscribe( data => {
+        const res = new SearchResult(data);
+        this.found.emit(res);
+      });
   }
 
   private static generateSearchTitle(): string {

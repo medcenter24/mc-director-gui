@@ -7,14 +7,11 @@ import {ButtonModule} from 'primeng/button';
 import {NgaModule} from '../../theme/nga.module';
 import {FormsModule} from '@angular/forms';
 import {CheckboxModule} from 'primeng/checkbox';
-import {SearchFormModule} from '../../components/search/components/form/search.form.module';
-import {SearchDatatableModule} from '../../components/search/components/datatable';
+import {SearchFormModule} from '../../components/search/components/form';
+import {SearchResultModule} from '../../components/search/components/result';
 
 @NgModule({
   imports: [
-    // FormsModule,
-    // CommonModule,
-    // NgaModule,
     routing,
     AppTranslationModule,
     ButtonModule,
@@ -22,13 +19,10 @@ import {SearchDatatableModule} from '../../components/search/components/datatabl
     FormsModule,
     CheckboxModule,
     SearchFormModule,
-    SearchDatatableModule,
-    // AppTranslationModule,
+    SearchResultModule,
   ],
   declarations: [SearchPageComponent],
   exports: [SearchPageComponent],
-  providers: [
-    StatisticsService,
-  ],
+  providers: [StatisticsService],
 })
 export class SearchPageModule {}

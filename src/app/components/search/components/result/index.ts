@@ -14,7 +14,5 @@
  * Copyright (c) 2022 (original work) MedCenter24.com;
  */
 
-export interface QuickFilter {
-  id: string;
-  name: string;
-}
+export * from './search.result.component';
+export * from './search.result.module';
