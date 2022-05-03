@@ -20,7 +20,7 @@ import { HttpService } from '../../../components/core/http/http.service';
 import { CalendarEvent } from './calendar';
 import { DateHelper } from '../../../helpers/date.helper';
 import { Observable } from 'rxjs';
-import {ObservableTransformer} from "../../../helpers/observable.transformer";
+import {ObservableTransformer} from '../../../helpers/observable.transformer';
 
 @Injectable()
 export class CalendarService extends HttpService {
@@ -37,6 +37,6 @@ export class CalendarService extends HttpService {
     const endDate = DateHelper.getDate(end);
     const obs = this.get(null, { start: DateHelper.getUnixDate(startDate), end: DateHelper.getUnixDate(endDate) });
     return new ObservableTransformer()
-      .transform(obs, r => r.data.map(row => CalendarEvent.fromData(row)))
+      .transform(obs, r => r.data.map(row => CalendarEvent.fromData(row)));
   }
 }

@@ -27,10 +27,10 @@ import { DatatableAction, DatatableCol, DatatableComponent, DatatableTransformer
 import { ConfirmationService } from 'primeng/api';
 import { Breadcrumb } from '../../../../theme/components/baContentTop/breadcrumb';
 import { Disease, DiseaseService } from '../../../disease';
-import {DatatableRequestBuilder} from "../../../ui/datatable/request/datatable.request.builder";
-import {RequestBuilder} from "../../../core/http/request";
-import {FilterRequestField, SortRequestField} from "../../../core/http/request/fields";
-import {Location} from "@angular/common";
+import {DatatableRequestBuilder} from '../../../ui/datatable/request/datatable.request.builder';
+import {RequestBuilder} from '../../../core/http/request';
+import {FilterRequestField, SortRequestField} from '../../../core/http/request/fields';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'nga-service-datatable',

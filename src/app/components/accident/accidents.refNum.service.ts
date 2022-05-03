@@ -17,9 +17,9 @@
 
 import { Injectable } from '@angular/core';
 import { HttpService } from '../core/http/http.service';
-import {Observable} from "rxjs";
-import {ObservableTransformer} from "../../helpers/observable.transformer";
-import {Accident} from "./accident";
+import {Observable} from 'rxjs';
+import {ObservableTransformer} from '../../helpers/observable.transformer';
+import {Accident} from './accident';
 
 @Injectable()
 export class AccidentsRefNumService extends HttpService {

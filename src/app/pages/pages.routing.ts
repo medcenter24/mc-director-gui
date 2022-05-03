@@ -31,6 +31,10 @@ export const routes: Routes = [
     component: PagesComponent,
     children: [
       {
+        path: 'search',
+        loadChildren: () => import('./search/search.page.module').then(m => m.SearchPageModule),
+        canActivate: [AuthGuard],
+      }, {
         path: 'settings',
         loadChildren: () => import('./settings/settings.page.module').then(m => m.SettingsPageModule),
         canActivate: [AuthGuard],

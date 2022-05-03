@@ -56,8 +56,7 @@ export class FinanceRule {
     return !!res;
   }
 
-  static fromData(data: object): FinanceRule
-  {
+  static fromData(data: object): FinanceRule {
     return new FinanceRule(
       data['id'],
       data['title'],

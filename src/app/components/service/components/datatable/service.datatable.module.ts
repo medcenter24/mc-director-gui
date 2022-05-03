@@ -15,7 +15,6 @@
  * Copyright (c) 2019 (original work) MedCenter24.com;
  */
 
-
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DialogModule } from 'primeng/dialog';
