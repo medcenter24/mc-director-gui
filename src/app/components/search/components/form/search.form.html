@@ -47,7 +47,7 @@
               <h6 class="text-muted" translate="">Current Search Parameters
                 <button pButton *ngIf="searcher.hasData()" class="pull-right" (click)="saveSearcher()" translate="">Save</button>
                 <button pButton *ngIf="searcher.id" class="pull-right mr-2" (click)="deleteSearcher()" translate="">Delete</button>
-                <button pButton *ngIf="searcher.id" class="pull-right mr-2" (click)="clearSearcher()" translate="">Clear</button>
+                <button pButton *ngIf="searcher.hasData()" class="pull-right mr-2" (click)="clearSearcher()" translate="">Clear</button>
               </h6>
             </div>
           </div>
