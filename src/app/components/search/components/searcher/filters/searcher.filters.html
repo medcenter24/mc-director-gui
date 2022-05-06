@@ -47,8 +47,8 @@
     <b translate="">Doctor Diagnostics</b>
     <li *ngFor="let diagnostic of searcher.filters.doctorDiagnostics">{{ diagnostic.title }}</li>
   </ul>
-  <ul>
-    <b *ngIf="searcher.filters.searchInDeleted" translate="">Search in deleted</b>
+  <ul *ngIf="searcher.filters.searchInDeleted">
+    <b translate="">Search in deleted</b>
     <li translate="">{{searcher.filters.searchInDeleted ? 'Yes' : 'No'}}</li>
   </ul>
 </div>
