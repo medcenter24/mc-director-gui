@@ -213,6 +213,10 @@
           (loaded)="stopLoader($event)"
         ></nga-autocompleter>
       </div>
+      <div class="col-sm-3 mb-2">
+        <p-checkbox [binary]="true" [(ngModel)]="searcher.filters.searchInDeleted"></p-checkbox>
+        <label class="label ml-2" translate="">Search in deleted</label>
+      </div>
     </div>
   </div>
 </div>
@@ -233,8 +237,8 @@
             [(ngModel)]="selectedFields"
             [inputId]="column.id"
           ></p-checkbox>
-          <label class="label pl-1" [for]="column.id">{{column.title}}</label>
-          <span class="fa fa-sort{{colOrderClassPrefix(column.order)}} ml-1" title="Order" (click)="toggleColumnSort(column)"></span>
+          <label class="label pl-1" [for]="column.id" translate="">{{column.title}}</label>
+          <span class="fa fa-sort{{colOrderClassPrefix(column.order)}} ml-1" title="{{'Order' | translate}}" (click)="toggleColumnSort(column)"></span>
         </div>
       </ng-template>
     </p-orderList>

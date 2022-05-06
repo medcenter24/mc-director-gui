@@ -17,7 +17,7 @@
 <ng-container *ngIf="result && result.isHasData()">
   <div class="row mt-3">
     <div class="col-12">
-      <h4 translate="">Result</h4>
+      <h4><span translate="">Result</span><small class="small" *ngIf="!result.isCountOnly()"> {{ result.getData().length }}</small></h4>
     </div>
   </div>
   <div class="row" *ngIf="result.isCountOnly()">
@@ -35,7 +35,7 @@
         </thead>
         <tbody>
         <tr *ngFor="let row of result.getData()">
-          <td *ngFor="let col of row">{{ col }}</td>
+          <td *ngFor="let col of row; index as i">{{ col }}</td>
         </tr>
         </tbody>
       </table>

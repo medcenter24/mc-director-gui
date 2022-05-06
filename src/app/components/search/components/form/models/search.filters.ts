@@ -38,6 +38,7 @@ export class SearchFilters {
     public doctorServices: Service[] = [],
     public doctorSurveys: Survey[] = [],
     public doctorDiagnostics: Diagnostic[] = [],
+    public searchInDeleted: boolean = false,
   ) {
   }
 
@@ -53,6 +54,6 @@ export class SearchFilters {
       + this.visitTimeRanges.length
       + this.doctorServices.length
       + this.doctorSurveys.length
-      + this.doctorDiagnostics.length > 0;
+      + this.doctorDiagnostics.length > 0 || this.searchInDeleted;
   }
 }

@@ -25,13 +25,19 @@ export class SearchFields {
     {id: 'assist-ref-num', title: 'Assistant Ref. Number', order: '', sort: 3},
     {id: 'city', title: 'City', order: '', sort: 4},
     {id: 'doctor-income', title: 'Doctor\'s fees', order: '', sort: 5},
+    {id: 'accident-link', title: 'Accident ID', order: '', sort: 6},
   ];
 
   public getFields(): SearchField[] {
     return this.fields;
   }
 
+  public getField(key: string): SearchField {
+    return this.fields.find(row => row.id === key);
+  }
+
   public getTitle(key: string): string {
-    return this.fields.find(row => row.id === key)['title'];
+    const field = this.getField(key);
+    return field && field.hasOwnProperty('title') ? field['title'] : '';
   }
 }

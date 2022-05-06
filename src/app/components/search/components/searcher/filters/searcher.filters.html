@@ -1,50 +1,54 @@
 <div *ngIf="searcher.hasFilters()">
   <ul *ngIf="searcher.filters.caseableTypes.length">
-    <b translate>Caseable Types</b>
-    <li *ngFor="let caseableType of searcher.filters.caseableTypes" translate>{{ caseableType }}</li>
+    <b translate="">Caseable Types</b>
+    <li *ngFor="let caseableType of searcher.filters.caseableTypes" translate="">{{ caseableType }}</li>
   </ul>
   <ul *ngIf="searcher.filters.doctors.length">
-    <b translate>Doctors</b>
+    <b translate="">Doctors</b>
     <li *ngFor="let doctor of searcher.filters.doctors">{{ doctor.name }}</li>
   </ul>
   <ul *ngIf="searcher.filters.assistants.length">
-    <b translate>Assistants</b>
+    <b translate="">Assistants</b>
     <li *ngFor="let assistant of searcher.filters.assistants">{{ assistant.title }}</li>
   </ul>
   <ul *ngIf="searcher.filters.cities.length">
-    <b translate>Cities</b>
+    <b translate="">Cities</b>
     <li *ngFor="let city of searcher.filters.cities">{{ city.title }} &rarr; {{ city.regionTitle }} &rarr; {{ city.countryTitle }}</li>
   </ul>
   <ul *ngIf="searcher.filters.patients.length">
-    <b translate>Patients</b>
+    <b translate="">Patients</b>
     <li *ngFor="let patient of searcher.filters.patients">{{ patient.name }}</li>
   </ul>
   <ul *ngIf="searcher.filters.handlingTimeRanges.length">
-    <b translate>Handling Time Ranges</b>
+    <b translate="">Handling Time Ranges</b>
     <li *ngFor="let handlingTimeRange of searcher.filters.handlingTimeRanges">{{ handlingTimeRange.replace('>', ' &rarr; ') }}</li>
   </ul>
   <ul *ngIf="searcher.filters.accidentStatuses.length">
-    <b translate>Accident Statuses</b>
-    <li *ngFor="let accidentStatus of searcher.filters.accidentStatuses" translate>{{ accidentStatus.title }}</li>
+    <b translate="">Accident Statuses</b>
+    <li *ngFor="let accidentStatus of searcher.filters.accidentStatuses" translate="">{{ accidentStatus.title }}</li>
   </ul>
   <ul *ngIf="searcher.filters.accidentTypes.length">
-    <b translate>Accident Types</b>
-    <li *ngFor="let accidentType of searcher.filters.accidentTypes" translate>{{ accidentType.title }}</li>
+    <b translate="">Accident Types</b>
+    <li *ngFor="let accidentType of searcher.filters.accidentTypes" translate="">{{ accidentType.title }}</li>
   </ul>
   <ul *ngIf="searcher.filters.visitTimeRanges.length">
-    <b translate>Visit Time Ranges</b>
+    <b translate="">Visit Time Ranges</b>
     <li *ngFor="let visitTimeRange of searcher.filters.visitTimeRanges">{{ visitTimeRange.replace('>', ' &rarr; ') }}</li>
   </ul>
   <ul *ngIf="searcher.filters.doctorServices.length">
-    <b translate>Doctor Services</b>
+    <b translate="">Doctor Services</b>
     <li *ngFor="let doctorService of searcher.filters.doctorServices">{{ doctorService.title }}</li>
   </ul>
   <ul *ngIf="searcher.filters.doctorSurveys.length">
-    <b translate>Doctor Surveys</b>
+    <b translate="">Doctor Surveys</b>
     <li *ngFor="let doctorSurvey of searcher.filters.doctorSurveys">{{ doctorSurvey.title }}</li>
   </ul>
   <ul *ngIf="searcher.filters.doctorDiagnostics.length">
-    <b translate>Doctor Diagnostics</b>
+    <b translate="">Doctor Diagnostics</b>
     <li *ngFor="let diagnostic of searcher.filters.doctorDiagnostics">{{ diagnostic.title }}</li>
+  </ul>
+  <ul>
+    <b *ngIf="searcher.filters.searchInDeleted" translate="">Search in deleted</b>
+    <li translate="">{{searcher.filters.searchInDeleted ? 'Yes' : 'No'}}</li>
   </ul>
 </div>
