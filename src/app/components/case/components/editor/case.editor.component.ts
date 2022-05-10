@@ -761,6 +761,9 @@ export class CaseEditorComponent extends LoadingComponent implements OnInit {
     const incomePayment = $event.find(val => val.type === 'income');
     this.accident['incomePaymentId'] = incomePayment.getPaymentId();
 
+    const cashPayment = $event.find(val => val.type === 'cash');
+    this.accident['cashPaymentId'] = cashPayment.getPaymentId();
+
     this.dataChanged();
   }
 
