@@ -36,7 +36,7 @@ export class CaseFinanceComponent extends LoadableComponent implements OnInit {
   @Output() changed: EventEmitter<PaymentViewer[]> = new EventEmitter<PaymentViewer[]>();
   @Output() state: EventEmitter<PaymentViewer[]> = new EventEmitter<PaymentViewer[]>();
 
-  types: string[] = ['income', 'assistant', 'caseable'];
+  types: string[] = ['income', 'assistant', 'caseable', 'cash'];
   paymentViewers: PaymentViewer[] = [];
 
   constructor(
@@ -89,10 +89,12 @@ export class CaseFinanceComponent extends LoadableComponent implements OnInit {
         return 'Income';
       case 'caseable':
         return this.accident.caseableType === 'hospital'
-          ? 'Payment to the hospital'
-          : 'Payment to the doctor';
+          ? 'To hospital'
+          : 'To doctor';
       case 'assistant':
-        return 'Payment from the assistant';
+        return 'From assistant';
+      case 'cash':
+        return 'Cash';
       default: return `Undefined payment type ${type}`;
     }
   }

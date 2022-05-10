@@ -1,4 +1,10 @@
 {
+  "From assistant": "От асистанса",
+  "To hospital": "В больницу",
+  "To doctor": "Врачу",
+  "Cash": "Наличные",
+  "Auto": "Авто",
+  "Fixed": "Фикс.",
   "Search in deleted": "Искать в удаленных",
   "Accident ID": "ID Дела",
   "Npp": "№",
@@ -148,6 +154,7 @@
   "`form` and/or `data source` has not been provided": "Не указана форма и/или источник данных",
   "Get Form": "Готовые формы",
   "Case loading": "Загрузка дела",
+  "Payment in cash": "Оплата наличными",
   "Payment to the doctor": "Оплата врачу",
   "Payment to the hospital": "Оплата в больницу",
   "Payment from the assistant": "Платеж из ассистанса",

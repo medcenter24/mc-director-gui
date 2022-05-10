@@ -1,4 +1,10 @@
 {
+  "From assistant": "From assistant",
+  "To hospital": "To hospital",
+  "To doctor": "To doctor",
+  "Cash": "Cash",
+  "Auto": "Auto",
+  "Fixed": "Fixed",
   "Search in deleted": "Search in deleted",
   "Accident ID": "Accident ID",
   "Npp": "#",
@@ -148,6 +154,7 @@
   "Get Form": "Get Form",
   "Loading": "Loading",
   "Case loading": "Case loading",
+  "Payment in cash": "Payment in cash",
   "Payment to the doctor": "Payment to the doctor",
   "Payment to the hospital": "Payment to the hospital",
   "Payment from the assistant": "Payment from the assistant",
