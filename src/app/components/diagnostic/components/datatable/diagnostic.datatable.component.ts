@@ -28,10 +28,10 @@ import { Diagnostic } from '../../diagnostic';
 import { LoggerComponent } from '../../../core/logger/LoggerComponent';
 import { Breadcrumb } from '../../../../theme/components/baContentTop/breadcrumb';
 import { Disease } from '../../../disease';
-import {DatatableRequestBuilder} from "../../../ui/datatable/request/datatable.request.builder";
-import {RequestBuilder} from "../../../core/http/request";
-import {FilterRequestField, SortRequestField} from "../../../core/http/request/fields";
-import {Location} from "@angular/common";
+import {DatatableRequestBuilder} from '../../../ui/datatable/request/datatable.request.builder';
+import {RequestBuilder} from '../../../core/http/request';
+import {FilterRequestField, SortRequestField} from '../../../core/http/request/fields';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'nga-diagnostic-datatable',
@@ -60,7 +60,7 @@ export class DiagnosticDatatableComponent extends AbstractDatatableController {
   protected onLangLoaded () {
     super.onLangLoaded();
     const breadcrumbs = [];
-    const title = this.translateService.instant('Diagnostics');
+    const title = this.translateService.instant('Diagnoses');
     breadcrumbs.push(new Breadcrumb(title, '/pages/doctors/diagnostics', true));
     this._state.notifyDataChanged('menu.activeLink', breadcrumbs);
     this._state.notifyDataChanged('changeTitle', title);

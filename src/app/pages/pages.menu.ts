@@ -198,7 +198,7 @@ const menu = [
             path: 'diagnostics',
             data: {
               menu: {
-                title: 'Diagnostics',
+                title: 'Diagnoses',
               },
             },
           },

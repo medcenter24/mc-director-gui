@@ -59,7 +59,10 @@ export class SearchFormComponent extends LoadingComponent implements OnInit {
 
   resultTypeOptions: SearchResultType[] = [];
 
-  listFields: SearchField[] = [];
+  allFields: SearchField[] = [];
+  otherFields: SearchField[] = [];
+  colFields: SearchField[] = [];
+
   selectedFields: SearchField[] = [];
 
   searcher: Searcher;
@@ -145,7 +148,9 @@ export class SearchFormComponent extends LoadingComponent implements OnInit {
   }
 
   private loadFields() {
-    this.listFields = this.searchFields.getFields();
+    this.allFields = this.searchFields.getAllFields();
+    this.colFields = this.searchFields.getColFields();
+    this.otherFields = this.searchFields.getAgrFields();
   }
 
   onCaseTypeSelected($event: string) {
@@ -251,15 +256,26 @@ export class SearchFormComponent extends LoadingComponent implements OnInit {
     this.searcher = Searcher.fromSmartSearch(smartSearch);
 
     this.selectedFields = [];
-    let list = this.listFields;
-    this.listFields = [];
+
+    let cols = this.colFields;
+    let oth = this.otherFields;
+    this.colFields = [];
+    this.otherFields = [];
     this.searcher.fields.forEach((row) => {
-      this.listFields.push(row);
+      if (SearchFields.getColumns().includes(row.id)) {
+        this.colFields.push(row);
+        cols = cols.filter((sf) => sf.id !== row.id);
+      } else {
+        this.otherFields.push(row);
+        oth = oth.filter((sf) => sf.id !== row.id);
+      }
       this.selectedFields.push(row);
-      list = list.filter((sf) => sf.id !== row.id );
     });
-    list.forEach((row) => {
-      this.listFields.push(row);
+    cols.forEach((row) => {
+      this.colFields.push(row);
+    });
+    oth.forEach((row) => {
+      this.otherFields.push(row);
     });
   }
 
@@ -330,13 +346,22 @@ export class SearchFormComponent extends LoadingComponent implements OnInit {
 
   private updateSearcherFields() {
     const fields = [];
-    this.listFields.forEach((field) => {
+
+    this.colFields.forEach((field) => {
       const found = this.selectedFields.find((row) => row.id === field.id);
       if (found) {
         fields.push(field);
       }
     });
     this.reSort(fields);
+
+    this.otherFields.forEach(field => {
+      const found = this.selectedFields.find((row) => row.id === field.id);
+      if (found) {
+        fields.push(field);
+      }
+    });
+
     this.searcher.fields = fields;
   }
 }

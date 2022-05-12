@@ -21,7 +21,6 @@ import {DateHelper} from '../../../../helpers/date.helper';
 import {PatientsService} from '../../patients.service';
 import {GlobalState} from '../../../../global.state';
 import {TranslateService} from '@ngx-translate/core';
-import {Message} from 'primeng/api';
 import {LoadableComponent} from '../../../core/components/componentLoader';
 
 @Component({
@@ -39,7 +38,6 @@ export class PatientEditorComponent extends LoadableComponent {
 
   patient: Patient = new Patient();
   birthday: string = '';
-  msgs: Message[] = [];
   protected componentName: string = 'PatientEditorComponent';
 
   constructor(
@@ -98,7 +96,7 @@ export class PatientEditorComponent extends LoadableComponent {
                 this.patient = null;
                 this.changed.emit(this.patient);
                 this.stopLoader(postfix);
-              }, error: () => this.stopLoader(postfix)
+              }, error: () => this.stopLoader(postfix),
             });
         },
         icon: 'fa fa-window-close-o red',
