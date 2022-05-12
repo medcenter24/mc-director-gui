@@ -22,19 +22,19 @@
         <div class="row">
           <div class="col-sm-6">
             <div class="form-group">
-              <label for="inputTitle" translate>Title</label>
+              <label for="inputTitle" translate="">Title</label>
               <input type="text" class="form-control" id="inputTitle"
                      required
                      [(ngModel)]="diagnostic.title" name="title"
                      #title="ngModel"
                      placeholder="{{ 'Title' | translate }}" maxlength="70"
               >
-              <div [hidden]="title.valid || title.pristine" class="alert alert-danger" translate>Title is required</div>
+              <div [hidden]="title.valid || title.pristine" class="alert alert-danger" translate="">Title is required</div>
             </div>
           </div>
           <div class="col-sm-6">
             <div class="form-group">
-              <label translate>Diseases</label><br>
+              <label translate="">Diseases</label><br>
               <nga-multi-selector
                 [service]="diseaseService"
                 placeholder="Select Diseases"
@@ -50,20 +50,20 @@
         <div class="row">
           <div class="col-sm-6">
             <div class="form-group">
-              <label for="inputDescription" translate>Description</label>
+              <label for="inputDescription" translate="">Description</label>
               <textarea class="form-control" id="inputDescription"
-                        placeholder="{{ 'Diagnostic description' | translate }}"
+                        placeholder="{{ 'Description' | translate }}"
                         [(ngModel)]="diagnostic.description" name="description"
                         #description="ngModel"
                         maxlength="255"
                         [innerHTML]="diagnostic ? diagnostic.description : ''"
               ></textarea>
-              <div [hidden]="description.valid || description.pristine" class="alert alert-danger" translate>Description is required</div>
+              <div [hidden]="description.valid || description.pristine" class="alert alert-danger" translate="">Description is required</div>
             </div>
           </div>
           <div class="col-sm-6">
             <div class="form-group">
-              <label translate>{{ isActive ? 'Active' : 'Inactive' }}</label>
+              <label translate="">{{ isActive ? 'Active' : 'Inactive' }}</label>
               <div>
                 <p-inputSwitch [(ngModel)]="isActive"></p-inputSwitch>
               </div>
@@ -82,9 +82,9 @@
               ></nga-autocompleter>
 
               <a (click)="toggleEditor()"
-                 *ngIf="showEditor" class="editor-toggle" translate>Close categories editor</a>
+                 *ngIf="showEditor" class="editor-toggle" translate="">Close categories editor</a>
               <a (click)="toggleEditor()"
-                 *ngIf="!showEditor" class="editor-toggle" translate>Open categories editor</a>
+                 *ngIf="!showEditor" class="editor-toggle" translate="">Open categories editor</a>
             </div>
           </div>
         </div>

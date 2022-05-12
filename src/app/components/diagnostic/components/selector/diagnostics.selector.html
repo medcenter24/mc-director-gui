@@ -16,7 +16,7 @@
   -->
 
 <div class="p-gridp-grid-responsive p-grid-pad">
-  <label class="label separate" translate>Accident Diagnostics</label>
+  <label class="label separate" translate="">Diagnosis</label>
   <ng-container *ngIf="!isStaticForm">
     <div class="row offset-bottom20">
         <div class="col-sm-10 p-grid-col-12">
@@ -31,15 +31,15 @@
     </div>
   </ng-container>
   <ng-container *ngIf="isStaticForm && !caseDiagnostics.length">
-    <span translate>Diagnostics not selected</span>
+    <span translate="">Diagnosis not selected</span>
   </ng-container>
     <div class="row" *ngIf="caseDiagnostics && caseDiagnostics.length">
         <div class="col-sm-12">
             <table class="table table-hover table-striped table-bordered">
                 <thead class="table-inverse">
                 <tr>
-                    <th translate>Title</th>
-                    <th translate>Description</th>
+                    <th translate="">Title</th>
+                    <th translate="">Description</th>
                     <th *ngIf="!isStaticForm"></th>
                 </tr>
                 </thead>

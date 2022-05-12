@@ -18,6 +18,7 @@ import {SearchFilters} from './search.filters';
 import {CaseTypeSelectComponent} from '../../../../case/components/type/case.type.select.component';
 import {SmartSearch} from '../../smartSearch';
 import {SearchField} from '../contracts/searhc.field';
+import {SearchFields} from './search.fields';
 
 export class Searcher {
   constructor(
@@ -28,6 +29,16 @@ export class Searcher {
     public filters: SearchFilters = new SearchFilters(),
     public fields: SearchField[] = [],
   ) {
+  }
+
+  getColFields(): SearchField[] {
+    const cols = SearchFields.getColumns();
+    return this.fields.filter(field => cols.includes(field.id));
+  }
+
+  getAgrFields(): SearchField[] {
+    const cols = SearchFields.getAggregations();
+    return this.fields.filter(field => cols.includes(field.id));
   }
 
   hasData(): boolean {

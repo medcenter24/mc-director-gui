@@ -36,7 +36,7 @@
             <!-- Type of Case -->
             <div class="row">
               <div class="col-sm-4">
-                  <label class="label separate required" *ngIf="!accident.id" translate>Choose Case</label>
+                  <label class="label separate required" *ngIf="!accident.id" translate="">Choose Case</label>
                   <nga-case-type-select
                           *ngIf="!accident.id"
                           [selectedCaseTypeId]="accident.caseableType"
@@ -46,9 +46,9 @@
                   ></nga-case-type-select>
 
                   <h4 *ngIf="accident.id && isDoctorAccident()"
-                      class="text-danger" translate>Doctor Case</h4>
+                      class="text-danger" translate="">Doctor Case</h4>
                   <h4 *ngIf="accident.id && isHospitalAccident()"
-                      class="text-danger" translate>Hospital Case</h4>
+                      class="text-danger" translate="">Hospital Case</h4>
               </div>
               <!-- /Type of Case -->
             </div>
@@ -58,7 +58,7 @@
             <div class="row">
               <!-- Referral Number -->
               <div class="col-sm-4">
-                <label class="label separate" for="refNumber" translate>Referral Number</label>
+                <label class="label separate" for="refNumber" translate="">Referral Number</label>
                 <b pTooltip="{{ 'If you leave it empty then it will be generated automatically' | translate }}"
                    class="badge badge-secondary pull-left">?</b>
                 <p-inplace closable="true" class="pull-left">
@@ -76,7 +76,7 @@
               <!-- Referral Number -->
               <!-- Assistant -->
               <div class="col-sm-4">
-                <label class="label required separate" translate>Assistant</label>
+                <label class="label required separate" translate="">Assistant</label>
                 <nga-autocompleter
                   #assistantAutocompleter
                   [service]="assistantService"
@@ -91,7 +91,7 @@
               <!-- /Assistant -->
               <!-- Assistant Ref Num -->
               <div class="col-sm-4">
-                <label class="label required separate" for="assistantRefNumber" translate>Assistant Ref Num</label>
+                <label class="label required separate" for="assistantRefNumber" translate="">Assistant Ref Num</label>
                 <input type="text" pInputText
                        id="assistantRefNumber"
                        name="assistant_ref_num"
@@ -107,7 +107,7 @@
             <div class="row">
               <!-- City -->
               <div class="col-sm-4">
-                <label class="label required separate" translate>City</label>
+                <label class="label required separate" translate="">City</label>
                 <nga-autocompleter
                     #cityAutocompleter
                     [service]="cityService"
@@ -123,7 +123,7 @@
 
               <!-- Assistants guarantee file -->
               <div class="col-sm-4">
-                <label class="label separate" translate>Application from the insurance company</label>
+                <label class="label separate" translate="">Application from the insurance company</label>
                 <nga-file-upload
                         *ngIf="!assistantGuaranteeFile"
                         (changed)="onAssistantGuaranteeFileUploaded($event)"
@@ -148,7 +148,7 @@
 
               <!-- Doctor Accident => Doctor, Handling Time -->
               <div class="col-sm-4" *ngIf="isDoctorAccident()">
-                <label class="label required separate" translate>Doctor</label>
+                <label class="label required separate" translate="">Doctor</label>
                 <nga-autocompleter
                     #doctorAutocompleter
                     [service]="doctorService"
@@ -162,7 +162,7 @@
               </div>
 
               <div class="col-sm-4" *ngIf="isDoctorAccident()">
-                <label class="label required separate" translate>Handling time</label>
+                <label class="label required separate" translate="">Handling time</label>
                 <p-inputMask
                         name="handlingTime"
                         mask="99.99.9999 99:99"
@@ -175,7 +175,7 @@
 
               <!-- Hospital Accident => Hospital -->
               <div class="col-sm-4" *ngIf="isHospitalAccident()">
-                <label class="label required separate" translate>Hospital</label>
+                <label class="label required separate" translate="">Hospital</label>
                 <nga-autocompleter
                   #hospitalAutocompleter
                   [service]="hospitalService"
@@ -198,7 +198,7 @@
               <div class="col-sm-6">
                 <div class="row">
                   <div class="col-sm-12">
-                    <label class="label separate" for="symptoms" translate>Symptoms</label>
+                    <label class="label separate" for="symptoms" translate="">Symptoms</label>
                     <textarea rows="5" cols="70" pInputTextarea
                               id="symptoms"
                               placeholder="{{ 'Symptoms' | translate }}"
@@ -213,7 +213,7 @@
               <!-- /Symptoms -->
               <!-- Repeated Appointment -->
               <div class="col-sm-6">
-                <label class="label separate" translate>Repeated Appointment</label>
+                <label class="label separate" translate="">Repeated Appointment</label>
                 <div class="row offset-bottom10">
                   <div class="col-sm-12">
                     <nga-autocompleter
@@ -262,7 +262,7 @@
                     </div>
 
                     <div class="patient-editor">
-                      <label class="label separated float-left offset-right10" translate>Patient editor</label>
+                      <label class="label separated float-left offset-right10" translate="">Patient editor</label>
                       <div class="edit-patient">
                       <span class="fa fa-edit lead linked text-success"
                             *ngIf="patient && patient.id"
@@ -281,7 +281,7 @@
             </div>
             <div class="row offset-bottom20">
               <div class="col-sm-9">
-                <label class="label separate" for="contacts" translate>Patient Data</label>
+                <label class="label separate" for="contacts" translate="">Patient Data</label>
                 <textarea rows="2" cols="50" pInputTextarea
                           id="contacts"
                           placeholder="{{ 'Patient Data' | translate }}"
@@ -317,7 +317,7 @@
           <div class="form-group offset-bottom20">
             <div class="row">
               <div class="col-sm-12">
-                <label class="label separate" translate>Checkpoints</label>
+                <label class="label separate" translate="">Checkpoints</label>
                 <br><br>
                 <nga-checkpoints-selector
                   [selectedCheckpoints]="checkpoints"
@@ -337,7 +337,7 @@
                   <div class="row">
                     <!-- Doctor Accident => Applied Time -->
                     <div class="col-sm-6" *ngIf="isDoctorAccident()">
-                      <label class="label separated required offset-right10" translate>Applied Time</label>
+                      <label class="label separated required offset-right10" translate="">Applied Time</label>
                       <p-inputMask
                         name="appliedTime"
                         mask="99.99.9999 99:99"
@@ -350,7 +350,7 @@
 
                     <!-- Accident Type -->
                     <div class="col-sm-6">
-                      <label class="label separated offset-right10" translate>Accident Type</label>
+                      <label class="label separated offset-right10" translate="">Accident Type</label>
                       <nga-select-accident-type
                               [typeId]="accident.accidentTypeId"
                               (selected)="onAccidentTypeSelected($event)"
@@ -411,10 +411,10 @@
                 <!-- Doctor Accident => Diagnosis & Additional Investigation -->
                 <div class="row offset-bottom20" *ngIf="isDoctorAccident()">
                   <div class="col-sm-6">
-                    <label class="label separate" for="recommendation" translate>Diagnosis</label>
+                    <label class="label separate" for="recommendation" translate="">Treatment and recommendations</label>
                     <textarea rows="5" cols="70" pInputTextarea
                               id="recommendation"
-                              placeholder="{{ 'Made a diagnosis' | translate }}"
+                              placeholder="{{ 'Treatment and recommendations' | translate }}"
                               class="form-control"
                               [(ngModel)]="doctorAccident.recommendation"
                               (change)="onDiagnosisChanged()"
@@ -422,7 +422,7 @@
                     ></textarea>
                   </div>
                   <div class="col-sm-6">
-                    <label class="label separate" for="investigation" translate>Additional Investigation</label>
+                    <label class="label separate" for="investigation" translate="">Additional Investigation</label>
                     <textarea rows="5" cols="70" pInputTextarea
                               id="investigation"
                               placeholder="{{ 'Additional Investigation' | translate }}"
@@ -441,7 +441,7 @@
                     <!-- Guarantee to the hospital -->
                     <div class="row">
                       <div class="col-sm-6 col-md-4">
-                        <label class="label separate" translate>Guarantee To the Hospital</label>
+                        <label class="label separate" translate="">Guarantee To the Hospital</label>
                         <nga-autocompleter
                                 #guaranteeHospitalAutocompleter
                                 [service]="formService"
@@ -454,7 +454,7 @@
                         ></nga-autocompleter>
                       </div>
                       <div class="col-sm-6 col-md-4">
-                        <label class="label separate" translate>Get Form</label>
+                        <label class="label separate" translate="">Get Form</label>
                         <nga-form-viewer
                                 [formId]="hospitalAccident.hospitalGuaranteeId"
                                 [formableId]="accident.id"
@@ -500,7 +500,7 @@
                 <!-- Documents -->
                 <div class="row mt-2">
                   <div class="col-12">
-                    <label class="label separated" translate>Documents</label>
+                    <label class="label separated" translate="">Documents</label>
                     <nga-file-uploader
                       [documents]="documents"
                       (changed)="onDocumentsChanged()"
@@ -515,7 +515,7 @@
                 <!-- Finances -->
                 <div class="row">
                   <div class="col-12 mt-2">
-                    <label class="label separate" translate>Finance</label>
+                    <label class="label separate" translate="">Finance</label>
                     <nga-case-finance
                       #caseFinance
                       [accident]="accident"
@@ -547,19 +547,19 @@
     </ba-card>
     <div class="col-lg-3 hidden-md-down case-details" *ngIf="accident.id">
       <div class="row item">
-        <div class="col-4 label"><span translate>Created</span>:</div>
+        <div class="col-4 label"><span translate="">Created</span>:</div>
         <div class="col-8">{{ createdTime }}</div>
       </div>
       <div class="row item" *ngIf="accident.updatedAt">
-        <div class="col-4 label"><span translate>Updated</span>:</div>
+        <div class="col-4 label"><span translate="">Updated</span>:</div>
         <div class="col-8">{{ updatedTime }}</div>
       </div>
       <div class="row item" *ngIf="accident.deletedAt">
-        <div class="col-4 label"><span translate>Deleted</span>:</div>
+        <div class="col-4 label"><span translate="">Deleted</span>:</div>
         <div class="col-8">{{ deletedTime }}</div>
       </div>
       <div class="row item" *ngIf="accident.closedAt">
-        <div class="col-4 label"><span translate>Closed</span>:</div>
+        <div class="col-4 label"><span translate="">Closed</span>:</div>
         <div class="col-8">{{ closedTime }}</div>
       </div>
     </div>

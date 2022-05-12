@@ -26,10 +26,50 @@ export class SearchFields {
     {id: 'city', title: 'City', order: '', sort: 4},
     {id: 'doctor-income', title: 'Doctor\'s fees', order: '', sort: 5},
     {id: 'accident-link', title: 'Accident ID', order: '', sort: 6},
+    {id: 'visit-date', title: 'Visit Date', order: '', sort: 7},
+    {id: 'handling-date', title: 'Handling time', order: '', sort: 8},
+    {id: 'ref-num', title: 'Ref. Number', order: '', sort: 9},
+    {id: 'income', title: 'Income', order: '', sort: 10},
+    {id: 'diagnosis', title: 'Diagnosis', order: '', sort: 11},
+    {id: 'agr-totals', title: 'Count Totals', order: '', sort: 12},
   ];
 
-  public getFields(): SearchField[] {
+  private static columns: string[] = [
+    'npp',
+    'patient',
+    'assist-ref-num',
+    'city',
+    'doctor-income',
+    'accident-link',
+    'visit-date',
+    'handling-date',
+    'ref-num',
+    'income',
+    'diagnosis',
+  ];
+
+  private static aggregations: string[] = [
+    'agr-totals',
+  ];
+
+  public static getColumns(): string[] {
+    return SearchFields.columns;
+  }
+
+  public static getAggregations(): string[] {
+    return SearchFields.aggregations;
+  }
+
+  public getAllFields(): SearchField[] {
     return this.fields;
+  }
+
+  public getColFields(): SearchField[] {
+    return this.fields.filter(field => SearchFields.columns.includes(field.id));
+  }
+
+  public getAgrFields(): SearchField[] {
+    return this.fields.filter(field => SearchFields.aggregations.includes(field.id));
   }
 
   public getField(key: string): SearchField {
