@@ -69,12 +69,21 @@
               <div class="row">
                 <div class="col-12">
                   <h5 class="mt-2" translate="">Data</h5>
+
                   <span class="text-muted" *ngIf="!searcher.fields.length" translate="">Result count</span>
-                  <div class="row">
-                    <div class="col-12">
-                      <div *ngFor="let field of searcher.fields">
-                        <b>{{ field.sort }}. </b> {{ field.title }}
+
+                  <div class="row" *ngIf="searcher.fields.length">
+                    <div class="col-4">
+                      <h6 translate="">Columns</h6>
+                      <div *ngFor="let field of searcher.getColFields()">
+                        <b>{{ field.sort }}. </b> {{ field.title | translate }}
                         <span class="fa fa-sort{{colOrderClassPrefix(field.order)}} ml-1" title="Order"></span>
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <h6 translate="">Other</h6>
+                      <div *ngFor="let field of searcher.getAgrFields()">
+                        <b>- </b> {{ field.title | translate }}
                       </div>
                     </div>
                   </div>
@@ -222,11 +231,11 @@
 </div>
 
 <div class="row columns mt-2">
-  <div class="col-12">
+  <div class="col-7">
     <h4 translate="">Data</h4>
 
     <p-orderList
-      [value]="listFields"
+      [value]="colFields"
       (onReorder)="fieldsReordered()"
       (onSelectionChange)="fieldsSelected()"
     >
@@ -237,11 +246,25 @@
             [(ngModel)]="selectedFields"
             [inputId]="column.id"
           ></p-checkbox>
-          <label class="label pl-1" [for]="column.id" translate="">{{column.title}}</label>
+          <label class="label pl-1" for="{{column.id}}" translate="">{{column.title}}</label>
           <span class="fa fa-sort{{colOrderClassPrefix(column.order)}} ml-1" title="{{'Order' | translate}}" (click)="toggleColumnSort(column)"></span>
         </div>
       </ng-template>
     </p-orderList>
+  </div>
+  <div class="col-5">
+    <h5 translate="">Data Aggregation</h5>
+    <div class="row" *ngFor="let field of otherFields">
+      <div class="col-12">
+        <p-checkbox
+          [(ngModel)]="selectedFields"
+          [value]="field"
+          [inputId]="field.id"
+          (onChange)="fieldsSelected()"
+        ></p-checkbox>
+        <label class="label ml-2" for="{{field.id}}" translate="">{{ field.title }}</label>
+      </div>
+    </div>
   </div>
 </div>
 

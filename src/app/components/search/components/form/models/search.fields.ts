@@ -30,14 +30,44 @@ export class SearchFields {
     {id: 'ref-num', title: 'Ref. Number', order: '', sort: 8},
     {id: 'income', title: 'Income', order: '', sort: 9},
     {id: 'diagnosis', title: 'Diagnosis', order: '', sort: 10},
-  ];
-
-  private agrFields: SearchField[] = [
     {id: 'agr-totals', title: 'Count Totals', order: '', sort: 0},
   ];
 
-  public getFields(): SearchField[] {
+  private static columns: string[] = [
+    'npp',
+    'patient',
+    'assist-ref-num',
+    'city',
+    'doctor-income',
+    'accident-link',
+    'visit-date',
+    'ref-num',
+    'income',
+    'diagnosis',
+  ];
+
+  private static aggregations: string[] = [
+    'agr-totals',
+  ];
+
+  public static getColumns(): string[] {
+    return SearchFields.columns;
+  }
+
+  public static getAggregations(): string[] {
+    return SearchFields.aggregations;
+  }
+
+  public getAllFields(): SearchField[] {
     return this.fields;
+  }
+
+  public getColFields(): SearchField[] {
+    return this.fields.filter(field => SearchFields.columns.includes(field.id));
+  }
+
+  public getAgrFields(): SearchField[] {
+    return this.fields.filter(field => SearchFields.aggregations.includes(field.id));
   }
 
   public getField(key: string): SearchField {
