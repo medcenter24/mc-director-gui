@@ -38,9 +38,9 @@
           <div class="row">
             <div class="col-sm-4">
               <h4 *ngIf="accident.id && isDoctorAccident()"
-                  class="text-danger" translate>Doctor Case</h4>
+                  class="text-danger" translate="">Doctor Case</h4>
               <h4 *ngIf="accident.id && isHospitalAccident()"
-                  class="text-danger" translate>Hospital Case</h4>
+                  class="text-danger" translate="">Hospital Case</h4>
             </div>
             <!-- /Type of Case -->
           </div>
@@ -57,7 +57,7 @@
             <!-- Assistant -->
             <div class="col-sm-4">
               <ng-container *ngIf="assistant">
-                <label class="label required separate" translate>Assistant</label>
+                <label class="label required separate" translate="">Assistant</label>
                 {{ assistant.title }}
               </ng-container>
             </div>
@@ -65,12 +65,12 @@
 
             <!-- Assistant Ref Num -->
             <div class="col-sm-4">
-              <label class="label required separate" translate>Assistant Ref Num</label>
+              <label class="label required separate" translate="">Assistant Ref Num</label>
               <ng-container *ngIf="accident.assistantRefNum.length">
                 <p>{{ accident.assistantRefNum }}</p>
               </ng-container>
               <ng-container *ngIf="!accident.assistantRefNum.length">
-                <p translate>Not specified</p>
+                <p translate="">Not specified</p>
               </ng-container>
             </div>
             <!-- /Assistant Ref Num -->
@@ -81,17 +81,17 @@
           <div class="row">
             <!-- City -->
             <div class="col-sm-4" *ngIf="city">
-              <label class="label required separate" translate>City</label>
+              <label class="label required separate" translate="">City</label>
               {{ city.regionTitle }} • {{ city.title }}
             </div>
             <!-- /City -->
 
             <!-- Assistants guarantee file -->
             <div class="col-sm-4">
-              <label class="label separate" translate>Application from the insurance company</label>
+              <label class="label separate" translate="">Application from the insurance company</label>
               <span
                 *ngIf="!assistantGuaranteeFile"
-                translate
+                translate=""
               >Not loaded</span>
 
               <!-- Assistant Guarantee File loaded -->
@@ -107,21 +107,21 @@
 
             <!-- Doctor Accident => Doctor, Handling Time -->
             <div class="col-sm-4" *ngIf="isDoctorAccident()">
-              <label class="label required separate" translate>Doctor</label>
-              <span *ngIf="!doctor" translate>Not selected</span>
+              <label class="label required separate" translate="">Doctor</label>
+              <span *ngIf="!doctor" translate="">Not selected</span>
               <span *ngIf="doctor">{{ doctor.name }}</span>
             </div>
 
             <div class="col-sm-4" *ngIf="isDoctorAccident()">
-              <label class="label required separate" translate>Handling time</label>
+              <label class="label required separate" translate="">Handling time</label>
               <p>{{ handlingTime }}</p>
             </div>
             <!-- DA /Doctor, Handling Time -->
 
             <!-- Hospital Accident => Hospital -->
             <div class="col-sm-4" *ngIf="isHospitalAccident()">
-              <label class="label required separate" translate>Hospital</label>
-              <span *ngIf="!hospital" translate>Not selected</span>
+              <label class="label required separate" translate="">Hospital</label>
+              <span *ngIf="!hospital" translate="">Not selected</span>
               <span *ngIf="hospital">{{ hospital.title }}</span>
             </div>
             <!-- HA /Hospital -->
@@ -135,12 +135,12 @@
             <div class="col-sm-6">
               <div class="row">
                 <div class="col-sm-12">
-                  <label class="label separate" translate>Symptoms</label>
+                  <label class="label separate" translate="">Symptoms</label>
                   <ng-container *ngIf="accident.symptoms.length">
                     <p>{{ accident.symptoms }}</p>
                   </ng-container>
                   <ng-container *ngIf="!accident.symptoms.length">
-                    <p translate>Symptoms not recorded</p>
+                    <p translate="">Symptoms not recorded</p>
                   </ng-container>
                 </div>
               </div>
@@ -148,7 +148,7 @@
             <!-- /Symptoms -->
             <!-- Repeated Appointment -->
             <div class="col-sm-6" *ngIf="+accident.parentId">
-              <label class="label separate" translate>Repeated Appointment</label>
+              <label class="label separate" translate="">Repeated Appointment</label>
               <nga-accident-card
                 [selectedAccidentId]="accident.parentId"
                 (init)="startLoader($event)"
@@ -166,12 +166,12 @@
             <div class="col-12">
               <label class="label separate required">{{ 'patient' | translate }}</label>
               <span *ngIf="patient">{{ patient.name }}</span>
-              <span *ngIf="!patient" translate>Patient not provided</span>
+              <span *ngIf="!patient" translate="">Patient not provided</span>
             </div>
           </div>
           <div class="row offset-bottom20" *ngIf="accident.contacts">
             <div class="col-sm-9">
-              <label class="label separate" translate>Patient Data</label>
+              <label class="label separate" translate="">Patient Data</label>
               <p>{{ accident.contacts }}</p>
             </div>
           </div>
@@ -200,9 +200,9 @@
         <div class="form-group offset-bottom20">
           <div class="row">
             <div class="col-sm-12">
-              <label class="label separate" translate>Checkpoints</label>
+              <label class="label separate" translate="">Checkpoints</label>
               <p *ngIf="checkpoints.length">{{ checkpoints.join(', ') }}</p>
-              <p *ngIf="!checkpoints.length" translate>Checkpoints not selected</p>
+              <p *ngIf="!checkpoints.length" translate="">Checkpoints not selected</p>
             </div>
           </div>
         </div>
@@ -215,20 +215,20 @@
                 <div class="row">
                   <!-- Doctor Accident => Applied Time -->
                   <div class="col-sm-6" *ngIf="isDoctorAccident()">
-                    <label class="label separated required offset-right10" translate>Applied Time</label>
+                    <label class="label separated required offset-right10" translate="">Applied Time</label>
                     <p *ngIf="appliedTime">{{ appliedTime }}</p>
-                    <p *ngIf="!appliedTime" translate>Not specified</p>
+                    <p *ngIf="!appliedTime" translate="">Not specified</p>
                   </div>
                   <!-- DA /Applied Time -->
 
                   <!-- Accident Type -->
                   <div class="col-sm-6" *ngIf="accidentType">
-                    <label class="label separated offset-right10" translate>Accident Type</label>
+                    <label class="label separated offset-right10" translate="">Accident Type</label>
                     <ng-container *ngIf="accidentType && accidentType.id">
-                      <p translate>{{ accidentType.title }}</p>
+                      <p translate="">{{ accidentType.title }}</p>
                     </ng-container>
                     <ng-container *ngIf="!accidentType || !accidentType.id">
-                      <p translate>Not specified</p>
+                      <p translate="">Not specified</p>
                     </ng-container>
                   </div>
                   <!-- /Accident Type -->
@@ -276,24 +276,24 @@
               </div>
               <!-- DA /Diagnostics -->
 
-              <!-- Doctor Accident => Diagnosis & Additional Investigation -->
+              <!-- Doctor Accident => Diagnosis (=> Treatment and recommendations) & Additional Investigation -->
               <div class="row offset-bottom20" *ngIf="isDoctorAccident()">
                 <div class="col-sm-6">
-                  <label class="label separate" translate>Diagnosis</label>
+                  <label class="label separate" translate="">Treatment and recommendations</label>
                   <ng-container *ngIf="doctorAccident.recommendation.length">
                     <p>{{ doctorAccident.recommendation }}</p>
                   </ng-container>
                   <ng-container *ngIf="!doctorAccident.recommendation.length">
-                    <p translate>Not specified</p>
+                    <p translate="">Not specified</p>
                   </ng-container>
                 </div>
                 <div class="col-sm-6">
-                  <label class="label separate" translate>Additional Investigation</label>
+                  <label class="label separate" translate="">Additional Investigation</label>
                   <ng-container *ngIf="doctorAccident.investigation.length">
                     <p>{{ doctorAccident.investigation }}</p>
                   </ng-container>
                   <ng-container *ngIf="!doctorAccident.investigation.length">
-                    <p translate>Not specified</p>
+                    <p translate="">Not specified</p>
                   </ng-container>
                 </div>
               </div>
@@ -305,13 +305,13 @@
                   <!-- Guarantee to the hospital -->
                   <div class="row">
                     <div class="col-sm-6 col-md-4">
-                      <label class="label separate" translate>Guarantee To the Hospital</label>
+                      <label class="label separate" translate="">Guarantee To the Hospital</label>
                       <ng-container *ngIf="!hospitalAccident.hospitalGuaranteeId">
-                        <span translate>Guarantee to the hospital is not chosen</span>
+                        <span translate="">Guarantee to the hospital is not chosen</span>
                       </ng-container>
                     </div>
                     <div class="col-sm-6 col-md-4">
-                      <label class="label separate" translate>Get Form</label>
+                      <label class="label separate" translate="">Get Form</label>
                       <nga-form-viewer
                         [formId]="hospitalAccident.hospitalGuaranteeId"
                         [formableId]="accident.id"
@@ -339,8 +339,8 @@
               <div class="row mt-3">
                 <div class="col-12">
                   <ng-container *ngIf="!assistantInvoice">
-                    <label class="label separate" translate>Invoice to the assistant</label>
-                    <p translate>Not specified</p>
+                    <label class="label separate" translate="">Invoice to the assistant</label>
+                    <p translate="">Not specified</p>
                   </ng-container>
                   <ng-container *ngIf="assistantInvoice">
                     <nga-invoice-editor
@@ -360,9 +360,9 @@
               <!-- Documents -->
               <div class="row mt-2">
                 <div class="col-12">
-                  <label class="label separated" translate>Documents</label>
+                  <label class="label separated" translate="">Documents</label>
                   <ng-container *ngIf="!documents.length">
-                    <p translate>Documents not loaded</p>
+                    <p translate="">Documents not loaded</p>
                   </ng-container>
                   <ul class="list-unstyled" *ngIf="documents.length">
                     <ng-container *ngFor="let document of documents">
@@ -374,8 +374,8 @@
                           style="max-width: 100px"
                         >
                         <div class="media-body">
-                          <h5 class="mt-0 mb-1" translate>{{ document.type }}</h5>
-                          <button class="btn btn-secondary" (click)="downloadDocument(document)" translate>Download
+                          <h5 class="mt-0 mb-1" translate="">{{ document.type }}</h5>
+                          <button class="btn btn-secondary" (click)="downloadDocument(document)" translate="">Download
                           </button>
                         </div>
                       </li>
@@ -388,16 +388,16 @@
               <!-- Finances -->
               <div class="row">
                 <div class="col-12 mt-2">
-                  <label class="label separate" translate>Finance</label>
+                  <label class="label separate" translate="">Finance</label>
                   <ng-container *ngIf="financeStateData.length">
                     <table class="table table-bordered text-center">
                       <thead>
                       <tr>
-                        <th translate>Income</th>
-                        <th translate>Payment from the assistant</th>
+                        <th translate="">Income</th>
+                        <th translate="">Payment from the assistant</th>
                         <th>
-                          <span *ngIf="accident.caseableType === 'hospital'" translate>Payment to the hospital</span>
-                          <span *ngIf="accident.caseableType === 'doctor'" translate>Payment to the doctor</span>
+                          <span *ngIf="accident.caseableType === 'hospital'" translate="">Payment to the hospital</span>
+                          <span *ngIf="accident.caseableType === 'doctor'" translate="">Payment to the doctor</span>
                         </th>
                       </tr>
                       </thead>
@@ -427,19 +427,19 @@
     </ba-card>
     <div class="col-lg-3 hidden-md-down case-details" *ngIf="accident.id">
       <div class="row item">
-        <div class="col-4 label"><span translate>Created</span>:</div>
+        <div class="col-4 label"><span translate="">Created</span>:</div>
         <div class="col-8">{{ createdTime }}</div>
       </div>
       <div class="row item" *ngIf="accident.updatedAt">
-        <div class="col-4 label"><span translate>Updated</span>:</div>
+        <div class="col-4 label"><span translate="">Updated</span>:</div>
         <div class="col-8">{{ updatedTime }}</div>
       </div>
       <div class="row item" *ngIf="accident.deletedAt">
-        <div class="col-4 label"><span translate>Deleted</span>:</div>
+        <div class="col-4 label"><span translate="">Deleted</span>:</div>
         <div class="col-8">{{ deletedTime }}</div>
       </div>
       <div class="row item" *ngIf="accident.closedAt">
-        <div class="col-4 label"><span translate>Closed</span>:</div>
+        <div class="col-4 label"><span translate="">Closed</span>:</div>
         <div class="col-8">{{ closedTime }}</div>
       </div>
     </div>

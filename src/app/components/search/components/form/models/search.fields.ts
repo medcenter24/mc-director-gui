@@ -26,6 +26,14 @@ export class SearchFields {
     {id: 'city', title: 'City', order: '', sort: 4},
     {id: 'doctor-income', title: 'Doctor\'s fees', order: '', sort: 5},
     {id: 'accident-link', title: 'Accident ID', order: '', sort: 6},
+    {id: 'visit-date', title: 'Visit Date', order: '', sort: 7},
+    {id: 'ref-num', title: 'Ref. Number', order: '', sort: 8},
+    {id: 'income', title: 'Income', order: '', sort: 9},
+    {id: 'diagnosis', title: 'Diagnosis', order: '', sort: 10},
+  ];
+
+  private agrFields: SearchField[] = [
+    {id: 'agr-totals', title: 'Count Totals', order: '', sort: 0},
   ];
 
   public getFields(): SearchField[] {
