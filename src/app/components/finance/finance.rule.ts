@@ -55,4 +55,73 @@ export class FinanceRule {
 
     return !!res;
   }
+
+  static fromData(data: object): FinanceRule {
+    return new FinanceRule(
+      data['id'],
+      data['title'],
+      this.getAssistantsFromData(data['assistants'] ?? []),
+      this.getCitiesFromData(data['cities'] ?? []),
+      this.getDoctorsFromData(data['doctors'] ?? []),
+      this.getServicesFromData(data['services'] ?? []),
+      this.getHospitalsFromData(data['hospitals'] ?? []),
+      this.getDatePeriodsFromData(data['datePeriods'] ?? []),
+      data['value'],
+      data['currencyId'],
+      data['currencyMode'],
+      data['type'],
+      data['model'],
+      data['order'],
+    );
+  }
+
+  private static getAssistantsFromData(assistants: Array<any>) {
+    const res = [];
+    assistants.forEach(assistant => {
+      res.push(Assistant.fromData(assistant));
+    });
+    return res;
+  }
+
+  private static getCitiesFromData(cities: Array<any>) {
+    const res = [];
+    cities.forEach(city => {
+      res.push(City.fromData(city));
+    });
+    return res;
+  }
+
+  private static getDoctorsFromData(doctors: Array<any>) {
+    const res = [];
+    doctors.forEach(doctor => {
+      res.push(Doctor.fromData(doctor));
+    });
+    return res;
+  }
+
+  private static getServicesFromData(services: Array<any>) {
+    const res = [];
+    services.forEach(service => {
+      res.push(Service.fromData(service));
+    });
+    return res;
+  }
+
+  private static getHospitalsFromData(hospitals: Array<any>) {
+    const res = [];
+    hospitals.forEach(hospital => {
+      res.push(Hospital.fromData(hospital));
+    });
+    return res;
+
+  }
+
+  private static getDatePeriodsFromData(datePeriods: Array<any>) {
+    const res = [];
+    datePeriods.forEach(datePeriod => {
+      res.push(Period.fromData(datePeriod));
+    });
+    return res;
+
+  }
 }

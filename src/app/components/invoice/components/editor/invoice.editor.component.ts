@@ -43,6 +43,7 @@ export class InvoiceEditorComponent extends LoadableComponent implements OnInit 
   @ViewChild('formViewerComponent')
   formViewerComponent: FormViewerComponent;
 
+  @Input() isStatic: boolean = false;
   @Input() invoice: Invoice;
   @Input() label: string = 'Invoice';
   @Input() autosave: boolean = false;
@@ -147,7 +148,9 @@ export class InvoiceEditorComponent extends LoadableComponent implements OnInit 
               obsForm.subscribe({
                 next: (form: Form) => {
                   this.stopLoader(postfix1);
-                  this.invoiceFormAutocompleter.selectItems(form);
+                  if (!this.isStatic) {
+                    this.invoiceFormAutocompleter.selectItems(form);
+                  }
                   this.form = form;
                 }, error: () => {
                   this.stopLoader(postfix1);

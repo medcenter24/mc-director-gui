@@ -71,7 +71,8 @@ export class AutoCompleteLoadableProvider implements AutoCompleteProvider {
   filter(event): void {
     this.loadData(event).subscribe(response => {
       this.total = response.meta.pagination.total;
-      return this.filtered = response.data;
+      this.filtered = response.data;
+      return this.filtered;
     });
   }
 

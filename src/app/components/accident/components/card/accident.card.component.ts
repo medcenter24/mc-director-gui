@@ -30,6 +30,7 @@ import {LoggerComponent} from '../../../core/logger/LoggerComponent';
 export class AccidentCardComponent extends LoadableComponent implements OnInit {
 
   @Input() selectedAccidentId: number = 0;
+  @Input() showDelete: boolean = true;
   @Output() closed: EventEmitter<any> = new EventEmitter();
   @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
   @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();

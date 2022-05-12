@@ -199,7 +199,7 @@ export class CaseDatatableComponent extends AbstractDatatableController implemen
     const requestBuilder = super.getRequestBuilder();
 
     requestBuilder.setSorter(new RequestBuilder([
-      new SortRequestField('id'),
+      new SortRequestField('id', 'desc'),
       new SortRequestField('patientName'),
       new SortRequestField('createdAt'),
     ]));

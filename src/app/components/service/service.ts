@@ -26,4 +26,23 @@ export class Service {
                public diseases: Disease[] = [],
   ) {
   }
+
+  static fromData(data: Array<any>) {
+    return new Service(
+      data['id'],
+      data['title'],
+      data['description'],
+      data['type'],
+      data['status'],
+      this.getDiseasesFromData(data['diseases']),
+    );
+  }
+
+  private static getDiseasesFromData(diseases: Array<any>) {
+    const res = [];
+    diseases.forEach(disease => {
+      res.push(Disease.fromData(disease));
+    });
+    return res;
+  }
 }

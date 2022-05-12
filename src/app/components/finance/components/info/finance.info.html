@@ -52,6 +52,7 @@
     </ul>
   </li>
   <li class="mt-2" *ngIf="hasCurrency()">
+    <span *ngIf="_financeRule.type === 'base'" translate>Set price</span>
     <span *ngIf="_financeRule.type === 'add'" translate>Add</span>
     <span *ngIf="_financeRule.type === 'sub'" translate>Subtract</span>
     &nbsp;

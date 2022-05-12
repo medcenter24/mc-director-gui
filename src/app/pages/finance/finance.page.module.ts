@@ -21,6 +21,9 @@ import { FinanceDatatableModule } from '../../components/finance/components/data
 import { ConditionsEditorPageModule } from './conditions/editor';
 import { FinancePageComponent } from './finance.page.component';
 import { routing } from './finance.page.routing';
+import {
+  FinanceBaseAssistantModule
+} from "../../components/finance/components/base/assistant";
 import {ConditionsAssistantPageModule} from './conditions/assistant';
 
 @NgModule({
@@ -30,6 +33,7 @@ import {ConditionsAssistantPageModule} from './conditions/assistant';
     FinanceCurrencyDatatableModule,
     ConditionsEditorPageModule,
     ConditionsAssistantPageModule,
+    FinanceBaseAssistantModule,
   ],
   declarations: [
     FinancePageComponent,

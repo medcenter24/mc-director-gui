@@ -28,6 +28,10 @@ import { Diagnostic } from '../../diagnostic';
 import { LoggerComponent } from '../../../core/logger/LoggerComponent';
 import { Breadcrumb } from '../../../../theme/components/baContentTop/breadcrumb';
 import { Disease } from '../../../disease';
+import {DatatableRequestBuilder} from "../../../ui/datatable/request/datatable.request.builder";
+import {RequestBuilder} from "../../../core/http/request";
+import {FilterRequestField, SortRequestField} from "../../../core/http/request/fields";
+import {Location} from "@angular/common";
 
 @Component({
   selector: 'nga-diagnostic-datatable',
@@ -48,6 +52,7 @@ export class DiagnosticDatatableComponent extends AbstractDatatableController {
     protected translateService: TranslateService,
     private diagnosticService: DiagnosticService,
     protected datatable: ElementRef,
+    private location: Location,
   ) {
     super();
   }
@@ -79,6 +84,7 @@ export class DiagnosticDatatableComponent extends AbstractDatatableController {
 
   getColumns(): DatatableCol[] {
     return [
+      new DatatableCol('id', this.translateService.instant('ID')),
       new DatatableCol('title', this.translateService.instant('Title')),
       new DatatableCol('description', this.translateService.instant('Description')),
       new DatatableCol('diseases', this.translateService.instant('Diseases')),
@@ -103,6 +109,27 @@ export class DiagnosticDatatableComponent extends AbstractDatatableController {
         this.displayDialog = true;
       }),
     ];
+  }
+
+  protected hasFilterRow (): boolean {
+    return true;
+  }
+
+  getRequestBuilder (): DatatableRequestBuilder {
+    const requestBuilder = super.getRequestBuilder();
+
+    requestBuilder.setSorter(new RequestBuilder([
+      new SortRequestField('id', 'asc'),
+    ]));
+
+    requestBuilder.setFilter(new RequestBuilder([
+      new FilterRequestField('title', null, FilterRequestField.MATCH_CONTENTS, FilterRequestField.TYPE_TEXT),
+      new FilterRequestField('description', null, FilterRequestField.MATCH_CONTENTS, FilterRequestField.TYPE_TEXT),
+    ]));
+
+    const urlRequestBuilder = DatatableRequestBuilder.fromUrl(this.location.path(true));
+    urlRequestBuilder.propagate(requestBuilder);
+    return urlRequestBuilder;
   }
 
   closeDiagnosticEditor(): void {

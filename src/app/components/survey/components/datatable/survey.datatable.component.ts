@@ -30,6 +30,7 @@ import { DatatableRequestBuilder } from '../../../ui/datatable/request/datatable
 import { RequestBuilder } from '../../../core/http/request';
 import { FilterRequestField, SortRequestField } from '../../../core/http/request/fields';
 import { Disease, DiseaseService } from '../../../disease';
+import {Location} from "@angular/common";
 
 @Component({
   selector: 'nga-survey-datatable',
@@ -50,6 +51,7 @@ export class SurveyDatatableComponent extends AbstractDatatableController {
     private surveyService: SurveyService,
     private confirmationService: ConfirmationService,
     public diseaseService: DiseaseService,
+    private location: Location,
   ) {
     super();
   }
@@ -81,6 +83,7 @@ export class SurveyDatatableComponent extends AbstractDatatableController {
 
   getColumns(): DatatableCol[] {
     return [
+      new DatatableCol('id', this.translateService.instant('ID')),
       new DatatableCol('title', this.translateService.instant('Title')),
       new DatatableCol('description', this.translateService.instant('Description')),
       new DatatableCol('status', this.translateService.instant('Status')),
@@ -119,12 +122,14 @@ export class SurveyDatatableComponent extends AbstractDatatableController {
     const requestBuilder = super.getRequestBuilder();
 
     requestBuilder.setSorter(new RequestBuilder([
+      new SortRequestField('id', 'asc'),
       new SortRequestField('title'),
       new SortRequestField('status'),
     ]));
 
     requestBuilder.setFilter(new RequestBuilder([
       new FilterRequestField('title', null, FilterRequestField.MATCH_CONTENTS, FilterRequestField.TYPE_TEXT),
+      new FilterRequestField('description', null, FilterRequestField.MATCH_CONTENTS, FilterRequestField.TYPE_TEXT),
     ]));
 
     return requestBuilder;

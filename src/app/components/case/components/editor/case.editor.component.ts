@@ -44,7 +44,9 @@ import {PatientsService} from '../../../patient/patients.service';
 import {CaseFinanceComponent} from '../finance';
 import {Assistant, AssistantsService} from '../../../assistant';
 import {CaseEditorTabsService} from './case.editor.tabs.service';
-import {AccidentScenarioLineComponent} from '../../../accident/components/scenario/components/line/accident.scenario.line.component';
+import {
+  AccidentScenarioLineComponent,
+} from '../../../accident/components/scenario/components/line/accident.scenario.line.component';
 import {Service} from '../../../service';
 import {AutocompleterComponent} from '../../../ui/selector/components/autocompleter';
 import {CitiesService} from '../../../city';
@@ -53,6 +55,8 @@ import {BaToolboxAction} from '../../../../theme/components';
 import {LoggerComponent} from '../../../core/logger/LoggerComponent';
 import {Breadcrumb} from '../../../../theme/components/baContentTop/breadcrumb';
 import {UiToastService} from '../../../ui/toast/ui.toast.service';
+import {PaymentViewer} from '../../../finance/components/payment/components/block/payment.viewer';
+import {AccidentsRefNumService} from '../../../accident/accidents.refNum.service';
 
 @Component({
   selector: 'nga-case-editor',
@@ -60,6 +64,7 @@ import {UiToastService} from '../../../ui/toast/ui.toast.service';
   styleUrls: ['./case.editor.scss'],
 })
 export class CaseEditorComponent extends LoadingComponent implements OnInit {
+  protected componentName: string = 'CaseEditorComponent';
 
   @ViewChild('parentSelector')
   private parentSelector: AutocompleterComponent;
@@ -95,9 +100,6 @@ export class CaseEditorComponent extends LoadingComponent implements OnInit {
   @ViewChild('hospitalInvoiceEditor')
   private hospitalInvoiceEditor: InvoiceEditorComponent;
 
-  @ViewChild('accidentReportFormAutocompleter')
-  private accidentReportFormAutocompleter: AutocompleterComponent;
-
   @ViewChild('invoiceEditorComponent')
   private invoiceEditorComponent: InvoiceEditorComponent;
 
@@ -130,13 +132,14 @@ export class CaseEditorComponent extends LoadingComponent implements OnInit {
    */
   hasChangedData: boolean = false;
 
-  protected componentName: string = 'CaseEditorComponent';
+  private financeStateData: PaymentViewer[] = [];
 
   constructor(private route: ActivatedRoute,
               private translate: TranslateService,
               protected _logger: LoggerComponent,
               protected _state: GlobalState,
               public accidentsService: AccidentsService,
+              public accidentRefNumService: AccidentsRefNumService,
               public caseService: CasesService,
               public doctorService: DoctorsService,
               private router: Router,
@@ -196,12 +199,18 @@ export class CaseEditorComponent extends LoadingComponent implements OnInit {
         this._state.notifyDataChanged('menu.activeLink', {title: 'Cases'});
 
         if (+params['id']) {
-          // start of loading data and the page
-          const mainPostfix = 'main';
+          // start of loading data
+          const mainPostfix = 'Main';
           this.startLoader(mainPostfix);
 
           this.accidentsService.getAccident(+params['id']).subscribe({
             next: (accident: Accident) => {
+
+              this.accident = accident ? accident : new Accident();
+
+              if (this.redirectIfClosed(mainPostfix)) {
+                return;
+              }
 
               this._state.notifyDataChanged('changeTitle', accident.refNum);
 
@@ -213,7 +222,7 @@ export class CaseEditorComponent extends LoadingComponent implements OnInit {
               });
 
               this.showToolbox();
-              this.accident = accident ? accident : new Accident();
+
               if (this.accident.handlingTime && this.accident.handlingTime.length) {
                 this.handlingTime = DateHelper.toEuropeFormatWithTime(this.accident.handlingTime);
               }
@@ -235,9 +244,6 @@ export class CaseEditorComponent extends LoadingComponent implements OnInit {
               if (this.accident.cityId) {
                 this.cityAutocompleter.selectItems(this.accident.cityId);
               }
-              if (this.accident.formReportId && this.accidentReportFormAutocompleter) {
-                this.accidentReportFormAutocompleter.selectItems(this.accident.formReportId);
-              }
               if (this.accident.parentId && this.parentSelector) {
                 this.parentSelector.selectItems(this.accident.parentId);
               }
@@ -257,7 +263,6 @@ export class CaseEditorComponent extends LoadingComponent implements OnInit {
               if (err.status === 404) {
                 this._logger.error('Resource not found');
                 this.uiToastService.notFound();
-                // todo stop all loaders on the page?
                 this.router.navigate(['pages/cases']).then();
               } else {
                 this._logger.error(err);
@@ -285,9 +290,6 @@ export class CaseEditorComponent extends LoadingComponent implements OnInit {
       actions.push(new BaToolboxAction(saveText, 'fa fa-save', () => {
         this.onSave();
       }, 'save'));
-      actions.push(new BaToolboxAction(this.translate.instant('Delete'), 'fa fa-trash', () => {
-        this.onDelete();
-      }, 'close'));
       actions.push(new BaToolboxAction(this.translate.instant('Close'), 'fa fa-times', () => {
         this.onClose();
       }, 'close'));
@@ -354,6 +356,12 @@ export class CaseEditorComponent extends LoadingComponent implements OnInit {
   }
 
   onClose(): void {
+
+    // check payments
+    if (!this.isAllPaymentsStaticAndSaved()) {
+      return;
+    }
+
     this._state.notifyDataChanged('confirmDialog',
       {
         header: this.translate.instant('Warning'),
@@ -362,18 +370,21 @@ export class CaseEditorComponent extends LoadingComponent implements OnInit {
         accept: () => {
           const postfix = 'caseClosing';
           this.startLoader(postfix);
-          this.caseService.closeCase(this.accident.id).subscribe({next: () => {
-            this.scenarioComponent.reload();
-            this.stopLoader(postfix);
-          }, error: err => {
-            if (err.status === 404) {
-              this.uiToastService.notFound();
-            } else {
-              this._logger.error(err);
-              this.uiToastService.error();
-              this.stopLoader(postfix);
-            }
-          }});
+          this.caseService.closeCase(this.accident.id)
+            .subscribe({
+              next: () => {
+                this.accident.isClosed = true;
+                this.redirectIfClosed(postfix);
+              }, error: err => {
+                this.stopLoader(postfix);
+                if (err.status === 404) {
+                  this.uiToastService.notFound();
+                } else {
+                  this._logger.error(err);
+                  this.uiToastService.error();
+                }
+              },
+            });
         },
         icon: 'fa fa-warning',
       },
@@ -393,17 +404,19 @@ export class CaseEditorComponent extends LoadingComponent implements OnInit {
         accept: () => {
           const postfix = 'deleteCase';
           this.startLoader(postfix);
-          this.caseService.deleteCase(this.accident.id).subscribe({next: () => {
-            this.goToList().then(() => this.stopLoader(postfix));
-          }, error: err => {
-            if (err.status === 404) {
-              this.uiToastService.notFound();
-              this.router.navigate(['pages/cases']).then(() => this.stopLoader(postfix));
-            } else {
-              this._logger.error(err);
-              this.stopLoader(postfix);
-            }
-          }});
+          this.caseService.deleteCase(this.accident.id).subscribe({
+            next: () => {
+              this.goToList().then(() => this.stopLoader(postfix));
+            }, error: err => {
+              if (err.status === 404) {
+                this.uiToastService.notFound();
+                this.router.navigate(['pages/cases']).then(() => this.stopLoader(postfix));
+              } else {
+                this._logger.error(err);
+                this.stopLoader(postfix);
+              }
+            },
+          });
         },
         icon: 'fa fa-window-close-o red',
       },
@@ -413,29 +426,31 @@ export class CaseEditorComponent extends LoadingComponent implements OnInit {
   private saveCase(data): void {
     const postfix = 'SaveCase';
     this.startLoader(postfix);
-    this.caseService.saveCase(data).subscribe({next: response => {
-      this.doctorBeforeSave = +this.doctorAccident.doctorId;
-      this.hasChangedData = false;
-      if (!data.accident.id) {
-        this.router.navigate([`pages/cases/${response.id}`])
-          .then(() => this.stopLoader(postfix));
-      } else {
-        this.scenarioComponent.reload();
-        this.caseFinance.reloadPayments(['income', 'assistant', 'caseable']);
-        this.stopLoader(postfix);
-      }
-    }, error: err => {
-      if (err.status === 404) {
-        this.uiToastService.notFound();
-        this.goToList().then(() => this.stopLoader(postfix));
-      } else if (err.status === 403) {
-        this.uiToastService.errorMessage(this.translate.instant('This case was closed'));
-        this.stopLoader(postfix);
-      } else {
-        this._logger.error(err);
-        this.stopLoader(postfix);
-      }
-    }});
+    this.caseService.saveCase(data).subscribe({
+      next: response => {
+        this.doctorBeforeSave = +this.doctorAccident.doctorId;
+        this.hasChangedData = false;
+        if (!data.accident.id) {
+          this.router.navigate([`pages/cases/${response.id}`])
+            .then(() => this.stopLoader(postfix));
+        } else {
+          this.scenarioComponent.reload();
+          this.caseFinance.reloadPayments(['income', 'assistant', 'caseable']);
+          this.stopLoader(postfix);
+        }
+      }, error: err => {
+        if (err.status === 404) {
+          this.uiToastService.notFound();
+          this.goToList().then(() => this.stopLoader(postfix));
+        } else if (err.status === 403) {
+          this.uiToastService.errorMessage(this.translate.instant('This case was closed'));
+          this.stopLoader(postfix);
+        } else {
+          this._logger.error(err);
+          this.stopLoader(postfix);
+        }
+      },
+    });
   }
 
   onCaseTypeSelected(type): void {
@@ -529,46 +544,54 @@ export class CaseEditorComponent extends LoadingComponent implements OnInit {
   private defineDoctorByCity(cityId: number): void {
     const postfix = 'DefineDoctorByCity';
     this.startLoader(postfix);
-    this.doctorService.getDoctorsByCity(cityId).subscribe({next: (doctors: Doctor[]) => {
-      if (doctors && doctors.length) {
-        this.doctorAccident.doctorId = doctors[0].id;
-      }
-      this.stopLoader(postfix);
-    }, error: () => this.stopLoader(postfix)});
+    this.doctorService.getDoctorsByCity(cityId).subscribe({
+      next: (doctors: Doctor[]) => {
+        if (doctors && doctors.length) {
+          this.doctorAccident.doctorId = doctors[0].id;
+        }
+        this.stopLoader(postfix);
+      }, error: () => this.stopLoader(postfix),
+    });
   }
 
   private loadDocuments(): void {
     const postfix = 'getDocuments';
     this.startLoader(postfix);
     this.caseService.getDocuments(this.accident.id)
-      .subscribe({ next: (documents: Document[]) => {
-        this.documents = documents;
-        this.stopLoader(postfix);
-      }, error: err => {
-        this._logger.error(err);
-        this.stopLoader(postfix);
-    }});
+      .subscribe({
+        next: (documents: Document[]) => {
+          this.documents = documents;
+          this.stopLoader(postfix);
+        }, error: err => {
+          this._logger.error(err);
+          this.stopLoader(postfix);
+        },
+      });
   }
 
   private loadCheckpoints(): void {
     this.startLoader('getCheckpoints');
     this.caseService.getCheckpoints(this.accident.id)
-      .subscribe({ next: (checkpoints: AccidentCheckpoint[]) => {
-        this.checkpoints = checkpoints.map(x => x.id);
-        this.stopLoader('getCheckpoints');
-      }, error: () => {
-      this.stopLoader('getCheckpoints');
-    }});
+      .subscribe({
+        next: (checkpoints: AccidentCheckpoint[]) => {
+          this.checkpoints = checkpoints.map(x => x.id);
+          this.stopLoader('getCheckpoints');
+        }, error: () => {
+          this.stopLoader('getCheckpoints');
+        },
+      });
   }
 
   private loadPatient(): void {
     if (+this.accident.patientId) {
       this.startLoader('getPatient');
       this.patientService.getPatient(this.accident.patientId)
-        .subscribe({next: (patient: Patient) => {
-          this.stopLoader('getPatient');
-          this.patient = patient;
-        }, error: () => this.stopLoader('getPatient')});
+        .subscribe({
+          next: (patient: Patient) => {
+            this.stopLoader('getPatient');
+            this.patient = patient;
+          }, error: () => this.stopLoader('getPatient'),
+        });
     }
   }
 
@@ -576,20 +599,22 @@ export class CaseEditorComponent extends LoadingComponent implements OnInit {
     const postfix = '_GetDoctorCaseable';
     this.startLoader(postfix);
     this.caseService.getDoctorCase(this.accident.id)
-      .subscribe({next: (doctorAccident: DoctorAccident) => {
-        this.doctorAccident = doctorAccident;
-        this.doctorBeforeSave = +doctorAccident.doctorId;
-        if (+this.doctorAccident.doctorId) {
-          this.doctorAutocompleter.selectItems(+this.doctorAccident.doctorId);
-        }
-        if (doctorAccident.visitTime) {
-          this.appliedTime = DateHelper.toEuropeFormatWithTime(doctorAccident.visitTime);
-        }
-        this.stopLoader(postfix);
-      }, error: err => {
-      this._logger.error(err);
-      this.stopLoader(postfix);
-    }});
+      .subscribe({
+        next: (doctorAccident: DoctorAccident) => {
+          this.doctorAccident = doctorAccident;
+          this.doctorBeforeSave = +doctorAccident.doctorId;
+          if (+this.doctorAccident.doctorId) {
+            this.doctorAutocompleter.selectItems(+this.doctorAccident.doctorId);
+          }
+          if (doctorAccident.visitTime) {
+            this.appliedTime = DateHelper.toEuropeFormatWithTime(doctorAccident.visitTime);
+          }
+          this.stopLoader(postfix);
+        }, error: err => {
+          this._logger.error(err);
+          this.stopLoader(postfix);
+        },
+      });
   }
 
   private loadHospitalCaseable(): void {
@@ -723,5 +748,53 @@ export class CaseEditorComponent extends LoadingComponent implements OnInit {
   onDocumentsChanged(): void {
     this.dataChanged();
     this.loadDocuments();
+  }
+
+  financeChanged($event: PaymentViewer[]) {
+    const assistantPayment = $event.find(val => val.type === 'assistant');
+    this.assistantInvoice.price = assistantPayment.getPrice();
+    this.accident['assistantPaymentId'] = assistantPayment.getPaymentId();
+
+    const caseablePayment = $event.find(val => val.type === 'caseable');
+    this.accident['caseablePaymentId'] = caseablePayment.getPaymentId();
+
+    const incomePayment = $event.find(val => val.type === 'income');
+    this.accident['incomePaymentId'] = incomePayment.getPaymentId();
+
+    const cashPayment = $event.find(val => val.type === 'cash');
+    this.accident['cashPaymentId'] = cashPayment.getPaymentId();
+
+    this.dataChanged();
+  }
+
+  financeState($event) {
+    this.financeStateData = $event;
+  }
+
+  private isAllPaymentsStaticAndSaved(): boolean {
+    let isSaved = true;
+    this.financeStateData.forEach((payment: PaymentViewer) => {
+      isSaved = isSaved && payment.formula === 'fixed';
+    });
+
+    if (!isSaved) {
+      this._state.notifyDataChanged('confirmDialog', {
+        header: this.translate.instant('Error'),
+        message: this.translate.instant('All payments must be verified and recorded (fixed).'),
+        acceptVisible: false,
+        icon: 'fa fa-ban red',
+      });
+    }
+
+    return isSaved;
+  }
+
+  private redirectIfClosed(loaderPostfix: string): boolean {
+    if (this.accident.isClosed) {
+      this.stopLoader(loaderPostfix);
+      this.router.navigate([`pages/cases/archive/${this.accident.id}`]).then();
+      return true;
+    }
+    return false;
   }
 }

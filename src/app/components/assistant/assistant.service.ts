@@ -37,4 +37,9 @@ export class AssistantsService extends HttpService {
     const obs = assistant.id ? this.put(assistant.id, assistant) : this.store(assistant);
     return new ObservableTransformer().transform(obs, r => r.data as AccidentCheckpoint);
   }
+
+  getAssistant(id: number): Observable<Assistant> {
+    const obs = this.get(id);
+    return new ObservableTransformer().transform(obs, r => r.data as Assistant);
+  }
 }

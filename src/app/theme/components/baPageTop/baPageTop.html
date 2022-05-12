@@ -22,10 +22,16 @@
     {{ 'Director' | translate}}</a>
   <a href (click)="toggleMenu()" class="collapse-menu-link ion-navicon"></a>
 
-<!--  <div class="search">-->
-<!--    <i class="fa fa-search" (click)="startSearch()"></i>-->
-<!--    <input id="searchInput" type="text" (keydown.enter)="startSearch()" [(ngModel)]="searchText" placeholder="{{ 'Search for' | translate }}..." autocomplete="auto">-->
-<!--  </div>-->
+  <div class="search">
+    <i class="fa fa-search" (click)="startSearch()"></i>
+    <input
+      id="searchInput"
+      type="text"
+      (keydown.enter)="startSearch()"
+      [(ngModel)]="searchText"
+      placeholder="{{ 'Search for' | translate }}..."
+      autocomplete="auto">
+  </div>
 
   <div class="user-profile clearfix">
     <div class="dropdown al-user-profile">

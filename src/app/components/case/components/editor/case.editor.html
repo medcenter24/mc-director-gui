@@ -218,9 +218,9 @@
                   <div class="col-sm-12">
                     <nga-autocompleter
                       #parentSelector
-                      [service]="accidentsService"
+                      [service]="accidentRefNumService"
                       placeholder="Accident"
-                      labelField="refNum"
+                      labelField="refNum2"
                       (selected)="onAccidentSelected($event)"
                       (init)="startLoader($event)"
                       (loaded)="stopLoader($event)"
@@ -521,6 +521,8 @@
                       [accident]="accident"
                       (init)="startLoader($event)"
                       (loaded)="stopLoader($event)"
+                      (changed)="financeChanged($event)"
+                      (state)="financeState($event)"
                     ></nga-case-finance>
                   </div>
                 </div>

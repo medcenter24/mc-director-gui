@@ -23,4 +23,14 @@ export class City {
         public regionTitle: string = '',
         public countryTitle: string = '',
     ) {}
+
+  static fromData(data: Array<any>) {
+    return new City(
+      data['id'],
+      data['title'],
+      data['regionId'],
+      data['regionTitle'],
+      data['countryTitle'],
+    )
+  }
 }

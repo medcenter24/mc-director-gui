@@ -154,4 +154,17 @@ export class FinanceDatatableComponent extends AbstractDatatableController {
 
     return urlRequestBuilder;
   }
+
+  protected hasCaptionPanel (): boolean {
+    return true;
+  }
+
+  protected getCaptionActions (): DatatableAction[] {
+    const actions = [];
+    actions.push(new DatatableAction(this.translateService.instant('Assistant Base Conditions'), 'fa fa-table', () => {
+      this.router.navigate(['pages/finance/base-assistant-conditions'])
+        .then().catch();
+    }));
+    return actions;
+  }
 }

@@ -15,56 +15,58 @@
  * Copyright (c) 2019 (original work) MedCenter24.com;
  */
 
-import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
-import { PatientsService } from '../../patients.service';
-import { Patient } from '../../patient';
-import { LoadableComponent } from '../../../core/components/componentLoader';
-import { AutocompleterComponent } from '../../../ui/selector/components/autocompleter';
+import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
+import {PatientsService} from '../../patients.service';
+import {Patient} from '../../patient';
+import {LoadableComponent} from '../../../core/components/componentLoader';
+import {AutocompleterComponent} from '../../../ui/selector/components/autocompleter';
 
 @Component({
-    selector: 'nga-patient-selector',
-    templateUrl: 'patient.selector.html',
-    styleUrls: ['patient.selector.scss'],
+  selector: 'nga-patient-selector',
+  templateUrl: 'patient.selector.html',
+  styleUrls: ['patient.selector.scss'],
 })
 export class PatientSelectorComponent extends LoadableComponent {
 
-    @ViewChild('patientSelect')
-        patientSelectComponent: AutocompleterComponent;
+  @ViewChild('patientSelect')
+  patientSelectComponent: AutocompleterComponent;
 
   @Input() set initPatient(patient: Patient) {
     if (patient) {
       this.setPatient(patient);
     }
   }
+
   @Output() select: EventEmitter<Patient> = new EventEmitter<Patient>();
   @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
   @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
 
-    protected componentName: string = 'PatientSelectorComponent';
+  protected componentName: string = 'PatientSelectorComponent';
 
-    patient: Patient = new Patient();
+  patient: Patient = new Patient();
 
-    constructor (
-        public patientService: PatientsService,
-    ) {
-        super();
-    }
+  constructor(
+    public patientService: PatientsService,
+  ) {
+    super();
+  }
 
-    resetPatient (patient: Patient): void {
-        this.patient = patient;
-    }
+  resetPatient(patient: Patient): void {
+    this.patient = patient;
+    this.setPatient(this.patient);
+  }
 
-    setPatient (patient: Patient): void {
-        this.patient = patient;
-        this.patientSelectComponent.selectItems(this.patient.id);
-    }
+  setPatient(patient: Patient): void {
+    this.patient = patient;
+    this.patientSelectComponent.selectItems(this.patient.id);
+  }
 
-    onPatientChanged(patient: Patient) {
-        this.patient = patient;
-        this.select.emit(this.patient);
-    }
+  onPatientChanged(patient: Patient) {
+    this.patient = patient;
+    this.select.emit(this.patient);
+  }
 
-    getPatient(): Patient {
-        return this.patient;
-    }
+  getPatient(): Patient {
+    return this.patient;
+  }
 }

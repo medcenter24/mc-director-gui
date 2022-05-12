@@ -57,6 +57,7 @@ import { AssistantsService } from '../../../assistant';
 import { CitiesService } from '../../../city';
 import { AccidentsService } from '../../../accident/accidents.service';
 import { HospitalsService } from '../../../hospital';
+import {AccidentsRefNumService} from "../../../accident/accidents.refNum.service";
 
 @NgModule({
   imports: [
@@ -105,6 +106,7 @@ import { HospitalsService } from '../../../hospital';
     AccidentsService,
     HospitalsService,
     FormService,
+    AccidentsRefNumService,
   ],
   exports: [
     CaseEditorComponent,

@@ -22,6 +22,7 @@ import { FinanceDatatableComponent } from '../../components/finance/components/d
 import { ConditionsEditorPageComponent } from './conditions/editor';
 import { FinancePageComponent } from './finance.page.component';
 import {ConditionsAssistantPageComponent} from './conditions/assistant';
+import {FinanceBaseAssistantConditionsPageComponent} from "./conditions/base/assistant";
 
 // noinspection TypeScriptValidateTypes
 const routes: Routes = [
@@ -34,6 +35,7 @@ const routes: Routes = [
       { path: 'conditions/:id', component: ConditionsEditorPageComponent },
       { path: 'currencies', component: FinanceCurrencyDatatableComponent },
       { path: 'assistant', component: ConditionsAssistantPageComponent },
+      { path: 'base-assistant-conditions', component: FinanceBaseAssistantConditionsPageComponent },
       // todo make it like a cities done
       // { path: 'currencies/new', component: ConditionsEditorPageComponent },
       // { path: 'currencies/:id', component: ConditionsEditorPageComponent },

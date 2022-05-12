@@ -1,0 +1,35 @@
+<table class="table table-bordered" *ngIf="showTable">
+  <thead>
+  <tr>
+    <th colspan="2"></th> <!-- place for city and services-->
+    <th *ngFor="let assistants of tableData['assistants']">
+      {{ assistants }}
+    </th>
+  </tr>
+  </thead>
+  <tbody>
+  <ng-container *ngFor="let region of objectToArray(tableData['regions'])">
+    <tr>
+      <td colspan="2" class="table-warning">{{ region['key'] }}</td>
+      <td class="table-warning" *ngFor="let assistants of tableData['assistants']">
+        {{ assistants }}
+      </td>
+    </tr>
+    <ng-container *ngFor="let city of objectToArray(region['value']); index as cityIdx">
+      <ng-container *ngFor="let services of objectToArray(city['value']); index as serviceIdx">
+        <tr>
+          <td *ngIf="!serviceIdx" [attr.rowspan]="countElements(city['value'])">{{ city['key'] }}</td>
+          <td>{{ services['key'] }}</td>
+
+          <ng-container *ngFor="let assistants of tableData['assistants']">
+            <ng-container *ngFor="let finance of objectToArray(services['value'][assistants] ?? {'': ''})">
+              <td [title]="finance['key']">{{ finance['value'] }}</td>
+            </ng-container>
+          </ng-container>
+
+        </tr>
+      </ng-container>
+    </ng-container>
+  </ng-container>
+  </tbody>
+</table>

@@ -23,4 +23,12 @@ export class AccidentStatusService extends HttpService {
   protected getPrefix (): string {
     return 'director/statuses';
   }
+
+  // search(filters: Object): Observable<any> {
+  //   const obs = super.search(filters);
+  //   return new ObservableTransformer()
+  //     .transform(obs,
+  //       r => r.data.map(row => AccidentStatus.fromData(row)),
+  //     );
+  // }
 }

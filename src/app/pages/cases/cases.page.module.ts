@@ -20,12 +20,14 @@ import { CasesPageComponent } from './cases.page.component';
 import { routing } from './cases.page.routing';
 import { CaseEditorModule } from '../../components/case/components/editor/case.editor.module';
 import { CaseDatatableModule } from '../../components/case/components/datatable';
+import {CaseArchiveModule} from "../../components/case/components/archive/case.archive.module";
 
 @NgModule({
   imports: [
     routing,
     CaseEditorModule,
     CaseDatatableModule,
+    CaseArchiveModule,
   ],
   declarations: [
     CasesPageComponent,

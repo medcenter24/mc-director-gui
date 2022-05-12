@@ -1,0 +1,264 @@
+<!--
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; under version 2
+  ~ of the License (non-upgradable).
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  ~
+  ~ Copyright (c) 2022 (original work) MedCenter24.com;
+  -->
+
+<div class="row">
+  <div class="col-12">
+    <div class="row">
+      <div class="col-sm-12">
+
+        <input
+          type="text"
+          class="p-inputtext p-component p-element mr-2"
+          pInputText
+          [placeholder]="'Search' | translate"
+          [(ngModel)]="query"
+          name="q"/>
+
+        <nga-autocompleter
+          [service]="smartSearchService"
+          placeholder="Quick Search"
+          labelField="title"
+          providerType="loadable"
+          (selected)="onSmartSearchSelected($event)"
+          (init)="startLoader($event)"
+          (loaded)="stopLoader($event)"
+        ></nga-autocompleter>
+      </div>
+    </div>
+
+    <div class="row mt-2">
+      <div class="col-12">
+        <div class="alert alert-warning searcher-info-block" role="alert">
+          <div class="row">
+            <div class="col-12">
+              <h6 class="text-muted" translate="">Current Search Parameters
+                <button pButton *ngIf="searcher.hasData()" class="pull-right" (click)="saveSearcher()" translate="">Save</button>
+                <button pButton *ngIf="searcher.id" class="pull-right mr-2" (click)="deleteSearcher()" translate="">Delete</button>
+                <button pButton *ngIf="searcher.hasData()" class="pull-right mr-2" (click)="clearSearcher()" translate="">Clear</button>
+              </h6>
+            </div>
+          </div>
+          <div class="row mt-2" *ngIf="searcher.id">
+            <div class="col-12">
+              <input pInputText type="text" [(ngModel)]="searcher.title" class="pull-right p-inputtext p-component p-element">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <div class="row">
+                <div class="col-12">
+                  <h5 translate="">Filters</h5>
+                  <span class="text-muted" *ngIf="!searcher.hasFilters()" translate="">All cases without filters</span>
+                  <nga-searcher-filters [searcher]="searcher"></nga-searcher-filters>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-12">
+                  <h5 class="mt-2" translate="">Data</h5>
+                  <span class="text-muted" *ngIf="!searcher.fields.length" translate="">Result count</span>
+                  <div class="row">
+                    <div class="col-12">
+                      <div *ngFor="let field of searcher.fields">
+                        <b>{{ field.sort }}. </b> {{ field.title }}
+                        <span class="fa fa-sort{{colOrderClassPrefix(field.order)}} ml-1" title="Order"></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h4 translate="">Filters</h4>
+
+    <div class="row mt-2">
+      <div class="col-sm-4 mb-2">
+        <nga-case-type-select
+          selectedCaseTypeId="0"
+          (selected)="onCaseTypeSelected($event)"
+          (init)="startLoader($event)"
+          (loaded)="stopLoader($event)"
+        ></nga-case-type-select>
+      </div>
+      <div class="col-sm-3 mb-2" *ngIf="searcher.hasDoctorCase()">
+        <nga-autocompleter
+          [service]="doctorService"
+          placeholder="Doctor"
+          labelField="name"
+          (selected)="onDoctorSelected($event)"
+          (init)="startLoader($event)"
+          (loaded)="stopLoader($event)"
+          providerType="loadable"
+        ></nga-autocompleter>
+      </div>
+      <div class="col-sm-3 mb-2">
+        <nga-autocompleter
+          [service]="assistantService"
+          placeholder="Assistant"
+          labelField="title"
+          providerType="loadable"
+          (selected)="onAssistantSelected($event)"
+          (init)="startLoader($event)"
+          (loaded)="stopLoader($event)"
+        ></nga-autocompleter>
+      </div>
+      <div class="col-sm-3 mb-2">
+        <nga-autocompleter
+          [service]="cityService"
+          placeholder="City"
+          labelField="title"
+          (selected)="onCitySelected($event)"
+          (init)="startLoader($event)"
+          (loaded)="stopLoader($event)"
+          providerType="loadable"
+        ></nga-autocompleter>
+      </div>
+      <div class="col-sm-3 mb-2">
+        <nga-autocompleter
+          [service]="patientService"
+          placeholder="Patient"
+          labelField="name"
+          providerType="loadable"
+          (selected)="onPatientSelected($event)"
+          (init)="startLoader($event)"
+          (loaded)="stopLoader($event)"
+        ></nga-autocompleter>
+      </div>
+      <div class="col-sm-3 mb-2">
+        <nga-ui-date-picker
+          *ngIf="handlingDatePickerConfig.ready"
+          [value]="handlingTimeRange"
+          [config]="handlingDatePickerConfig"
+          (changed)="onHandlingTimeRangeChanged($event)"
+        ></nga-ui-date-picker>
+      </div>
+      <div class="col-sm-3 mb-2">
+        <nga-autocompleter
+          [service]="statusService"
+          placeholder="Status"
+          labelField="title"
+          providerType="loadable"
+          (selected)="onStatusSelected($event)"
+          (init)="startLoader($event)"
+          (loaded)="stopLoader($event)"
+        ></nga-autocompleter>
+      </div>
+      <div class="col-sm-3 mb-2">
+        <nga-autocompleter
+          [service]="accidentTypesService"
+          placeholder="Accident Type"
+          labelField="title"
+          providerType="loadable"
+          (selected)="onAccidentTypeSelected($event)"
+          (init)="startLoader($event)"
+          (loaded)="stopLoader($event)"
+        ></nga-autocompleter>
+      </div>
+      <div class="col-sm-3 mb-2" *ngIf="searcher.hasDoctorCase()">
+        <nga-ui-date-picker
+          *ngIf="visitDatePickerConfig.ready"
+          [value]="visitTimeRange"
+          [config]="visitDatePickerConfig"
+          (changed)="onVisitTimeRangeChanged($event)"
+        ></nga-ui-date-picker>
+      </div>
+      <div class="col-sm-3 mb-2" *ngIf="searcher.hasDoctorCase()">
+        <nga-autocompleter
+          [service]="doctorsServicesService"
+          placeholder="Doctors Services"
+          labelField="title"
+          providerType="loadable"
+          (selected)="onDoctorsServiceSelected($event)"
+          (init)="startLoader($event)"
+          (loaded)="stopLoader($event)"
+        ></nga-autocompleter>
+      </div>
+      <div class="col-sm-3 mb-2" *ngIf="searcher.hasDoctorCase()">
+        <nga-autocompleter
+          [service]="doctorsSurveyService"
+          placeholder="Doctors Survey"
+          labelField="title"
+          providerType="loadable"
+          (selected)="onDoctorsSurveySelected($event)"
+          (init)="startLoader($event)"
+          (loaded)="stopLoader($event)"
+        ></nga-autocompleter>
+      </div>
+      <div class="col-sm-3 mb-2" *ngIf="searcher.hasDoctorCase()">
+        <nga-autocompleter
+          [service]="doctorsDiagnosticService"
+          placeholder="Doctors Diagnostic"
+          labelField="title"
+          providerType="loadable"
+          (selected)="onDoctorsDiagnosticSelected($event)"
+          (init)="startLoader($event)"
+          (loaded)="stopLoader($event)"
+        ></nga-autocompleter>
+      </div>
+      <div class="col-sm-3 mb-2">
+        <p-checkbox [binary]="true" [(ngModel)]="searcher.filters.searchInDeleted"></p-checkbox>
+        <label class="label ml-2" translate="">Search in deleted</label>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row columns mt-2">
+  <div class="col-12">
+    <h4 translate="">Data</h4>
+
+    <p-orderList
+      [value]="listFields"
+      (onReorder)="fieldsReordered()"
+      (onSelectionChange)="fieldsSelected()"
+    >
+      <ng-template let-column pTemplate="item">
+        <div>
+          <p-checkbox
+            [value]="column"
+            [(ngModel)]="selectedFields"
+            [inputId]="column.id"
+          ></p-checkbox>
+          <label class="label pl-1" [for]="column.id" translate="">{{column.title}}</label>
+          <span class="fa fa-sort{{colOrderClassPrefix(column.order)}} ml-1" title="{{'Order' | translate}}" (click)="toggleColumnSort(column)"></span>
+        </div>
+      </ng-template>
+    </p-orderList>
+  </div>
+</div>
+
+<div class="row mt-2">
+  <div class="col-12">
+    <h4 translate="">Format</h4>
+    <p-selectButton
+      [options]="resultTypeOptions"
+      [(ngModel)]="searcher.result"
+      optionLabel="title"
+      optionValue="id"></p-selectButton>
+  </div>
+</div>
+
+<div class="row mt-3">
+  <div class="col-12">
+    <button pButton type="button" class="p-button-info pull-left offset-right20 mr-1" (click)="onSearch()"
+            label="{{ 'Search' | translate }}"></button>
+  </div>
+</div>

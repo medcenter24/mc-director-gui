@@ -1,0 +1,81 @@
+<div *ngIf="searcher.hasFilters()">
+  <ul *ngIf="searcher.filters.caseableTypes.length">
+    <b translate="">Caseable Types</b>
+    <li *ngFor="let caseableType of searcher.filters.caseableTypes"><span
+      translate="">{{ caseableType }}</span><span
+      class="text-muted c-pointer"
+      (click)="deleteCaseableType(caseableType)"
+      title="{{'Delete' | translate}}">&Cross;</span></li>
+  </ul>
+  <ul *ngIf="searcher.filters.doctors.length">
+    <b translate="">Doctors</b>
+    <li *ngFor="let doctor of searcher.filters.doctors">{{ doctor.name }}<span
+        class="text-muted c-pointer"
+        (click)="deleteDoctor(doctor.id)">&Cross;</span>
+    </li>
+  </ul>
+  <ul *ngIf="searcher.filters.assistants.length">
+    <b translate="">Assistants</b>
+    <li *ngFor="let assistant of searcher.filters.assistants">{{ assistant.title }}<span
+      class="text-muted c-pointer"
+      (click)="deleteAssistant(assistant.id)">&Cross;</span></li>
+  </ul>
+  <ul *ngIf="searcher.filters.cities.length">
+    <b translate="">Cities</b>
+    <li *ngFor="let city of searcher.filters.cities">{{ city.title }} &rarr; {{ city.regionTitle }} &rarr; {{ city.countryTitle }}<span
+      class="text-muted c-pointer"
+      (click)="deleteCity(city.id)">&Cross;</span></li>
+  </ul>
+  <ul *ngIf="searcher.filters.patients.length">
+    <b translate="">Patients</b>
+    <li *ngFor="let patient of searcher.filters.patients">{{ patient.name }}<span
+      class="text-muted c-pointer"
+      (click)="deletePatient(patient.id)">&Cross;</span></li>
+  </ul>
+  <ul *ngIf="searcher.filters.handlingTimeRanges.length">
+    <b translate="">Handling Time Ranges</b>
+    <li *ngFor="let handlingTimeRange of searcher.filters.handlingTimeRanges">{{ handlingTimeRange.replace('>', ' &rarr; ') }}<span
+      class="text-muted c-pointer"
+      (click)="deleteHandlingTimeRange(handlingTimeRange)">&Cross;</span></li>
+  </ul>
+  <ul *ngIf="searcher.filters.accidentStatuses.length">
+    <b translate="">Accident Statuses</b>
+    <li *ngFor="let accidentStatus of searcher.filters.accidentStatuses" translate="">{{ accidentStatus.title }}<span
+      class="text-muted c-pointer"
+      (click)="deleteAccidentStatus(accidentStatus.id)">&Cross;</span></li>
+  </ul>
+  <ul *ngIf="searcher.filters.accidentTypes.length">
+    <b translate="">Accident Types</b>
+    <li *ngFor="let accidentType of searcher.filters.accidentTypes" translate="">{{ accidentType.title }}<span
+      class="text-muted c-pointer"
+      (click)="deleteAccidentType(accidentType.id)">&Cross;</span></li>
+  </ul>
+  <ul *ngIf="searcher.filters.visitTimeRanges.length">
+    <b translate="">Visit Time Ranges</b>
+    <li *ngFor="let visitTimeRange of searcher.filters.visitTimeRanges">{{ visitTimeRange.replace('>', ' &rarr; ') }}</li>
+  </ul>
+  <ul *ngIf="searcher.filters.doctorServices.length">
+    <b translate="">Doctor Services</b>
+    <li *ngFor="let doctorService of searcher.filters.doctorServices">{{ doctorService.title }}<span
+      class="text-muted c-pointer"
+      (click)="deleteDoctorService(doctorService.id)">&Cross;</span></li>
+  </ul>
+  <ul *ngIf="searcher.filters.doctorSurveys.length">
+    <b translate="">Doctor Surveys</b>
+    <li *ngFor="let doctorSurvey of searcher.filters.doctorSurveys">{{ doctorSurvey.title }}<span
+      class="text-muted c-pointer"
+      (click)="deleteDoctorSurvey(doctorSurvey.id)">&Cross;</span></li>
+  </ul>
+  <ul *ngIf="searcher.filters.doctorDiagnostics.length">
+    <b translate="">Doctor Diagnostics</b>
+    <li *ngFor="let diagnostic of searcher.filters.doctorDiagnostics">{{ diagnostic.title }}<span
+      class="text-muted c-pointer"
+      (click)="deleteDoctorDiagnostic(diagnostic.id)">&Cross;</span></li>
+  </ul>
+  <ul *ngIf="searcher.filters.searchInDeleted">
+    <b translate="">Search in deleted</b>
+    <li translate="">{{searcher.filters.searchInDeleted ? 'Yes' : 'No'}}<span
+      class="text-muted c-pointer"
+      (click)="searcher.filters.searchInDeleted=false">&Cross;</span></li>
+  </ul>
+</div>

@@ -24,4 +24,15 @@ export class Hospital {
         public description: string = '',
         public refKey: string = '',
     ) {}
+
+  static fromData(data: Array<any>) {
+    return new Hospital(
+      data['id'],
+      data['title'],
+      data['address'],
+      data['phones'],
+      data['description'],
+      data['refKey'],
+    );
+  }
 }

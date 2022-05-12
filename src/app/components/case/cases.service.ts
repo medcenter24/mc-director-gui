@@ -131,11 +131,19 @@ export class CasesService extends HttpService implements LoadableServiceInterfac
       typesUri = `?types=${types.join(',')}`;
     }
     const obs = this.get(`${accident.id}/finance${typesUri}`);
-    return new ObservableTransformer().transform(obs, r => r.data as PaymentViewer[]);
+    return new ObservableTransformer()
+      .transform(obs, r => r.data.map(row => PaymentViewer.fromData(row)));
   }
 
   saveFinance(accident: Accident, type: string, data: Object): Observable<PaymentViewer[]> {
     const obs = this.put(`${accident.id}/finance/${type}`, data);
-    return new ObservableTransformer().transform(obs, r => r.data as PaymentViewer[]);
+    return new ObservableTransformer()
+      .transform(obs, r => r.data.map(row => PaymentViewer.fromData(row)));
+  }
+
+  reopen(accident: Accident): Observable<any> {
+    const obs = this.put(`${accident.id}/reopen`, {});
+    return new ObservableTransformer()
+      .transform(obs, r => r);
   }
 }

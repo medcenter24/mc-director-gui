@@ -15,14 +15,14 @@
  * Copyright (c) 2019 (original work) MedCenter24.com;
  */
 
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Patient } from '../../patient';
-import { DateHelper } from '../../../../helpers/date.helper';
-import { PatientsService } from '../../patients.service';
-import { GlobalState } from '../../../../global.state';
-import { TranslateService } from '@ngx-translate/core';
-import { Message } from 'primeng/api';
-import { LoadableComponent } from '../../../core/components/componentLoader';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Patient} from '../../patient';
+import {DateHelper} from '../../../../helpers/date.helper';
+import {PatientsService} from '../../patients.service';
+import {GlobalState} from '../../../../global.state';
+import {TranslateService} from '@ngx-translate/core';
+import {Message} from 'primeng/api';
+import {LoadableComponent} from '../../../core/components/componentLoader';
 
 @Component({
   selector: 'nga-patient-editor',
@@ -93,11 +93,13 @@ export class PatientEditorComponent extends LoadableComponent {
           const postfix = 'Delete';
           this.startLoader(postfix);
           this.patientService.delete(this.patient.id)
-            .subscribe({next: () => {
-              this.changed.emit(this.patient);
-              this.patient = null;
-              this.stopLoader(postfix);
-            }, error: () => this.stopLoader(postfix)});
+            .subscribe({
+              next: () => {
+                this.patient = null;
+                this.changed.emit(this.patient);
+                this.stopLoader(postfix);
+              }, error: () => this.stopLoader(postfix)
+            });
         },
         icon: 'fa fa-window-close-o red',
       },

@@ -33,8 +33,10 @@ export class CaseFinanceComponent extends LoadableComponent implements OnInit {
   @Input() accident: Accident;
   @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
   @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
+  @Output() changed: EventEmitter<PaymentViewer[]> = new EventEmitter<PaymentViewer[]>();
+  @Output() state: EventEmitter<PaymentViewer[]> = new EventEmitter<PaymentViewer[]>();
 
-  types: string[] = ['income', 'assistant', 'caseable'];
+  types: string[] = ['income', 'assistant', 'caseable', 'cash'];
   paymentViewers: PaymentViewer[] = [];
 
   constructor(
@@ -58,22 +60,27 @@ export class CaseFinanceComponent extends LoadableComponent implements OnInit {
    * @param types [income, assistant, caseable]
    */
   private reload(types: string[] = []): void {
-    this.caseService.getFinance(this.accident, types).subscribe((paymentViewers: PaymentViewer[]) => {
-      this.updatePaymentViewers(paymentViewers);
-    });
+    this.caseService.getFinance(this.accident, types)
+      .subscribe((paymentViewers: PaymentViewer[]) => {
+        this.updatePaymentViewers(paymentViewers);
+      });
   }
 
   private save(type: string, data: Object): void {
-    this.caseService.saveFinance(this.accident, type, data).subscribe((paymentViewers: PaymentViewer[]) => {
-      this.updatePaymentViewers(paymentViewers);
-    });
+    this.caseService.saveFinance(this.accident, type, data)
+      .subscribe((paymentViewers: PaymentViewer[]) => {
+        this.updatePaymentViewers(paymentViewers);
+        this.changed.emit(this.paymentViewers);
+      });
   }
 
   private updatePaymentViewers(paymentViewers: PaymentViewer[]): void {
     paymentViewers.forEach((pView: PaymentViewer) => {
-      const viewerKey = this.paymentViewers.findIndex((view: PaymentViewer) => view.type === pView.type);
+      const viewerKey = this.paymentViewers
+        .findIndex((view: PaymentViewer) => view.type === pView.type);
       this.paymentViewers[viewerKey] = pView;
     });
+    this.state.emit(this.paymentViewers);
   }
 
   getTitle(type: string): string {
@@ -82,10 +89,12 @@ export class CaseFinanceComponent extends LoadableComponent implements OnInit {
         return 'Income';
       case 'caseable':
         return this.accident.caseableType === 'hospital'
-          ? 'Payment to the hospital'
-          : 'Payment to the doctor';
+          ? 'To hospital'
+          : 'To doctor';
       case 'assistant':
-        return 'Payment from the assistant';
+        return 'From assistant';
+      case 'cash':
+        return 'Cash';
       default: return `Undefined payment type ${type}`;
     }
   }
