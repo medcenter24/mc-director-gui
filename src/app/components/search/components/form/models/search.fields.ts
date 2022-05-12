@@ -27,10 +27,11 @@ export class SearchFields {
     {id: 'doctor-income', title: 'Doctor\'s fees', order: '', sort: 5},
     {id: 'accident-link', title: 'Accident ID', order: '', sort: 6},
     {id: 'visit-date', title: 'Visit Date', order: '', sort: 7},
-    {id: 'ref-num', title: 'Ref. Number', order: '', sort: 8},
-    {id: 'income', title: 'Income', order: '', sort: 9},
-    {id: 'diagnosis', title: 'Diagnosis', order: '', sort: 10},
-    {id: 'agr-totals', title: 'Count Totals', order: '', sort: 0},
+    {id: 'handling-date', title: 'Handling time', order: '', sort: 8},
+    {id: 'ref-num', title: 'Ref. Number', order: '', sort: 9},
+    {id: 'income', title: 'Income', order: '', sort: 10},
+    {id: 'diagnosis', title: 'Diagnosis', order: '', sort: 11},
+    {id: 'agr-totals', title: 'Count Totals', order: '', sort: 12},
   ];
 
   private static columns: string[] = [
@@ -41,6 +42,7 @@ export class SearchFields {
     'doctor-income',
     'accident-link',
     'visit-date',
+    'handling-date',
     'ref-num',
     'income',
     'diagnosis',
