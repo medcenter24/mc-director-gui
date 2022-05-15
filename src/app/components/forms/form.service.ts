@@ -23,6 +23,8 @@ import { Form } from './form';
 import { saveAs } from 'file-saver';
 import { map } from 'rxjs/operators';
 import {ObservableTransformer} from '../../helpers/observable.transformer';
+import {randomUUID} from 'crypto';
+import {HttpResponse} from '@angular/common/http';
 
 @Injectable()
 export class FormService extends HttpService implements LoadableServiceInterface {
@@ -45,16 +47,30 @@ export class FormService extends HttpService implements LoadableServiceInterface
   }
 
   downloadPdf(formId: number, formableId: number): Observable<any> {
+
+    // fix an issue with browser cache
+    const current = new Date();
+    current.setHours(0);
+    current.setMinutes(0);
+    current.setSeconds(0);
+    current.setMilliseconds(0);
+    const cacheTime = current. getTime();
+
     const obs = this.http
-      .get(this.getUrl(`${formId}/${formableId}/pdf`),
-        { headers: this.getAuthHeaders(), responseType: 'blob' })
-      .pipe(
-        map(res => res),
-      );
+      .get(this.getUrl(`${formId}/${formableId}/pdf?cache=${cacheTime}`),
+        {
+          headers: this.getAuthHeaders(),
+          observe: 'response',
+          responseType: 'blob',
+        });
 
       // todo to see if I can sent a title from a server side to make it more readable
       obs.subscribe(
-        data => saveAs(data, `report_case_${formableId}_${formableId}.pdf`),
+        (response: HttpResponse<Blob>) => {
+          const disposition = response.headers.get('content-disposition');
+          const name = disposition.substr(21);
+          saveAs(response.body, name || `report_case_${formableId}.pdf`);
+        },
           err => this.handleError(err),
       );
       return obs;
