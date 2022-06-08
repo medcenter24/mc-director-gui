@@ -20,7 +20,7 @@
     <div class="col-12 col-lg-6 col-xlg-4">
       <div class="row mb-2">
         <div class="col-xs-4">
-          <label class="label required separate" for="title" translate>Title</label>
+          <label class="label required separate" for="title" translate="">Title</label>
           <input type="text" pInputText
                  id="title"
                  [value]="rule.title"
@@ -33,13 +33,13 @@
 
       <div class="row">
         <div class="col-xs-4 mb-2">
-          <label class="label required separate" for="title" translate>Type</label>
+          <label class="label required separate" for="title" translate="">Type</label>
           <p-selectButton [options]="financeTypes"
                           [(ngModel)]="rule.type"
                           (onChange)="rule.type = $event.value"></p-selectButton>
         </div>
         <div class="col-xs-4 mb-2">
-          <label class="label required separate" for="title" translate>Model</label>
+          <label class="label required separate" for="title" translate="">Model</label>
           <p-selectButton [options]="conditionModels"
                           [(ngModel)]="rule.model"
                           (onChange)="rule.model = $event.value"></p-selectButton>
@@ -48,7 +48,7 @@
 
       <div class="row mb-2">
         <div class="col-xs-4 mb-2">
-          <label class="label separate" translate>Doctor</label>
+          <label class="label separate" translate="">Doctor</label>
           <nga-multi-selector
                   [service]="doctorService"
                   placeholder="Doctors"
@@ -60,7 +60,7 @@
           ></nga-multi-selector>
         </div>
         <div class="col-xs-4 mb-2">
-          <label class="label separate" translate>Assistant</label>
+          <label class="label separate" translate="">Assistant</label>
           <nga-multi-selector
                   [service]="assistantService"
                   placeholder="Assistants"
@@ -72,7 +72,7 @@
           ></nga-multi-selector>
         </div>
         <div class="col-xs-4 mb-2">
-          <label class="label separate" translate>City</label>
+          <label class="label separate" translate="">City</label>
           <nga-multi-selector
                   [service]="cityService"
                   placeholder="Cities"
@@ -84,7 +84,7 @@
           ></nga-multi-selector>
         </div>
         <div class="col-xs-4 mb-2">
-          <label class="label separate" translate>Date Period</label>
+          <label class="label separate" translate="">Date Period</label>
           <nga-multi-selector
                   [service]="periodService"
                   placeholder="Date Periods"
@@ -96,7 +96,7 @@
           ></nga-multi-selector>
         </div>
         <div class="col-xs-4 mb-2">
-          <label class="label separate" translate>Services</label>
+          <label class="label separate" translate="">Services</label>
           <nga-multi-selector
                   [service]="servicesService"
                   placeholder="Services"
@@ -108,7 +108,7 @@
           ></nga-multi-selector>
         </div>
         <div class="col-xs-4 mb-2" *ngIf="rule.model === 'assistant'">
-          <label class="label separate" translate>Hospitals</label>
+          <label class="label separate" translate="">Hospitals</label>
           <nga-multi-selector
                   [service]="hospitalService"
                   placeholder="Hospitals"
@@ -123,7 +123,7 @@
 
       <div class="row">
         <div class="col-xs-4 mb-2">
-          <label class="label required separate" for="price"><b translate>Set Amount</b></label>
+          <label class="label required separate" for="price"><b translate="">Set Amount</b></label>
           <input type="text" pInputText
                  id="price"
                  [value]="rule.value"
@@ -148,7 +148,7 @@
               ></nga-autocompleter>
             <div class="col-12 pt-1">
               <div class="row">
-                <label class="label pr-3" translate>Calculate as a percent</label>
+                <label class="label pr-3" translate="">Calculate as a percent</label>
                 <p-inputSwitch [ngModel]="rule.currencyMode === 'percent'"
                                (onChange)="rule.currencyMode = $event.checked ? 'percent' : 'currency'"></p-inputSwitch>
               </div>
@@ -157,7 +157,7 @@
           </div>
           <div class="row">
             <div class="col-12">
-              <label class="label pr-3" translate>Display Order</label>
+              <label class="label pr-3" translate="">Display Order</label>
               <p-inputNumber [(ngModel)]="rule.order" [showButtons]="true" [min]="0" [max]="9999"></p-inputNumber>
             </div>
           </div>
@@ -167,7 +167,7 @@
       <button class="btn btn-success"
               [disabled]="!canBeSaved()"
               (click)="saveFinanceRule()"
-              translate
+              translate=""
       >{{ rule.id ? 'Update' : 'Add' }}</button>
     </div>
     <div class="col-12 col-lg-6 col-xlg-8 mt-3">
@@ -185,12 +185,12 @@
       <button class="btn btn-danger pull-right"
               *ngIf="rule.id"
               (click)="deleteFinanceRule()"
-              translate
+              translate=""
       >{{ 'Delete' }}</button>
       <button class="btn btn-warning pull-right mr-2"
               *ngIf="rule.id"
               (click)="copyFinanceRule()"
-              translate
+              translate=""
       >{{ 'Copy' }}</button>
     </div>
   </div>
