@@ -39,7 +39,6 @@
     <div class="col-sm-12">
 
       <p-orderList
-        #caseServicesList
         [value]="caseServices"
         *ngIf="!isStaticForm"
         (onReorder)="onServicesChanged()"

@@ -15,12 +15,12 @@
  * Copyright (c) 2019 (original work) MedCenter24.com;
  */
 
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Diagnostic } from '../../diagnostic';
 import { CasesService } from '../../../case/cases.service';
-import { DiagnosticSelectComponent } from '../select/diagnostic.select.component';
 import { LoadableComponent } from '../../../core/components/componentLoader';
 import { LoggerComponent } from '../../../core/logger/LoggerComponent';
+import {DiagnosticService} from '../../diagnostic.service';
 
 @Component({
   selector: 'nga-diagnostics-selector',
@@ -35,8 +35,6 @@ export class DiagnosticsSelectorComponent extends LoadableComponent implements O
   @Output() diagnosticsLoaded: EventEmitter<Diagnostic[]> = new EventEmitter<Diagnostic[]>();
   @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
   @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
-  @ViewChild('selectDiagnostics')
-    private selectDiagnosticsComponent: DiagnosticSelectComponent;
 
   isLoaded: boolean = false;
   caseDiagnostics: Diagnostic[] = [];
@@ -44,20 +42,18 @@ export class DiagnosticsSelectorComponent extends LoadableComponent implements O
   constructor (
     private casesService: CasesService,
     private _logger: LoggerComponent,
+    public diagnosticService: DiagnosticService,
   ) {
     super();
   }
 
   ngOnInit () {
-    if (this.isStaticForm) {
-      this.casesService.getCaseDiagnostics(this.caseId)
-        .subscribe(diagnostics => {
-          this.caseDiagnostics = diagnostics;
-          this.isLoaded = true;
-        })
-    } else {
-      this.isLoaded = true;
-    }
+    this.casesService.getCaseDiagnostics(this.caseId)
+      .subscribe(diagnostics => {
+        this.caseDiagnostics = diagnostics;
+        this.onChange();
+        this.isLoaded = true;
+      });
   }
 
   onDelete (diagnostic: Diagnostic): void {
@@ -65,36 +61,13 @@ export class DiagnosticsSelectorComponent extends LoadableComponent implements O
       this.caseDiagnostics = this.caseDiagnostics.filter(function (el) {
         return el.id !== diagnostic.id;
       });
-      this.selectDiagnosticsComponent.reloadChosenDiagnostics(this.caseDiagnostics);
-      this.changed.emit(this.caseDiagnostics);
+      this.onChange();
     }
   }
 
   onChange(): void {
+    this.reSort(this.caseDiagnostics);
     this.changed.emit(this.caseDiagnostics);
-  }
-
-  onSelectDiagnosticsLoaded(name): void {
-    this.stopLoader(name);
-    if (this.caseId) {
-      const postfix = 'SelectDiagnosticsLoaded';
-      this.startLoader(postfix);
-      const obs = this.casesService.getCaseDiagnostics(this.caseId);
-      obs.subscribe({ next: diagnostics => {
-        this.stopLoader(postfix);
-        this.caseDiagnostics = diagnostics;
-        this.selectDiagnosticsComponent.reloadChosenDiagnostics(this.caseDiagnostics);
-        // if I loaded diagnostics by the case id
-        this.diagnosticsLoaded.emit(this.caseDiagnostics);
-      }, error: (err) => {
-        this.stopLoader(postfix);
-        this._logger.error(err);
-      }});
-    }
-  }
-
-  onSelectDiagnosticsInit(name): void {
-    this.startLoader(name);
   }
 
   private hasDiagnostic (diagnostic: Diagnostic): boolean {
@@ -103,5 +76,19 @@ export class DiagnosticsSelectorComponent extends LoadableComponent implements O
     });
 
     return !!result;
+  }
+
+  onDiagnosticSelected($event: Diagnostic) {
+    if (!this.hasDiagnostic($event)) {
+      this.caseDiagnostics = [...this.caseDiagnostics, $event];
+      this.onChange();
+    }
+  }
+
+  private reSort(sf: Diagnostic[]): void {
+    let sort = 1;
+    sf.map((row) => {
+      row.sort = sort++;
+    });
   }
 }

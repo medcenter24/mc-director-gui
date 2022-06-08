@@ -25,5 +25,6 @@ export class Survey {
         public type: string = '',
         public status: string = 'active',
         public diseases: Disease[] = [],
+        public sort: number = 0,
     ) {}
 }

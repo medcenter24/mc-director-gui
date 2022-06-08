@@ -15,13 +15,12 @@
  * Copyright (c) 2019 (original work) MedCenter24.com;
  */
 
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Service } from '../../service';
 import { CasesService } from '../../../case/cases.service';
 import { LoggerComponent } from '../../../core/logger/LoggerComponent';
 import { LoadableComponent } from '../../../core/components/componentLoader';
 import {ServicesService} from '../../services.service';
-import {OrderList} from 'primeng/orderlist';
 
 @Component({
   selector: 'nga-services-selector',
@@ -34,8 +33,6 @@ export class ServiceSelectorComponent extends LoadableComponent implements OnIni
   @Output() changedServices: EventEmitter<Service[]> = new EventEmitter<Service[]>();
   @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
   @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
-
-  @ViewChild('caseServicesList') caseServiceListEl: OrderList;
 
   isLoaded: boolean = false;
   caseServices: Service[] = [];
@@ -55,7 +52,7 @@ export class ServiceSelectorComponent extends LoadableComponent implements OnIni
           this.caseServices = services;
           this.onServicesChanged();
           this.isLoaded = true;
-      });
+        });
   }
 
   onDelete (service: Service): void {

@@ -19,18 +19,25 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AppTranslationModule } from '../../../../app.translation.module';
-import { SurveySelectModule } from '../select/survey.select.module';
 import { SurveysSelectorComponent } from './survey.selector.component';
+import {AutocompleterModule} from '../../../ui/selector/components/autocompleter';
+import {SurveyService} from '../../survey.service';
+import {CasesService} from '../../../case/cases.service';
+import {OrderListModule} from 'primeng/orderlist';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     AppTranslationModule,
-    SurveySelectModule,
+    AutocompleterModule,
+    OrderListModule,
   ],
   declarations: [SurveysSelectorComponent],
-  providers: [],
+  providers: [
+    SurveyService,
+    CasesService,
+  ],
   exports: [SurveysSelectorComponent],
 })
 export class SurveySelectorModule {

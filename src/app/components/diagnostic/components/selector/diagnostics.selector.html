@@ -19,40 +19,61 @@
   <label class="label separate" translate="">Diagnosis</label>
   <ng-container *ngIf="!isStaticForm">
     <div class="row offset-bottom20">
-        <div class="col-sm-10 p-grid-col-12">
-            <nga-select-diagnostics
-                #selectDiagnostics
-                [(chosenDiagnostics)]="caseDiagnostics"
-                (loaded)="onSelectDiagnosticsLoaded($event)"
-                (init)="onSelectDiagnosticsInit($event)"
-                (chosenDiagnosticsChange)="onChange()"
-            ></nga-select-diagnostics>
-        </div>
+      <div class="col-sm-10 p-grid-col-12">
+        <nga-autocompleter
+          [service]="diagnosticService"
+          placeholder="Diagnostics"
+          labelField="title"
+          (selected)="onDiagnosticSelected($event)"
+          (init)="startLoader($event)"
+          (loaded)="stopLoader($event)"
+          providerType="loadable"
+        ></nga-autocompleter>
+      </div>
     </div>
   </ng-container>
   <ng-container *ngIf="isStaticForm && !caseDiagnostics.length">
     <span translate="">Diagnosis not selected</span>
   </ng-container>
-    <div class="row" *ngIf="caseDiagnostics && caseDiagnostics.length">
-        <div class="col-sm-12">
-            <table class="table table-hover table-striped table-bordered">
-                <thead class="table-inverse">
-                <tr>
-                    <th translate="">Title</th>
-                    <th translate="">Description</th>
-                    <th *ngIf="!isStaticForm"></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr *ngFor="let diagnostic of caseDiagnostics" [ngClass]="{ 'table-warning': diagnostic.type === 'doctor' }">
-                    <td>{{ diagnostic.title }}</td>
-                    <td>{{ diagnostic.description }}</td>
-                    <td class="text-center" *ngIf="!isStaticForm">
-                        <input type="button" value="{{ 'Delete' | translate }}" class="btn btn-danger" (click)="onDelete(diagnostic)">
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
+  <div class="row" *ngIf="caseDiagnostics.length">
+    <div class="col-sm-12">
+
+      <p-orderList
+        [value]="caseDiagnostics"
+        *ngIf="!isStaticForm"
+        (onReorder)="onChange()"
+        [dragdrop]="true"
+      >
+        <ng-template let-diagnostic pTemplate="item">
+          <div>
+            <div>
+              {{diagnostic.title}}
+              <span *ngIf="diagnostic.type === 'doctor'" class="fa fa-user-md"></span>
+              <span
+                class="fa fa-trash text-danger"
+                [title]="'Delete' | translate"
+                (click)="onDelete(diagnostic)"></span>
+            </div>
+          </div>
+        </ng-template>
+      </p-orderList>
+
+      <table
+        *ngIf="isStaticForm"
+        class="table table-hover table-striped table-bordered">
+        <thead class="table-inverse">
+        <tr>
+          <th translate="">Title</th>
+          <th translate="">Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let diagnostic of caseDiagnostics" [ngClass]="{ 'table-warning': diagnostic.type === 'doctor' }">
+          <td>{{ diagnostic.title }}</td>
+          <td>{{ diagnostic.description }}</td>
+        </tr>
+        </tbody>
+      </table>
     </div>
+  </div>
 </div>

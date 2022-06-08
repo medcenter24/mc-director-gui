@@ -15,12 +15,12 @@
  * Copyright (c) 2019 (original work) MedCenter24.com;
  */
 
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { LoggerComponent } from '../../../core/logger/LoggerComponent';
 import { Survey } from '../../survey';
 import { CasesService } from '../../../case/cases.service';
 import { LoadableComponent } from '../../../core/components/componentLoader';
-import { SurveySelectComponent } from '../select/survey.select.component';
+import {SurveyService} from '../../survey.service';
 
 @Component({
   selector: 'nga-surveys-selector',
@@ -35,9 +35,6 @@ export class SurveysSelectorComponent extends LoadableComponent implements OnIni
   @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
   @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
 
-  @ViewChild('selectSurveys')
-    private selectSurveysComponent: SurveySelectComponent;
-
   isLoaded: boolean = false;
   caseSurveys: Survey[] = [];
   protected componentName: string = 'SurveysSelectorComponent';
@@ -45,20 +42,18 @@ export class SurveysSelectorComponent extends LoadableComponent implements OnIni
   constructor (
     private casesService: CasesService,
     private _logger: LoggerComponent,
+    public surveysService: SurveyService,
   ) {
     super();
   }
 
   ngOnInit () {
-    if (this.isStaticForm) {
-      this.casesService.getCaseSurveys(this.caseId)
-        .subscribe(surveys => {
-          this.caseSurveys = surveys;
-          this.isLoaded = true;
-        })
-    } else {
-      this.isLoaded = true;
-    }
+    this.casesService.getCaseSurveys(this.caseId)
+      .subscribe(surveys => {
+        this.caseSurveys = surveys;
+        this.onSurveysChanged();
+        this.isLoaded = true;
+      });
   }
 
   onDelete (survey: Survey): void {
@@ -66,34 +61,13 @@ export class SurveysSelectorComponent extends LoadableComponent implements OnIni
       this.caseSurveys = this.caseSurveys.filter(function (el) {
         return el.id !== survey.id;
       });
-      this.selectSurveysComponent.reloadChosenSurveys(this.caseSurveys);
-      this.changed.emit(this.caseSurveys);
+      this.onSurveysChanged();
     }
   }
 
   onSurveysChanged(): void {
+    this.reSort(this.caseSurveys);
     this.changed.emit(this.caseSurveys);
-  }
-
-  onSelectSurveysLoaded(name: string): void {
-    this.stopLoader(name);
-    if (this.caseId) {
-      const postfix = 'SelectSurveysLoaded';
-      this.startLoader(postfix);
-      this.casesService.getCaseSurveys(this.caseId).subscribe({next: surveys => {
-        this.stopLoader(postfix);
-        this.caseSurveys = surveys;
-        this.selectSurveysComponent.reloadChosenSurveys(this.caseSurveys);
-        this.changed.emit(this.caseSurveys);
-      }, error: (err) => {
-        this.stopLoader(postfix);
-        this._logger.error(err);
-      }});
-    }
-  }
-
-  onSelectSurveysInit(name: string): void {
-    this.startLoader(name);
   }
 
   private hasSurvey (survey: Survey): boolean {
@@ -102,5 +76,19 @@ export class SurveysSelectorComponent extends LoadableComponent implements OnIni
     });
 
     return !!result;
+  }
+
+  onSurveySelected($event: Survey) {
+    if (!this.hasSurvey($event)) {
+      this.caseSurveys = [...this.caseSurveys, $event];
+      this.onSurveysChanged();
+    }
+  }
+
+  private reSort(sf: Survey[]): void {
+    let sort = 1;
+    sf.map((row) => {
+      row.sort = sort++;
+    });
   }
 }

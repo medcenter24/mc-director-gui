@@ -21,6 +21,10 @@ import { FormsModule } from '@angular/forms';
 import { AppTranslationModule } from '../../../../app.translation.module';
 import { DiagnosticSelectModule } from '../select';
 import { DiagnosticsSelectorComponent } from './diagnostics.selector.component';
+import {DiagnosticService} from '../../diagnostic.service';
+import {CasesService} from '../../../case/cases.service';
+import {AutocompleterModule} from '../../../ui/selector/components/autocompleter';
+import {OrderListModule} from 'primeng/orderlist';
 
 @NgModule({
   imports: [
@@ -28,6 +32,12 @@ import { DiagnosticsSelectorComponent } from './diagnostics.selector.component';
     FormsModule,
     AppTranslationModule,
     DiagnosticSelectModule,
+    AutocompleterModule,
+    OrderListModule,
+  ],
+  providers: [
+    DiagnosticService,
+    CasesService,
   ],
   declarations: [DiagnosticsSelectorComponent],
   exports: [DiagnosticsSelectorComponent],
