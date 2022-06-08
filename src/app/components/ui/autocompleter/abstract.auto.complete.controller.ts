@@ -36,7 +36,7 @@ export abstract class AbstractAutoCompleteController extends LoadableComponent i
   @Output() selected: EventEmitter<Object> = new EventEmitter<Object>();
 
   @ViewChild('autocompleter')
-    private autocompleter: AutoCompleteComponent;
+    autocompleter: AutoCompleteComponent;
 
   langLoaded: boolean = false;
   autoCompleteConfig: AutoCompleteSrcConfig;

@@ -238,6 +238,7 @@
       [value]="colFields"
       (onReorder)="fieldsReordered()"
       (onSelectionChange)="fieldsSelected()"
+      [dragdrop]="true"
     >
       <ng-template let-column pTemplate="item">
         <div>

@@ -28,6 +28,7 @@ import {
   SortRequestField,
 } from '../../../core/http/request/fields';
 
+// todo @deprecated will be removed when not in the code anymore
 @Component({
   selector: 'nga-select-services',
   templateUrl: './select.html',

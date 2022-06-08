@@ -20,9 +20,9 @@ import { Service } from '../../service';
 import { CasesService } from '../../../case/cases.service';
 import { LoggerComponent } from '../../../core/logger/LoggerComponent';
 import { LoadableComponent } from '../../../core/components/componentLoader';
-import { SelectServicesComponent } from '../select';
+import {ServicesService} from '../../services.service';
+import {OrderList} from 'primeng/orderlist';
 
-// todo move that to accident or case folder and for service selector use autocompleter|multiselect
 @Component({
   selector: 'nga-services-selector',
   templateUrl: 'service.selector.html',
@@ -35,8 +35,7 @@ export class ServiceSelectorComponent extends LoadableComponent implements OnIni
   @Output() protected init: EventEmitter<string> = new EventEmitter<string>();
   @Output() protected loaded: EventEmitter<string> = new EventEmitter<string>();
 
-  @ViewChild('selectServices')
-    private selectServicesComponent: SelectServicesComponent;
+  @ViewChild('caseServicesList') caseServiceListEl: OrderList;
 
   isLoaded: boolean = false;
   caseServices: Service[] = [];
@@ -45,20 +44,18 @@ export class ServiceSelectorComponent extends LoadableComponent implements OnIni
   constructor (
     private casesService: CasesService,
     private _logger: LoggerComponent,
+    public servicesService: ServicesService,
   ) {
     super();
   }
 
   ngOnInit () {
-    if (this.isStaticForm) {
       this.casesService.getCaseServices(this.caseId)
         .subscribe(services => {
           this.caseServices = services;
+          this.onServicesChanged();
           this.isLoaded = true;
-        });
-    } else {
-      this.isLoaded = true;
-    }
+      });
   }
 
   onDelete (service: Service): void {
@@ -66,33 +63,13 @@ export class ServiceSelectorComponent extends LoadableComponent implements OnIni
       this.caseServices = this.caseServices.filter(function (el) {
         return el.id !== service.id;
       });
-      this.selectServicesComponent.reloadChosenServices(this.caseServices);
       this.onServicesChanged();
     }
   }
 
   onServicesChanged(): void {
+    this.reSort(this.caseServices);
     this.changedServices.emit(this.caseServices);
-  }
-
-  onSelectServicesLoaded(name: string): void {
-    this.stopLoader(name);
-    if (this.caseId) {
-      this.startLoader();
-      this.casesService.getCaseServices(this.caseId).subscribe({next: services => {
-        this.stopLoader();
-        this.caseServices = services;
-        this.selectServicesComponent.reloadChosenServices(this.caseServices);
-        this.onServicesChanged();
-      }, error: (err) => {
-        this.stopLoader();
-        this._logger.error(err);
-      }});
-    }
-  }
-
-  onSelectServicesInit(name: string): void {
-    this.startLoader(name);
   }
 
   private hasService (service: Service): boolean {
@@ -101,5 +78,19 @@ export class ServiceSelectorComponent extends LoadableComponent implements OnIni
     });
 
     return !!result;
+  }
+
+  onServiceSelected($event: Service) {
+    if (!this.hasService($event)) {
+      this.caseServices = [...this.caseServices, $event];
+      this.onServicesChanged();
+    }
+  }
+
+  private reSort(sf: Service[]): void {
+    let sort = 1;
+    sf.map((row) => {
+      row.sort = sort++;
+    });
   }
 }

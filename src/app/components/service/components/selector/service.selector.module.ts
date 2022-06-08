@@ -15,23 +15,27 @@
  * Copyright (c) 2019 (original work) MedCenter24.com;
  */
 
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { AppTranslationModule } from '../../../../app.translation.module';
-import { ServiceSelectModule } from '../select';
-import { ServiceSelectorComponent } from './service.selector.component';
-import { CasesService } from '../../../case/cases.service';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {AppTranslationModule} from '../../../../app.translation.module';
+import {ServiceSelectorComponent} from './service.selector.component';
+import {CasesService} from '../../../case/cases.service';
+import {AutocompleterModule} from '../../../ui/selector/components/autocompleter';
+import {ServicesService} from '../../services.service';
+import {OrderListModule} from 'primeng/orderlist';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    AppTranslationModule,
-    ServiceSelectModule,
-  ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        AppTranslationModule,
+        AutocompleterModule,
+        OrderListModule,
+    ],
   providers: [
     CasesService,
+    ServicesService,
   ],
   declarations: [
     ServiceSelectorComponent,
