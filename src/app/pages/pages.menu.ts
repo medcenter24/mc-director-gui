@@ -65,6 +65,13 @@ const menu = [
               title: 'Currencies',
             },
           },
+        }, {
+          path: 'assistant',
+          data: {
+            menu: {
+              title: 'Assistant',
+            },
+          },
         }],
       },
       {

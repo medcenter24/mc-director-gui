@@ -24,6 +24,7 @@ import { routing } from './finance.page.routing';
 import {
   FinanceBaseAssistantModule
 } from "../../components/finance/components/base/assistant";
+import {ConditionsAssistantPageModule} from './conditions/assistant';
 
 @NgModule({
   imports: [
@@ -31,6 +32,7 @@ import {
     FinanceDatatableModule,
     FinanceCurrencyDatatableModule,
     ConditionsEditorPageModule,
+    ConditionsAssistantPageModule,
     FinanceBaseAssistantModule,
   ],
   declarations: [
